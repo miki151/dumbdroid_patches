@@ -1,22 +1,24 @@
-From 5a40f407c66ca67bf522f7ae4f17addd2eb773be Mon Sep 17 00:00:00 2001
+From b82aab496e9b0aa66686f71e461c135a48046f61 Mon Sep 17 00:00:00 2001
 From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
 Date: Wed, 19 Jan 2022 18:04:36 +0000
-Subject: [PATCH 2/2] DeskClock: Adapt app and daydream clocks to keyguard
- style
+Subject: [PATCH] DeskClock: Adapt app and daydream clocks to keyguard style
 
 Ignore the configurable widget for now, as I don't use it anyway
 
 Change-Id: Id9ab04d48b7cd67f7a2925db9b8d4e1f4cf6506c
 ---
- res/layout/date_and_next_alarm_time.xml      | 53 +++++++++++---------
- res/layout/desk_clock_saver.xml              | 10 +---
- res/layout/main_clock_frame.xml              | 36 ++++---------
- res/values/dimens.xml                        | 12 ++++-
- res/values/styles.xml                        | 18 +++++++
- src/com/android/deskclock/AlarmUtils.java    |  2 +-
- src/com/android/deskclock/ClockFragment.java |  3 --
- src/com/android/deskclock/Utils.java         | 23 +--------
- 8 files changed, 73 insertions(+), 84 deletions(-)
+ res/layout/date_and_next_alarm_time.xml       | 53 ++++++++++---------
+ res/layout/desk_clock_saver.xml               | 10 +---
+ res/layout/main_clock_frame.xml               | 36 ++++---------
+ res/values/dimens.xml                         | 12 ++++-
+ res/values/donottranslate.xml                 |  2 +-
+ res/values/styles.xml                         | 18 +++++++
+ res/xml/screensaver_settings.xml              | 16 ------
+ src/com/android/deskclock/AlarmUtils.java     |  2 +-
+ src/com/android/deskclock/ClockFragment.java  |  3 --
+ src/com/android/deskclock/Utils.java          | 35 ++----------
+ .../android/deskclock/data/SettingsDAO.java   |  2 +-
+ 11 files changed, 76 insertions(+), 113 deletions(-)
 
 diff --git a/res/layout/date_and_next_alarm_time.xml b/res/layout/date_and_next_alarm_time.xml
 index 9a0cb9103..b29ffedcf 100644
@@ -198,11 +200,24 @@ index bf5128d1a..546cc02a8 100644
 +    <dimen name="sc_keyguard_row_date_start_padding">6dp</dimen>
 +    <dimen name="sc_keyguard_row_alarm_start_padding">5.5dp</dimen>
  </resources>
+diff --git a/res/values/donottranslate.xml b/res/values/donottranslate.xml
+index 1cbd61deb..918b5371e 100644
+--- a/res/values/donottranslate.xml
++++ b/res/values/donottranslate.xml
+@@ -34,7 +34,7 @@
+     <!-- Default screensaver bold text. -->
+     <bool name="default_clock_bold_text">false</bool>
+     <!-- Default screensaver show AM/PM. -->
+-    <bool name="default_clock_show_ampm">true</bool>
++    <bool name="default_clock_show_ampm">false</bool>
+     <!-- Default screensaver night mode follows do no disturbe. -->
+     <bool name="default_clock_night_mode_dnd">false</bool>
+     <!-- Default screensaver night mode brightness. -->
 diff --git a/res/values/styles.xml b/res/values/styles.xml
-index 98bd74f52..a29bd7b82 100644
+index 3cb625ba6..b46916317 100644
 --- a/res/values/styles.xml
 +++ b/res/values/styles.xml
-@@ -318,4 +318,22 @@
+@@ -304,4 +304,22 @@
          <item name="appWidgetThemeTransparent">@style/Theme.DeskClock.DigitalWidgetTransparentLightBg</item>
          <item name="appWidgetThemeSolid">@style/Theme.DeskClock.DigitalWidgetLightBg</item>
      </style>
@@ -225,6 +240,33 @@ index 98bd74f52..a29bd7b82 100644
 +        <item name="android:maxLines">1</item>
 +    </style>
  </resources>
+diff --git a/res/xml/screensaver_settings.xml b/res/xml/screensaver_settings.xml
+index 68e2c51f1..b75e712f2 100644
+--- a/res/xml/screensaver_settings.xml
++++ b/res/xml/screensaver_settings.xml
+@@ -35,22 +35,6 @@
+         android:title="@string/clock_color_title"
+         app:iconSpaceReserved="false" />
+ 
+-    <SwitchPreferenceCompat
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:defaultValue="@bool/default_clock_bold_text"
+-        android:key="screensaver_bold_text"
+-        android:title="@string/bold_text_title"
+-        app:iconSpaceReserved="false" />
+-
+-    <SwitchPreferenceCompat
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:defaultValue="@bool/default_clock_show_ampm"
+-        android:key="screensaver_show_ampm"
+-        android:title="@string/show_ampm_title"
+-        app:iconSpaceReserved="false" />
+-
+     <PreferenceCategory
+         android:title="@string/night_mode_title"
+         app:iconSpaceReserved="false" >
 diff --git a/src/com/android/deskclock/AlarmUtils.java b/src/com/android/deskclock/AlarmUtils.java
 index c3739bac8..5b931a46d 100644
 --- a/src/com/android/deskclock/AlarmUtils.java
@@ -267,10 +309,10 @@ index 7591a18d0..8b0eecf7e 100644
          }
      }
 diff --git a/src/com/android/deskclock/Utils.java b/src/com/android/deskclock/Utils.java
-index 1182b67ff..179edcc13 100644
+index 27109a9d2..575f1fde4 100644
 --- a/src/com/android/deskclock/Utils.java
 +++ b/src/com/android/deskclock/Utils.java
-@@ -49,9 +49,7 @@ import android.text.style.RelativeSizeSpan;
+@@ -50,9 +50,7 @@ import android.text.style.RelativeSizeSpan;
  import android.text.style.StyleSpan;
  import android.text.style.TypefaceSpan;
  import android.util.ArraySet;
@@ -280,7 +322,7 @@ index 1182b67ff..179edcc13 100644
  import android.widget.TextClock;
  import android.widget.TextView;
  
-@@ -299,23 +297,6 @@ public class Utils {
+@@ -334,23 +332,6 @@ public class Utils {
          dateDisplay.setContentDescription(new SimpleDateFormat(descriptionPattern, l).format(now));
      }
  
@@ -304,24 +346,57 @@ index 1182b67ff..179edcc13 100644
      /***
       * Formats the time in the TextClock according to the Locale with a special
       * formatting treatment for the am/pm label.
-@@ -326,7 +307,7 @@ public class Utils {
+@@ -361,8 +342,7 @@ public class Utils {
      public static void setTimeFormat(TextClock clock, boolean includeSeconds) {
          if (clock != null) {
              // Get the best format for 12 hours mode according to the locale
--            clock.setFormat12Hour(get12ModeFormat(0.4f /* amPmRatio */, includeSeconds, true));
-+            clock.setFormat12Hour(get12ModeFormat(0f /* amPmRatio */, includeSeconds, true));
+-            clock.setFormat12Hour(get12ModeFormat(0.4f /* amPmRatio */, includeSeconds, true,
+-                    true));
++            clock.setFormat12Hour(get12ModeFormat(0.4f /* amPmRatio */, includeSeconds));
              // Get the best format for 24 hours mode according to the locale
              clock.setFormat24Hour(get24ModeFormat(includeSeconds));
          }
-@@ -342,7 +323,7 @@ public class Utils {
+@@ -377,17 +357,8 @@ public class Utils {
+      */
      public static void setScreensaverTimeFormat(TextClock clock, boolean includeSeconds) {
          if (clock != null) {
+-            final Boolean boldText = DataModel.getDataModel().getScreensaverBoldTextOn();
+-            final Boolean showAmPm = DataModel.getDataModel().getScreensaverShowAmPmOn();
              // Get the best format for 12 hours mode according to the locale
--            clock.setFormat12Hour(get12ModeFormat(0.4f /* amPmRatio */, includeSeconds, false));
-+            clock.setFormat12Hour(get12ModeFormat(0f /* amPmRatio */, includeSeconds, false));
+-            CharSequence pattern = get12ModeFormat(0.4f /* amPmRatio */, includeSeconds, boldText,
+-                    showAmPm);
+-            final Spannable sp = new SpannableString(pattern);
+-            if (boldText) {
+-                sp.setSpan(new StyleSpan(Typeface.BOLD), 0, pattern.length(),
+-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+-            }
+-            clock.setFormat12Hour(sp);
++            clock.setFormat12Hour(get12ModeFormat(0.4f /* amPmRatio */, includeSeconds));
              // Get the best format for 24 hours mode according to the locale
              clock.setFormat24Hour(get24ModeFormat(includeSeconds));
          }
+@@ -400,7 +371,7 @@ public class Utils {
+      * @return format string for 12 hours mode time, not including seconds
+      */
+     public static CharSequence get12ModeFormat(float amPmRatio, boolean includeSeconds) {
+-        return get12ModeFormat(amPmRatio, includeSeconds, true, true);
++        return get12ModeFormat(amPmRatio, includeSeconds, true, false);
+     }
+ 
+     /**
+diff --git a/src/com/android/deskclock/data/SettingsDAO.java b/src/com/android/deskclock/data/SettingsDAO.java
+index f55ede8e6..1fa303d6e 100644
+--- a/src/com/android/deskclock/data/SettingsDAO.java
++++ b/src/com/android/deskclock/data/SettingsDAO.java
+@@ -211,7 +211,7 @@ final class SettingsDAO {
+      * @return {@code true} if the screen saver should show AM/PM in 12 hour mode
+      */
+     static boolean getScreensaverShowAmPmOn(SharedPreferences prefs) {
+-        return prefs.getBoolean(ScreensaverSettingsActivity.KEY_SHOW_AMPM, true);
++        return prefs.getBoolean(ScreensaverSettingsActivity.KEY_SHOW_AMPM, false);
+     }
+ 
+     /**
 -- 
 2.34.1
 
