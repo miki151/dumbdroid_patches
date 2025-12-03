@@ -1,7 +1,7 @@
 From bbef0e4709b1bed4fa849645ffe42c008ac5ffa9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:25:00 +0200
-Subject: [PATCH 11/21] Add DumbdroidAdmin package
+Subject: [PATCH 11/22] Add DumbdroidAdmin package
 
 Change-Id: Ie7aa3e969c7857e3525796c8fdb0e8e840852e41
 ---

@@ -1,7 +1,7 @@
 From 33e9e8739d6525e8470049ac4cba3870e0cba08e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:26:24 +0100
-Subject: [PATCH 20/21] Add leaner rw-system.sh and fix the build
+Subject: [PATCH 20/22] Add leaner rw-system.sh and fix the build
 
 Change-Id: Icbf22bd063bd6d266b5b2f0709b114a6daa68dba
 ---

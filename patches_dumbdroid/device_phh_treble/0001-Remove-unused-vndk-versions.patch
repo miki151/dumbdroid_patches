@@ -1,7 +1,7 @@
 From 360861bdfafa91942857658242013d2aba3c2c39 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:03:09 +0200
-Subject: [PATCH 01/21] Remove unused vndk versions
+Subject: [PATCH 01/22] Remove unused vndk versions
 
 Change-Id: I17f70682be532f1e1f13c9fa8f9077db0ee5f523
 ---

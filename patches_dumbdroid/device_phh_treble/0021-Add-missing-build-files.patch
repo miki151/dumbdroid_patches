@@ -1,7 +1,7 @@
 From 550fee1f8f063565521f5b3b7e9f6570bccf0e6f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 3 Dec 2025 10:54:18 +0100
-Subject: [PATCH 21/21] Add missing build files
+Subject: [PATCH 21/22] Add missing build files
 
 Change-Id: I8ddb52e2d0318ff736498c2fe9499ebc49726b70
 ---

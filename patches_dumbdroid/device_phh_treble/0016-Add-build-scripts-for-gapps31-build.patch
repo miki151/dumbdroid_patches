@@ -1,7 +1,7 @@
 From 42c37286c0bbec4c82482052b1c832d4d4a5abf0 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:24:27 +0100
-Subject: [PATCH 16/21] Add build scripts for gapps31 build
+Subject: [PATCH 16/22] Add build scripts for gapps31 build
 
 Change-Id: I603d217fa1ab06907e1b1dc9a7f4c472fa7bb215
 ---

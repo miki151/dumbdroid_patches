@@ -1,7 +1,7 @@
 From 02d5a56ed6ce8ec2cd92090aa56e429d68bf4761 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 3 Nov 2025 11:35:33 +0100
-Subject: [PATCH 14/21] Stop removing device owner definitions on device boot
+Subject: [PATCH 14/22] Stop removing device owner definitions on device boot
 
 Change-Id: I14e82c15ba56961c808910c157b77e863eaba58d
 ---
