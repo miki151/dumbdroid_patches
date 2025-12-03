@@ -1,0 +1,82 @@
+From 42c37286c0bbec4c82482052b1c832d4d4a5abf0 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 29 Nov 2025 18:24:27 +0100
+Subject: [PATCH 16/21] Add build scripts for gapps31 build
+
+Change-Id: I603d217fa1ab06907e1b1dc9a7f4c472fa7bb215
+---
+ lineage_arm64_bgN.mk | 50 ++++++++++++++++++++++++++++++++++++++++++++
+ lineage_dg31.mk      |  4 ++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 lineage_arm64_bgN.mk
+ create mode 100644 lineage_dg31.mk
+
+diff --git a/lineage_arm64_bgN.mk b/lineage_arm64_bgN.mk
+new file mode 100644
+index 0000000..7deee5e
+--- /dev/null
++++ b/lineage_arm64_bgN.mk
+@@ -0,0 +1,50 @@
++TARGET_GAPPS_ARCH := arm64
++include build/make/target/product/aosp_arm64.mk
++#include device/phh/treble/remove_packages/Android.mk
++include $(call all-makefiles-under, device/phh/treble/remove_packages)
++$(call inherit-product, device/phh/treble/base.mk)
++
++$(call inherit-product, vendor/gapps/arm64/arm64-vendor.mk)
++$(call inherit-product, device/phh/treble/lineage.mk)
++$(call inherit-product-if-exists, device/qin/f21pro/f21pro_gsi_overlay.mk)
++$(call inherit-product, \
++    $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
++
++PRODUCT_NAME := arm64_bgN
++PRODUCT_DEVICE := tdgsi_arm64_ab
++PRODUCT_BRAND := google
++PRODUCT_SYSTEM_BRAND := google
++PRODUCT_MODEL := Dumbdroid
++
++# Overwrite the inherited "emulator" characteristics
++PRODUCT_CHARACTERISTICS := device
++
++PRODUCT_PACKAGES += \
++	android.hardware.lights-service.example \
++
++PRODUCT_REMOVE_PACKAGES := \
++AudioFX \
++BasicDreams \
++EasterEgg \
++Etar \
++ExactCalculator \
++Recorder \
++Velvet \
++Eleven \
++MtkInCallService \
++SetupWizard \
++#TrebleApp \
++#Seedvault \
++#LineageSetupWizard \
++#NotoColorEmojiLegacy.ttf \
++#NotoSansCJK-Regular.ttc \
++#NotoSerifCJK-Regular.ttc \
++#SpeechServicesByGoogle \
++#talkback \
++
++PRODUCT_PACKAGES += package_filter
++
++#PRODUCT_PACKAGES += ImsApp
++
++PRODUCT_SYSTEM_PROPERTIES += \
++    ro.dumbdroid.branch=gapps
+diff --git a/lineage_dg31.mk b/lineage_dg31.mk
+new file mode 100644
+index 0000000..b42951b
+--- /dev/null
++++ b/lineage_dg31.mk
+@@ -0,0 +1,4 @@
++$(call inherit-product, device/phh/treble/lineage_arm64_bgN.mk)
++
++PRODUCT_EXTRA_VNDK_VERSIONS := 31
++
+-- 
+2.34.1
+

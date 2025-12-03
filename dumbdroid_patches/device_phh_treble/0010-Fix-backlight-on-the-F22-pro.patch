@@ -1,0 +1,24 @@
+From 9174f369a0bf58200e0712ac182f6db4662c2185 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 15 Sep 2025 11:00:25 +0200
+Subject: [PATCH 10/21] Fix backlight on the F22 pro
+
+Change-Id: I5cf8947fb6a24acbae8c1d0db764a6485b68d8fa
+---
+ sepolicy/hal_light_default.te | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 sepolicy/hal_light_default.te
+
+diff --git a/sepolicy/hal_light_default.te b/sepolicy/hal_light_default.te
+new file mode 100644
+index 0000000..545db1c
+--- /dev/null
++++ b/sepolicy/hal_light_default.te
+@@ -0,0 +1,4 @@
++# F22 pro backlight fix
++
++allow hal_light sysfs_type:file rw_file_perms;
++allow hal_light sysfs_type:dir r_dir_perms;
+-- 
+2.34.1
+

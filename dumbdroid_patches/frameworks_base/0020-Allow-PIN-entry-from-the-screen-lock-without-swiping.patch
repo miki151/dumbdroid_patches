@@ -1,0 +1,205 @@
+From e8d1d4b957b35719cc3ebe3ec7ebb090306360ec Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 16 Aug 2025 09:12:59 +0200
+Subject: [PATCH 20/44] Allow PIN entry from the screen lock without swiping
+
+Change-Id: Icc4bc16fd059df7c5cf198432d98c6d1eacec936
+---
+ .../keyguard/KeyguardPinBasedInputView.java   | 17 +++++++++
+ .../keyguard/KeyguardPinViewController.java   | 14 +++++++
+ .../interactor/KeyguardKeyEventInteractor.kt  | 38 +++++++++++++++++++
+ .../domain/interactor/PendingPinInput.kt      | 22 +++++++++++
+ 4 files changed, 91 insertions(+)
+ create mode 100644 packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
+
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+index e1aca6e79aa5..6c9fcbbfaaf3 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+@@ -36,12 +36,14 @@ import android.graphics.Rect;
+ import android.util.AttributeSet;
+ import android.view.KeyEvent;
+ import android.view.View;
++import android.util.Log;
+ 
+ import androidx.annotation.CallSuper;
+ 
+ import com.android.app.animation.Interpolators;
+ import com.android.internal.widget.LockscreenCredential;
+ import com.android.systemui.res.R;
++import com.android.systemui.keyguard.domain.interactor.PendingPinInput;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -92,8 +94,18 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+         }
+     }
+ 
++    private boolean mConsumeBackKeyUp = false;
++
+     @Override
+     public boolean onKeyDown(int keyCode, KeyEvent event) {
++        if (keyCode == KeyEvent.KEYCODE_BACK) {
++            if (mPasswordEntry.getText().length() > 0 && mPasswordEntry.isEnabled()) {
++                mPasswordEntry.deleteLastChar();
++		mConsumeBackKeyUp = true;
++                return true;
++            }
++            return super.onKeyDown(keyCode, event);
++        }
+         if (keyCode == KeyEvent.KEYCODE_DEL) {
+             mDeleteButton.performClick();
+             return true;
+@@ -113,6 +125,10 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+ 
+     @Override
+     public boolean onKeyUp(int keyCode, KeyEvent event) {
++        if (keyCode == KeyEvent.KEYCODE_BACK && mConsumeBackKeyUp) {
++            mConsumeBackKeyUp = false;
++            return true;
++	}
+         if (KeyEvent.isConfirmKey(keyCode)) {
+             mOkButton.performClick();
+             return true;
+@@ -160,6 +176,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+ 
+     @Override
+     protected void resetPasswordText(boolean animate, boolean announce) {
++	PendingPinInput.reset();
+         mPasswordEntry.reset(animate, announce);
+     }
+ 
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java b/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
+index f4cda0204036..c4c6795d66f6 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
+@@ -32,6 +32,8 @@ import com.android.systemui.flags.Flags;
+ import com.android.systemui.res.R;
+ import com.android.systemui.statusbar.policy.DevicePostureController;
+ import com.android.systemui.user.domain.interactor.SelectedUserInteractor;
++import com.android.systemui.keyguard.domain.interactor.PendingPinInput;
++import android.util.Log;
+ 
+ public class KeyguardPinViewController
+         extends KeyguardPinBasedInputViewController<KeyguardPINView> {
+@@ -76,6 +78,18 @@ public class KeyguardPinViewController
+         mUiEventLogger = uiEventLogger;
+     }
+ 
++    @Override
++    public void onResume(int reason) {
++        super.onResume(reason);
++        String pending = PendingPinInput.get();
++        Log.i("Dumbdroid", "KeyguardPinViewControlelr onResume \"" + mPasswordEntry.getText() + "\" + \"" + pending);
++        for (int i = 0; i < pending.length(); i++) {
++            mPasswordEntry.append(pending.charAt(i));
++        }
++	Log.i("Dumbdroid", "After append \"" + mPasswordEntry.getText() + "\"");
++
++    }
++
+     @Override
+     protected void onViewAttached() {
+         super.onViewAttached();
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+index 82c28ff4cffb..4b7a88df1ef7 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+@@ -16,9 +16,13 @@
+ 
+ package com.android.systemui.keyguard.domain.interactor
+ 
++import android.util.Log
+ import android.content.Context
+ import android.media.AudioManager
+ import android.view.KeyEvent
++import com.android.systemui.keyguard.domain.interactor.PendingPinInput
++import com.android.keyguard.KeyguardSecurityModel
++import com.android.systemui.user.domain.interactor.SelectedUserInteractor
+ import com.android.systemui.back.domain.interactor.BackActionInteractor
+ import com.android.systemui.dagger.SysUISingleton
+ import com.android.systemui.keyevent.domain.interactor.SysUIKeyEventHandler.Companion.handleAction
+@@ -44,6 +48,8 @@ constructor(
+     private val mediaSessionLegacyHelperWrapper: MediaSessionLegacyHelperWrapper,
+     private val backActionInteractor: BackActionInteractor,
+     private val powerInteractor: PowerInteractor,
++    private val keyguardSecurityModel: KeyguardSecurityModel,
++    private val selectedUserInteractor: SelectedUserInteractor,
+ ) {
+ 
+     fun dispatchKeyEvent(event: KeyEvent): Boolean {
+@@ -64,6 +70,14 @@ constructor(
+                 KeyEvent.KEYCODE_MENU -> return dispatchMenuKeyEvent()
+             }
+         }
++        if (shouldShowPinBouncer(event)) {
++            digitFromKey(event)?.let {
++		PendingPinInput.addDigit(it)
++		Log.i("Dumbdroid", "Adding digit " + it)
++		}
++            statusBarKeyguardViewManager.showPrimaryBouncer(true)
++            return true
++        }
+         return false
+     }
+ 
+@@ -128,4 +142,28 @@ constructor(
+     private fun isDeviceAwake(): Boolean {
+         return powerInteractor.detailedWakefulness.value.isAwake()
+     }
++    private fun digitFromKey(event: KeyEvent): Char? {
++        return when (event.keyCode) {
++            in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9 ->
++                '0' + (event.keyCode - KeyEvent.KEYCODE_0)
++            in KeyEvent.KEYCODE_NUMPAD_0..KeyEvent.KEYCODE_NUMPAD_9 ->
++                '0' + (event.keyCode - KeyEvent.KEYCODE_NUMPAD_0)
++            else -> null
++        }
++    }
++
++    private fun shouldShowPinBouncer(event: KeyEvent): Boolean {
++        if (event.action != KeyEvent.ACTION_DOWN) return false
++        if (statusBarStateController.state != StatusBarState.KEYGUARD) return false
++        if (!isDeviceAwake()) return false
++        if (statusBarKeyguardViewManager.primaryBouncerIsOrWillBeShowing()) return false
++
++        val mode = keyguardSecurityModel.getSecurityMode(selectedUserInteractor.getSelectedUserId())
++        if (mode != KeyguardSecurityModel.SecurityMode.PIN) return false
++
++        val code = event.keyCode
++        return (code in KeyEvent.KEYCODE_0..KeyEvent.KEYCODE_9) ||
++            (code in KeyEvent.KEYCODE_NUMPAD_0..KeyEvent.KEYCODE_NUMPAD_9)
++    }
++
+ }
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
+new file mode 100644
+index 000000000000..0d0faa767308
+--- /dev/null
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
+@@ -0,0 +1,22 @@
++package com.android.systemui.keyguard.domain.interactor
++
++object PendingPinInput {
++    @JvmStatic
++    var digits: String = ""
++
++    @JvmStatic
++    fun addDigit(d: Char) {
++        digits += d
++    }
++
++    @JvmStatic
++    fun get(): String {
++        return digits
++    }
++
++    @JvmStatic
++    fun reset() {
++        digits = ""
++    }
++}
++
+-- 
+2.34.1
+

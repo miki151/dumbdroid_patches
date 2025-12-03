@@ -1,0 +1,60 @@
+From 0a71d5ca22d4bf33c5e87417b15953078c4d0a2a Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 9 Oct 2025 00:14:00 +0200
+Subject: [PATCH 5/8] Add a settings toggle for waking the screen with a number
+ key
+
+Change-Id: I9b000c826c832c13ae524a6ada2801d8ab32c2cf
+---
+ res/values/strings.xml                                       | 4 ++++
+ res/xml/screen_lock_settings.xml                             | 5 +++++
+ .../settings/security/screenlock/ScreenLockSettings.java     | 2 ++
+ 3 files changed, 11 insertions(+)
+
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 118edd3e311..7da21064e7b 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -1457,6 +1457,10 @@
+     <string name="lock_screen_auto_pin_confirm_title">Auto-confirm unlock</string>
+     <!-- Summary of the lock screen auto pin confirm setting. [CHAR LIMIT=NONE] -->
+     <string name="lock_screen_auto_pin_confirm_summary">Unlock automatically once you enter the correct PIN. This is slightly less secure than tapping Enter to confirm.</string>
++    <!-- Title of the setting to wake the device when numeric keys are pressed while using a PIN. [CHAR LIMIT=NONE] -->
++    <string name="lock_screen_wake_on_numeric_key_title">Wake screen with PIN keys</string>
++    <!-- Summary of the setting to wake the device when numeric keys are pressed while using a PIN. [CHAR LIMIT=NONE] -->
++    <string name="lock_screen_wake_on_numeric_key_summary">Turn on the screen when pressing number keys so you can start entering your PIN right away.</string>
+     <!-- Message shown to check auto pin confirmation feature when the user is updating the PIN. [CHAR LIMIT=NONE] -->
+     <string name="auto_pin_confirm_user_message">Auto-confirm correct PIN</string>
+     <!-- Message shown to explain the security concern if a user opts-in to the auto-pin feature. [CHAR LIMIT=NONE] -->
+diff --git a/res/xml/screen_lock_settings.xml b/res/xml/screen_lock_settings.xml
+index 1110c0b4cb4..0a90e2db721 100644
+--- a/res/xml/screen_lock_settings.xml
++++ b/res/xml/screen_lock_settings.xml
+@@ -41,6 +41,11 @@
+         android:title="@string/lock_screen_auto_pin_confirm_title"
+         android:summary="@string/lock_screen_auto_pin_confirm_summary" />
+ 
++    <SwitchPreferenceCompat
++        android:key="wake_on_numeric_key"
++        android:title="@string/lock_screen_wake_on_numeric_key_title"
++        android:summary="@string/lock_screen_wake_on_numeric_key_summary" />
++
+     <SwitchPreferenceCompat
+         android:key="enhancedPinPrivacy"
+         android:title="@string/lockpattern_settings_enhanced_pin_privacy_title"
+diff --git a/src/com/android/settings/security/screenlock/ScreenLockSettings.java b/src/com/android/settings/security/screenlock/ScreenLockSettings.java
+index f811872ee59..30daa7ed571 100644
+--- a/src/com/android/settings/security/screenlock/ScreenLockSettings.java
++++ b/src/com/android/settings/security/screenlock/ScreenLockSettings.java
+@@ -92,6 +92,8 @@ public class ScreenLockSettings extends DashboardFragment
+                 context, MY_USER_ID, lockPatternUtils));
+         controllers.add(new AutoPinConfirmPreferenceController(
+                 context, MY_USER_ID, lockPatternUtils, parent));
++        controllers.add(new NumericKeyWakePreferenceController(
++                context, MY_USER_ID, lockPatternUtils));
+         controllers.add(new PinScramblePreferenceController(
+                 context, MY_USER_ID, lockPatternUtils));
+         controllers.add(new OwnerInfoPreferenceController(context, parent));
+-- 
+2.34.1
+

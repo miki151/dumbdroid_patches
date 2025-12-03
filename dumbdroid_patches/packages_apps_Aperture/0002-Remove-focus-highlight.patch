@@ -1,0 +1,47 @@
+From 926ef40cf842159809bf55100a1094d2cd2f2abd Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 3 Sep 2025 09:35:27 +0200
+Subject: [PATCH 2/4] Remove focus highlight
+
+Change-Id: I66da789cefbe3c8d29441d7986e81e27a4847cd1
+---
+ .../main/java/org/lineageos/aperture/CameraActivity.kt    | 8 --------
+ app/src/main/res/layout/activity_camera.xml               | 3 +++
+ 2 files changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+index d575fb9..d914d39 100644
+--- a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
++++ b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+@@ -2491,14 +2491,6 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+         return super.dispatchKeyEvent(event)
+     }
+ 
+-    override fun onWindowFocusChanged(hasFocus: Boolean) {
+-        super.onWindowFocusChanged(hasFocus)
+-        if (hasFocus) {
+-            findViewById<ViewGroup>(R.id.mainLayout)
+-                .descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
+-        }
+-    }
+-
+     private fun handleHardwareKeyDown(
+         keyCode: Int, event: KeyEvent?
+     ) = HardwareKey.match(keyCode)?.let { (hardwareKey, tempIncrease) ->
+diff --git a/app/src/main/res/layout/activity_camera.xml b/app/src/main/res/layout/activity_camera.xml
+index c77ef88..92172ea 100644
+--- a/app/src/main/res/layout/activity_camera.xml
++++ b/app/src/main/res/layout/activity_camera.xml
+@@ -9,6 +9,9 @@
+     android:id="@+id/mainLayout"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
++    android:focusable="false"
++    android:focusableInTouchMode="false"
++    android:descendantFocusability="blocksDescendants"
+     android:background="@android:color/black"
+     android:keepScreenOn="true"
+     tools:context=".CameraActivity">
+-- 
+2.34.1
+

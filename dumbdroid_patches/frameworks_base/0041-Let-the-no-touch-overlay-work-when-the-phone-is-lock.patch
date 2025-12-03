@@ -1,0 +1,30 @@
+From 4528557d3e71c50d361bd149f55b7c0d151b9f64 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 3 Nov 2025 12:03:05 +0100
+Subject: [PATCH 41/44] Let the no-touch overlay work when the phone is locked
+
+Change-Id: I902c3a02bc13312c07cc2769f51935a3504374ef
+---
+ .../com/android/server/policy/ProximityTouchBlockOverlay.java   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java b/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
+index f8c97b40b2ae..34d628ee83fb 100644
+--- a/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
++++ b/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
+@@ -159,6 +159,7 @@ final class ProximityTouchBlockOverlay {
+                         WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                                 | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
+                                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
++                                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                                 | WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                         PixelFormat.TRANSLUCENT);
+ 
+@@ -173,4 +174,3 @@ final class ProximityTouchBlockOverlay {
+         return lp;
+     }
+ }
+-
+-- 
+2.34.1
+

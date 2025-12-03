@@ -1,0 +1,24 @@
+From ce97b6fffea7655b1af2d4c9a00dd81c3cfecebe Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 15 Jun 2025 11:33:46 +0200
+Subject: [PATCH 07/44] Tweak default font size
+
+Change-Id: Ie72058d0428c8dab566374b6e7923db46bc9738d
+---
+ packages/SettingsProvider/res/values/defaults.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/SettingsProvider/res/values/defaults.xml b/packages/SettingsProvider/res/values/defaults.xml
+index 17d9f1b87fac..73d3cc59ea47 100644
+--- a/packages/SettingsProvider/res/values/defaults.xml
++++ b/packages/SettingsProvider/res/values/defaults.xml
+@@ -337,5 +337,5 @@
+     <integer name="def_battery_charging_state_enforce_level">-1</integer>
+ 
+     <!-- Value to use as default scale for fonts -->
+-    <item name="def_device_font_scale" format="float" type="dimen">1.0</item>
++    <item name="def_device_font_scale" format="float" type="dimen">1.28</item>
+ </resources>
+-- 
+2.34.1
+

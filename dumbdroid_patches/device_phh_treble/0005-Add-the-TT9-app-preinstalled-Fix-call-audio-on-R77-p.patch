@@ -1,0 +1,34 @@
+From 025ee8b3f44739c0a9469c60707622ee3c66b303 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 27 Jun 2025 19:55:37 +0200
+Subject: [PATCH 05/21] Add the TT9 app preinstalled; Fix call audio on R77 pro
+
+Change-Id: I2a108a66834983625a1482f02a0b06b5a75e257a
+---
+ lineage.mk | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/lineage.mk b/lineage.mk
+index 6cb684b..cb1dff6 100644
+--- a/lineage.mk
++++ b/lineage.mk
+@@ -12,5 +12,16 @@ PRODUCT_SYSTEM_PROPERTIES += \
+     persist.dbg.wfc_avail_ovr=1
+ PRODUCT_SYSTEM_PROPERTIES += \
+     persist.dbg.allow_ims_off=1
++PRODUCT_SYSTEM_PROPERTIES += \
++    persist.sys.phh.disable_voice_call_in=true
++
++
++#PRODUCT_COPY_FILES += \
++#      device/phh/treble/permissions/privapp-permissions-com.mediatek.ims.xml:system/etc/permissions/privapp-permissions-com.mediatek.ims.xml
++
++#PRODUCT_COPY_FILES += \
++#    device/phh/treble/ims/mediatek-ims-extension-plugin.jar:system/system_ext/framework/mediatek-ims-extension-plugin.jar
++
+ 
++PRODUCT_PACKAGES += tt9
+ 
+-- 
+2.34.1
+

@@ -1,0 +1,72 @@
+From a5aa3c7a19975c525326cde948752e6c032ebc43 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 25 Jul 2025 14:23:14 +0200
+Subject: [PATCH 16/44] Bind the MENU Action to toggling quick settings; Bind
+ IN_APP_SEARCH Action to Home
+
+Change-Id: Ib3928fb984663bbd5785c375bc13e6959ab70211
+---
+ .../server/policy/PhoneWindowManager.java     | 35 +++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index dbe0c53d4cdf..6cf2953d2cb8 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -2292,12 +2292,43 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         performKeyAction(action, event, AssistUtils.INVOCATION_TYPE_UNKNOWN);
+     }
+ 
++    private void closeSettingsPanel() {
++        Intent i = new Intent("eu.dumbdroid.settingspanel.CLOSE_PANEL");
++        mContext.sendBroadcastAsUser(i, UserHandle.CURRENT);
++    }
++
++    private void launchSettingsPanel() {
++        Intent intent = new Intent(Intent.ACTION_MAIN)
++            .setComponent(new ComponentName(
++                        "eu.dumbdroid.settingspanel",
++                        "eu.dumbdroid.settingspanel.MainActivity"))
++            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
++                    | Intent.FLAG_ACTIVITY_CLEAR_TOP);
++        // Use UserHandle.CURRENT or ALL depending on multi‑user support
++        mContext.startActivityAsUser(intent, UserHandle.CURRENT);
++    }
++
++    private boolean isSettingsPanelOn() {
++        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
++        // NOTE: getRunningTasks is deprecated for apps but still available in system code
++        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
++        if (!tasks.isEmpty()) {
++            ComponentName top = tasks.get(0).topActivity;
++            return "eu.dumbdroid.settingspanel".equals(top.getPackageName())
++                && "eu.dumbdroid.settingspanel.MainActivity".equals(top.getClassName());
++        }
++        return false;
++    }
++
+     private void performKeyAction(Action action, KeyEvent event, int assistInvocationType) {
+         switch (action) {
+             case NOTHING:
+                 break;
+             case MENU:
+-                triggerVirtualKeypress(KeyEvent.KEYCODE_MENU);
++                if (isSettingsPanelOn())
++                    closeSettingsPanel();
++                else
++                    launchSettingsPanel();
+                 break;
+             case APP_SWITCH:
+                 toggleRecentApps();
+@@ -2312,7 +2343,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 launchVoiceAssistWithWakeLock();
+                 break;
+             case IN_APP_SEARCH:
+-                triggerVirtualKeypress(KeyEvent.KEYCODE_SEARCH);
++                triggerVirtualKeypress(KeyEvent.KEYCODE_HOME);
+                 break;
+             case LAUNCH_CAMERA:
+                 launchCameraAction();
+-- 
+2.34.1
+

@@ -1,0 +1,33 @@
+From e73c8bf7c9ee2c5c3771d5905bcdb059504b3251 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 8 Oct 2025 11:42:36 +0200
+Subject: [PATCH 34/44] Make dpad up/down not wake the screen when the
+ screen-off volume setting is offf
+
+Change-Id: I10bccfa19f7168a6c3f00a398874054e331d255a
+---
+ data/keyboards/Generic.kl | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/data/keyboards/Generic.kl b/data/keyboards/Generic.kl
+index cd899b70843a..200ca1060783 100644
+--- a/data/keyboards/Generic.kl
++++ b/data/keyboards/Generic.kl
+@@ -122,12 +122,12 @@ key 99    SYSRQ
+ key 100   ALT_RIGHT
+ # key 101 "KEY_LINEFEED"
+ key 102   MOVE_HOME
+-key 103   DPAD_UP WAKE
++key 103   DPAD_UP
+ key 104   PAGE_UP
+ key 105   DPAD_LEFT
+ key 106   DPAD_RIGHT
+ key 107   MOVE_END
+-key 108   DPAD_DOWN WAKE
++key 108   DPAD_DOWN
+ key 109   PAGE_DOWN
+ key 110   INSERT
+ key 111   FORWARD_DEL
+-- 
+2.34.1
+

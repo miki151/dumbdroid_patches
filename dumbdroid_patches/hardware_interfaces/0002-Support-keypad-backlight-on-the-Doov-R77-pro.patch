@@ -1,0 +1,60 @@
+From 28cee29f1f653986b4fee5623f819cae4e32c49e Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 5 Sep 2025 10:54:51 +0200
+Subject: [PATCH 2/4] Support keypad backlight on the Doov R77 pro.
+
+Change-Id: I3c349da836c2a19d81e77b92cde56cc38eb15b5f
+---
+ light/aidl/default/lights.rs | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/light/aidl/default/lights.rs b/light/aidl/default/lights.rs
+index 8fbc7dbfb8..3a94162279 100644
+--- a/light/aidl/default/lights.rs
++++ b/light/aidl/default/lights.rs
+@@ -54,6 +54,8 @@ use std::fs;
+ use std::io::Write;
+ 
+ const KEYPAD_BACKLIGHT_PATH: &str = "/sys/class/leds/mt6370_pmu_led1/brightness";
++const KEYPAD_BACKLIGHT_PATH2: &str = "/proc/gpio3";
++const KEYPAD_BACKLIGHT_PATH3: &str = "/sys/class/leds/button-backlight/brightness";
+ const SCREEN_BACKLIGHT_PATH: &str = "/sys/class/leds/lcd-backlight/brightness";
+ 
+ fn compute_brightness(color: i32) -> u8 {
+@@ -74,23 +76,21 @@ fn compute_brightness(color: i32) -> u8 {
+     brightness as u8
+ }
+ 
+-fn write_backlight(value: u8) {
+-    if let Ok(mut file) = fs::OpenOptions::new().write(true).open(KEYPAD_BACKLIGHT_PATH) {
+-        if value > 0 {
+-          let _ = write!(file, "{}", 6);
+-        } else {
+-          let _ = write!(file, "{}", 0);
+-        }
+-    } else {
+-        log::warn!("Failed to open keypad backlight path");
+-    }
+-    if let Ok(mut file) = fs::OpenOptions::new().write(true).open(SCREEN_BACKLIGHT_PATH) {
++fn write_led_value(path: &str, value: u8) {
++    if let Ok(mut file) = fs::OpenOptions::new().write(true).open(path) {
+         let _ = write!(file, "{}", value);
+     } else {
+-        log::warn!("Failed to open screen backlight path");
++        log::warn!("Failed to open keypad backlight path: {}", path);
+     }
+ }
+ 
++fn write_backlight(value: u8) {
++    write_led_value(KEYPAD_BACKLIGHT_PATH, if value > 0 { 6 } else { 0 });
++    write_led_value(KEYPAD_BACKLIGHT_PATH2, if value > 0 { 1 } else { 0 });
++    write_led_value(KEYPAD_BACKLIGHT_PATH3, if value > 0 { 1 } else { 0 });
++    write_led_value(SCREEN_BACKLIGHT_PATH, value);
++}
++
+ impl Default for LightsService {
+     fn default() -> Self {
+         let lights = vec![
+-- 
+2.34.1
+

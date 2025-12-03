@@ -1,0 +1,53 @@
+From eac60a78ab5dde57fd52aaf9a6d0461f671741a3 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 8 Oct 2025 11:05:45 +0200
+Subject: [PATCH 33/44] When a voice call is active, allow any key (except
+ power button) to wake the screen
+
+Change-Id: Idc34a4601e1b6de2730af7ce8552a2d3fb9de150
+---
+ .../android/server/policy/PhoneWindowManager.java  | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 542b8c2b2b85..d4d4060d4b89 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -5397,6 +5397,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         final boolean isInjected = (policyFlags & WindowManagerPolicy.FLAG_INJECTED) != 0;
+         final boolean isNumberKey = isNumericKey(keyCode);
+         final boolean allowNumberKeyWake = isNumberKey && shouldWakeOnNumericKey();
++        final boolean voiceCallActiveWithScreenOff = !interactive && !isInjected
++                && isVoiceCallActive();
++
++        if (voiceCallActiveWithScreenOff && keyCode != KeyEvent.KEYCODE_POWER && down) {
++            isWakeKey = true;
++        }
+ 
+         // If screen is off then we treat the case where the keyguard is open but hidden
+         // the same as if it were open and in front.
+@@ -5452,7 +5458,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 mPendingWakeKey = PENDING_KEY_NULL;
+             } else {
+                 result = 0;
+-                if (isWakeKey && (!down || !isWakeKeyWhenScreenOff(keyCode))) {
++                if (isWakeKey && (!down || (!voiceCallActiveWithScreenOff
++                        && !isWakeKeyWhenScreenOff(keyCode)))) {
+                     isWakeKey = false;
+                 }
+                 // Cache the wake key on down event so we can also avoid sending the up event
+@@ -6158,6 +6165,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         return true;
+     }
+ 
++    private boolean isVoiceCallActive() {
++        final TelecomManager telecomManager = getTelecommService();
++        return telecomManager != null && telecomManager.isInCall();
++    }
++
+     /**
+      * When the screen is off we ignore some keys that might otherwise typically
+      * be considered wake keys.  We filter them out here.
+-- 
+2.34.1
+

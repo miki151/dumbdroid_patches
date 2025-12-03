@@ -1,0 +1,42 @@
+From e666bf0f731881722444aa4124bd10d49eb28e65 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 26 Oct 2025 12:36:56 +0100
+Subject: [PATCH 6/6] Turn off the "discover trust" notification
+
+Change-Id: Iaf2c247cce8c78da255e9a32f4fcff855b373db9
+---
+ .../platform/internal/TrustInterfaceService.java       | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/lineage/lib/main/java/org/lineageos/platform/internal/TrustInterfaceService.java b/lineage/lib/main/java/org/lineageos/platform/internal/TrustInterfaceService.java
+index 3cb8e5e7..ce33ee1b 100644
+--- a/lineage/lib/main/java/org/lineageos/platform/internal/TrustInterfaceService.java
++++ b/lineage/lib/main/java/org/lineageos/platform/internal/TrustInterfaceService.java
+@@ -88,11 +88,8 @@ public class TrustInterfaceService extends LineageSystemService {
+         if (phase == PHASE_BOOT_COMPLETED) {
+             mNotificationManager = mContext.getSystemService(NotificationManager.class);
+ 
+-            // Onboard
+             if (!hasOnboardedUser()) {
+-                postOnBoardingNotification();
+-                registerLocaleChangedReceiver();
+-                return;
++                markUserOnboarded();
+             }
+ 
+             runTestInternal();
+@@ -338,6 +335,11 @@ public class TrustInterfaceService extends LineageSystemService {
+                 LineageSettings.System.TRUST_INTERFACE_HINTED, 0) == 1;
+     }
+ 
++    private void markUserOnboarded() {
++        LineageSettings.System.putInt(mContext.getContentResolver(),
++                LineageSettings.System.TRUST_INTERFACE_HINTED, 1);
++    }
++
+     private void registerLocaleChangedReceiver() {
+         IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
+         mContext.registerReceiver(mReceiver, filter);
+-- 
+2.34.1
+

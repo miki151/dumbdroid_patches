@@ -1,0 +1,26 @@
+From a71f42a0352d9572abea050b3bf5366c0a30f865 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 24 Jul 2025 11:44:30 +0200
+Subject: [PATCH 14/44] Remap the top right button as menu again
+
+Change-Id: Icaf1c5ff3a541a45dd4532dc4dbbf1293b77eedb
+---
+ data/keyboards/Generic.kl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/data/keyboards/Generic.kl b/data/keyboards/Generic.kl
+index a35df9bf2b9a..fd44a3663d14 100644
+--- a/data/keyboards/Generic.kl
++++ b/data/keyboards/Generic.kl
+@@ -158,7 +158,7 @@ key 135   PASTE
+ # key 136 "KEY_FIND"
+ key 137   CUT
+ # key 138 "KEY_HELP"
+-key 139   HOME
++key 139   MENU
+ key 140   CALCULATOR
+ # key 141 "KEY_SETUP"
+ key 142   SLEEP
+-- 
+2.34.1
+

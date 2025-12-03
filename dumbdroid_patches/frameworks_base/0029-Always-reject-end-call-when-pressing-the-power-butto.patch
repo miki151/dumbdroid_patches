@@ -1,0 +1,249 @@
+From 532b03de0592a60f196da5a4bb2074eeab9aa5b5 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 4 Oct 2025 12:44:42 +0200
+Subject: [PATCH 29/44] Always reject/end call when pressing the power button
+
+Change-Id: I0b6eb538c730167775cb3589fe210de2c0eafeb6
+---
+ .../keyguard_security_container_view.xml      |  1 +
+ .../keyguard/KeyguardSecurityContainer.java   | 15 +++++
+ .../com/android/keyguard/NumPadButton.java    |  2 +
+ .../src/com/android/keyguard/NumPadKey.java   |  1 +
+ .../interactor/KeyguardKeyEventInteractor.kt  | 11 ++++
+ .../policy/HeuristicProximityController.java  | 11 ++--
+ .../server/policy/PhoneWindowManager.java     | 56 +++++++++++++------
+ 7 files changed, 75 insertions(+), 22 deletions(-)
+
+diff --git a/packages/SystemUI/res-keyguard/layout/keyguard_security_container_view.xml b/packages/SystemUI/res-keyguard/layout/keyguard_security_container_view.xml
+index dc58d500da2f..a14390ab7fec 100644
+--- a/packages/SystemUI/res-keyguard/layout/keyguard_security_container_view.xml
++++ b/packages/SystemUI/res-keyguard/layout/keyguard_security_container_view.xml
+@@ -15,6 +15,7 @@
+ ** See the License for the specific language governing permissions and
+ ** limitations under the License.
+ */
++    android:descendantFocusability="blocksDescendants"
+ -->
+ 
+ <com.android.keyguard.KeyguardSecurityContainer
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardSecurityContainer.java b/packages/SystemUI/src/com/android/keyguard/KeyguardSecurityContainer.java
+index 70465bc3d0b7..65041ee64d9e 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardSecurityContainer.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardSecurityContainer.java
+@@ -66,6 +66,7 @@ import android.util.TypedValue;
+ import android.view.GestureDetector;
+ import android.view.LayoutInflater;
+ import android.view.MotionEvent;
++import android.view.KeyEvent;
+ import android.view.VelocityTracker;
+ import android.view.View;
+ import android.view.ViewConfiguration;
+@@ -647,6 +648,8 @@ public class KeyguardSecurityContainer extends ConstraintLayout {
+     @Override
+     public void onFinishInflate() {
+         super.onFinishInflate();
++	        setDefaultFocusHighlightEnabled(false);
++        setFocusable(false);
+         mSecurityViewFlipper = findViewById(R.id.view_flipper);
+     }
+ 
+@@ -674,6 +677,18 @@ public class KeyguardSecurityContainer extends ConstraintLayout {
+         return TouchLogger.logDispatchTouch(TAG, ev, super.dispatchTouchEvent(ev));
+     }
+ 
++        @Override
++    public boolean dispatchKeyEvent(KeyEvent event) {
++        int keyCode = event.getKeyCode();
++        if (keyCode == KeyEvent.KEYCODE_DPAD_UP
++                || keyCode == KeyEvent.KEYCODE_DPAD_DOWN
++                || keyCode == KeyEvent.KEYCODE_DPAD_LEFT
++                || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
++            return true;
++        }
++        return super.dispatchKeyEvent(event);
++    }
++
+     @Override
+     protected void dispatchDraw(Canvas canvas) {
+         super.dispatchDraw(canvas);
+diff --git a/packages/SystemUI/src/com/android/keyguard/NumPadButton.java b/packages/SystemUI/src/com/android/keyguard/NumPadButton.java
+index a81c1b0bf9c3..0c608b5ab8e5 100644
+--- a/packages/SystemUI/src/com/android/keyguard/NumPadButton.java
++++ b/packages/SystemUI/src/com/android/keyguard/NumPadButton.java
+@@ -46,6 +46,8 @@ public class NumPadButton extends AlphaOptimizedImageButton implements NumPadAni
+ 
+     public NumPadButton(Context context, AttributeSet attrs) {
+         super(context, attrs);
++	 setFocusable(false);
++        setDefaultFocusHighlightEnabled(false);
+         mStyleAttr = attrs.getStyleAttribute();
+         setupAnimator();
+     }
+diff --git a/packages/SystemUI/src/com/android/keyguard/NumPadKey.java b/packages/SystemUI/src/com/android/keyguard/NumPadKey.java
+index 7f5c06c16588..8e1f72ed846d 100644
+--- a/packages/SystemUI/src/com/android/keyguard/NumPadKey.java
++++ b/packages/SystemUI/src/com/android/keyguard/NumPadKey.java
+@@ -95,6 +95,7 @@ public class NumPadKey extends ViewGroup implements NumPadAnimationListener {
+     protected NumPadKey(Context context, AttributeSet attrs, int defStyle, int contentResource) {
+         super(context, attrs, defStyle);
+         setFocusable(true);
++	setDefaultFocusHighlightEnabled(false);
+ 
+         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NumPadKey, defStyle,
+                 contentResource);
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+index 4b7a88df1ef7..10ff2e6da4f5 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+@@ -59,6 +59,17 @@ constructor(
+                 KeyEvent.KEYCODE_VOLUME_UP -> return dispatchVolumeKeyEvent(event)
+             }
+         }
++        if (
++            statusBarStateController.state == StatusBarState.KEYGUARD ||
++                statusBarStateController.state == StatusBarState.SHADE_LOCKED
++        ) {
++            when (event.keyCode) {
++                KeyEvent.KEYCODE_DPAD_UP,
++                KeyEvent.KEYCODE_DPAD_DOWN,
++                KeyEvent.KEYCODE_DPAD_LEFT,
++                KeyEvent.KEYCODE_DPAD_RIGHT -> return true
++            }
++        }
+ 
+         if (event.handleAction()) {
+             if (KeyEvent.isConfirmKey(event.keyCode)) {
+diff --git a/services/core/java/com/android/server/policy/HeuristicProximityController.java b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+index c66dff27b152..cdb0796736ca 100644
+--- a/services/core/java/com/android/server/policy/HeuristicProximityController.java
++++ b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+@@ -48,7 +48,7 @@ final class HeuristicProximityController {
+     // Audio state settling/polling
+     private static final long SETTLE_MS = 600;        // require this long of "clean" state to treat voice as ended
+     private static final long POLL_INTERVAL_MS = 200; // how often to poll after a change
+-    private static final long POLL_BURST_DURATION_MS = 3000; // poll for up to this long after a change
++    private static final long POLL_BURST_DURATION_MS = 30000; // poll for up to this long after a change
+ 
+     private final Context mContext;
+     private final Listener mListener;
+@@ -106,7 +106,7 @@ final class HeuristicProximityController {
+             new AudioManager.AudioPlaybackCallback() {
+                 @Override
+                 public void onPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs) {
+-                    markAudioChangeAndRefresh();
++         //           markAudioChangeAndRefresh();
+                     Slog.d("Dumbdroid proximity", "Audio playback changed");
+                 }
+             };
+@@ -115,7 +115,7 @@ final class HeuristicProximityController {
+             new AudioManager.AudioRecordingCallback() {
+                 @Override
+                 public void onRecordingConfigChanged(List<AudioRecordingConfiguration> configs) {
+-                    markAudioChangeAndRefresh();
++           //         markAudioChangeAndRefresh();
+                     Slog.d("Dumbdroid proximity", "Audio recording changed");
+                 }
+             };
+@@ -134,7 +134,7 @@ final class HeuristicProximityController {
+         }
+     };
+ 
+-    private void markAudioChangeAndRefresh() {
++    public void markAudioChangeAndRefresh() {
+         mLastAudioChangeRealtime = SystemClock.elapsedRealtime();
+         refreshActiveFromAudioRoute();
+         schedulePollingBurst(); // keep nudging for a short while to catch laggy updates
+@@ -146,7 +146,8 @@ final class HeuristicProximityController {
+         mHandler.post(new Runnable() {
+             @Override public void run() {
+                 long elapsed = SystemClock.elapsedRealtime() - mLastAudioChangeRealtime;
+-                refreshActiveFromAudioRoute();
++		if (mActive)
++                   refreshActiveFromAudioRoute();
+                 if (elapsed < POLL_BURST_DURATION_MS) {
+                     mHandler.postDelayed(this, POLL_INTERVAL_MS);
+                 } else {
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index a8e57364ff14..dd31284c0a9e 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -1246,15 +1246,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         TelecomManager telecomManager = getTelecommService();
+         boolean hungUp = false;
+         if (telecomManager != null) {
+-            if (telecomManager.isRinging()) {
+-                // Pressing Power while there's a ringing incoming
+-                // call should silence the ringer.
+-                telecomManager.silenceRinger();
+-            } else if ((mIncallPowerBehavior
+-                    & Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_HANGUP) != 0
+-                    && telecomManager.isInCall() && interactive) {
+-                // Otherwise, if "Power button ends call" is enabled,
+-                // the Power button will hang up any current active call.
++            if (telecomManager.isRinging() || telecomManager.isInCall()) {
+                 hungUp = telecomManager.endCall();
+             }
+         }
+@@ -3978,6 +3970,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+             if (mProxOverlay != null && mProxOverlay.isShown()) {
+                 Log.d("Dumbdroid proximity", "Hiding the proximity overlay.");
+                 mProxOverlay.hideThreadSafe();
++		mHeuristicProx.markAudioChangeAndRefresh();
+                 return -1; // consume; don't let apps see this Back
+             }
+         }
+@@ -5508,14 +5501,43 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         if (dispatchKeyToKeyHandlers(event)) {
+             return 0;
+         }
+-    if (down && !interactive &&
+-            (keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP)) {
+-        if (mDpadScreenOffAction != Action.NOTHING)
+-        dispatchDirectAudioEvent(new KeyEvent(event.getDownTime(), event.getEventTime(),
+-            KeyEvent.ACTION_DOWN, keyCode == KeyEvent.KEYCODE_DPAD_DOWN 
+-                ? KeyEvent.KEYCODE_VOLUME_DOWN : KeyEvent.KEYCODE_VOLUME_UP, 0));
+-        return 0;
+-    }
++        if (!interactive && mDpadScreenOffAction != Action.NOTHING) {
++            switch (keyCode) {
++                case KeyEvent.KEYCODE_DPAD_DOWN:
++                case KeyEvent.KEYCODE_DPAD_UP:
++                    if (down) {
++                        dispatchDirectAudioEvent(new KeyEvent(event.getDownTime(),
++                                event.getEventTime(), KeyEvent.ACTION_DOWN,
++                                keyCode == KeyEvent.KEYCODE_DPAD_DOWN
++                                        ? KeyEvent.KEYCODE_VOLUME_DOWN
++                                        : KeyEvent.KEYCODE_VOLUME_UP, 0));
++                    }
++                    return 0;
++                case KeyEvent.KEYCODE_DPAD_CENTER:
++                case KeyEvent.KEYCODE_DPAD_LEFT:
++                case KeyEvent.KEYCODE_DPAD_RIGHT:
++                    if (event.getRepeatCount() == 0) {
++                        final int mediaKeyCode;
++                        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
++                            mediaKeyCode = KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
++                        } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
++                            mediaKeyCode = KeyEvent.KEYCODE_MEDIA_PREVIOUS;
++                        } else {
++                            mediaKeyCode = KeyEvent.KEYCODE_MEDIA_NEXT;
++                        }
++
++                        KeyEvent mediaKeyEvent = new KeyEvent(event.getDownTime(),
++                                event.getEventTime(), down ? KeyEvent.ACTION_DOWN
++                                        : KeyEvent.ACTION_UP, mediaKeyCode, 0);
++                        mBroadcastWakeLock.acquire();
++                        Message msg = mHandler.obtainMessage(
++                                MSG_DISPATCH_MEDIA_KEY_WITH_WAKE_LOCK, mediaKeyEvent);
++                        msg.setAsynchronous(true);
++                        msg.sendToTarget();
++                    }
++                    return 0;
++            }
++        }
+         // Handle special keys.
+         switch (keyCode) {
+             case KeyEvent.KEYCODE_BACK: {
+-- 
+2.34.1
+

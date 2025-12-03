@@ -1,0 +1,97 @@
+From 55acd9e2d0c7332bd4d4badb2c2ba97038e6ba2c Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 17 Aug 2025 11:12:30 +0200
+Subject: [PATCH 21/44] Make the power button close recent apps in the "power
+ button go home first" mode
+
+Change-Id: I5794d376f1ee2ddd2c21709718e9771e7e6140e5
+---
+ .../shared/recents/ISystemUiProxy.aidl        |  2 ++
+ .../recents/OverviewProxyService.java         | 19 +++++++++++++++++++
+ .../server/policy/PhoneWindowManager.java     |  6 ++++--
+ 3 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl b/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
+index d28d227bcf7c..bb2fdce6b151 100644
+--- a/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
++++ b/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
+@@ -41,6 +41,8 @@ interface ISystemUiProxy {
+      */
+     oneway void onOverviewShown(boolean fromHome) = 6;
+ 
++    oneway void onOverviewHidden() = 60;
++
+     /**
+      * Proxies motion events from the homescreen UI to the status bar. Only called when
+      * swipe down is detected on WORKSPACE. The sender guarantees the following order of events on
+diff --git a/packages/SystemUI/src/com/android/systemui/recents/OverviewProxyService.java b/packages/SystemUI/src/com/android/systemui/recents/OverviewProxyService.java
+index 81dd60167eca..bc54d848e08c 100644
+--- a/packages/SystemUI/src/com/android/systemui/recents/OverviewProxyService.java
++++ b/packages/SystemUI/src/com/android/systemui/recents/OverviewProxyService.java
+@@ -310,6 +310,19 @@ public class OverviewProxyService implements CallbackController<OverviewProxyLis
+                     .injectInputEvent(ev, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
+         }
+ 
++        private static void setRecentsVisibility(boolean visible) {
++            try {
++                final android.os.IBinder b = android.os.ServiceManager.getService("window");
++                final android.view.IWindowManager wm =
++                    android.view.IWindowManager.Stub.asInterface(b);
++                if (wm != null) {
++                    wm.setRecentsVisibility(visible);
++                }
++            } catch (android.os.RemoteException e) {
++                // SystemUI may be restarting; ignore
++            }
++        }
++
+         @Override
+         public void onOverviewShown(boolean fromHome) {
+             verifyCallerAndClearCallingIdentityPostMain("onOverviewShown", () -> {
+@@ -317,6 +330,12 @@ public class OverviewProxyService implements CallbackController<OverviewProxyLis
+                     mConnectionCallbacks.get(i).onOverviewShown(fromHome);
+                 }
+             });
++            setRecentsVisibility(true);
++        }
++
++        @Override
++        public void onOverviewHidden() {
++            setRecentsVisibility(false);
+         }
+ 
+         @Override
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 6cf2953d2cb8..6b879d6177ad 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -5154,7 +5154,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         }
+ 
+         // no keyguard stuff to worry about, just launch home!
+-        if (mRecentsVisible) {
++	// commenting this out since it breaks going home from recents (hideRecentApps() doesn't seem to do anything
++/*        if (mRecentsVisible) {
+             try {
+                 ActivityManager.getService().stopAppSwitches();
+             } catch (RemoteException e) {}
+@@ -5164,7 +5165,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 awakenDreams();
+             }
+             hideRecentApps(false, true);
+-        } else if (mDefaultDisplayPolicy.isScreenOnFully()) {
++        } else */if (mDefaultDisplayPolicy.isScreenOnFully()) {
+             // Otherwise, just launch Home
+             startDockOrHome(displayId, true /*fromHomeKey*/, awakenFromDreams);
+         }
+@@ -5173,6 +5174,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+     @Override
+     public void setRecentsVisibilityLw(boolean visible) {
+         mRecentsVisible = visible;
++	Log.i("Dumbdroid", "Recents visibility: " + visible);
+     }
+ 
+     @Override
+-- 
+2.34.1
+

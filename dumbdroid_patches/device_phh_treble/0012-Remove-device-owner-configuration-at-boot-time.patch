@@ -1,0 +1,30 @@
+From c5b4535cdc417838af917c42381f681d349f0f94 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 7 Oct 2025 09:28:16 +0200
+Subject: [PATCH 12/21] Remove device owner configuration at boot time
+
+Change-Id: Ifcfe752daeef528bad97ee200dcd3d1c70b2e156
+---
+ ota/phh-ota.rc | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/ota/phh-ota.rc b/ota/phh-ota.rc
+index c6c5814..74bfc99 100644
+--- a/ota/phh-ota.rc
++++ b/ota/phh-ota.rc
+@@ -8,5 +8,12 @@ service phh-ota-switch /system/bin/phh-ota switch-slot
+ 	disabled
+ 	oneshot
+ 
++on post-fs-data
++    rm /data/system/device_owner_2.xml
++    rm /data/system/device_policies.xml
++    rm /data/system/device_policy_state.xml
++
+ on property:sys.boot_completed=1
+     exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-ota delete-other-slot
++
++
+-- 
+2.34.1
+

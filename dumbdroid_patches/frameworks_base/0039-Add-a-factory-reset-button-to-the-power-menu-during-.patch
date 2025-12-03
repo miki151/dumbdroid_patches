@@ -1,0 +1,157 @@
+From 34b48bb648e05a58a88bf17d33ff0f4e7a4e31e1 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 30 Oct 2025 18:24:17 +0100
+Subject: [PATCH 39/44] Add a factory reset button to the power menu during
+ setup wizard
+
+Change-Id: Ib90eb6ebf81dd5dd533dc275c7880fee14cefd8d
+---
+ core/res/res/values/strings.xml               | 10 +++
+ .../GlobalActionsDialogLite.java              | 75 +++++++++++++++++++
+ 2 files changed, 85 insertions(+)
+
+diff --git a/core/res/res/values/strings.xml b/core/res/res/values/strings.xml
+index 7405120bf6bc..a7abc35652af 100644
+--- a/core/res/res/values/strings.xml
++++ b/core/res/res/values/strings.xml
+@@ -690,6 +690,16 @@
+     <!-- label for item that restarts phone in phone options dialog [CHAR LIMIT=24]-->
+     <string name="global_action_restart">Restart</string>
+ 
++    <!-- label for item that performs a factory reset from the phone options dialog while the device is being set up [CHAR LIMIT=24] -->
++    <string name="global_action_factory_reset">Factory reset</string>
++
++    <!-- message shown when confirming a factory reset triggered from the phone options dialog.
++         Keep concise because this is displayed in a modal confirmation dialog. [CHAR LIMIT=NONE] -->
++    <string name="global_action_factory_reset_message">Erase all data from this device now? This can\'t be undone.</string>
++
++    <!-- label for the positive button that confirms the factory reset from the phone options dialog [CHAR LIMIT=24] -->
++    <string name="global_action_factory_reset_confirm">Factory reset</string>
++
+     <!-- label for item that opens emergency features in the phone options dialog [CHAR LIMIT=24]-->
+     <string name="global_action_emergency">Emergency</string>
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java b/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
+index c579d61a75e4..e34cdc613a5c 100644
+--- a/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
++++ b/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
+@@ -192,6 +192,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+     private static final String INTERACTION_JANK_TAG = "global_actions";
+ 
+     private static final boolean SHOW_SILENT_TOGGLE = true;
++    private static final String FACTORY_RESET_REASON = "GlobalActionsDialogLite";
+ 
+     /* Valid settings for restart actions keys.
+      * see lineage-sdk config.xml config_restartActionsList */
+@@ -620,6 +621,12 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+         }
+     }
+ 
++    private boolean maybeAddFactoryResetAction(List<Action> actions) {
++        int beforeSize = actions.size();
++        addIfShouldShowAction(actions, new FactoryResetAction());
++        return actions.size() > beforeSize;
++    }
++
+     @VisibleForTesting
+     protected String[] getRestartActions() {
+         return mResources.getStringArray(
+@@ -654,6 +661,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+         ArraySet<String> addedKeys = new ArraySet<>();
+         ArraySet<String> addedRestartKeys = new ArraySet<String>();
+         List<Action> tempActions = new ArrayList<>();
++        boolean factoryResetAdded = false;
+         CurrentUserProvider currentUser = new CurrentUserProvider();
+ 
+         // make sure emergency affordance action is first, if needed
+@@ -670,6 +678,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+             }
+             if (GLOBAL_ACTION_KEY_POWER.equals(actionKey)) {
+                 addIfShouldShowAction(tempActions, shutdownAction);
++                factoryResetAdded |= maybeAddFactoryResetAction(tempActions);
+             } else if (GLOBAL_ACTION_KEY_AIRPLANE.equals(actionKey)) {
+                 addIfShouldShowAction(tempActions, mAirplaneModeOn);
+             } else if (GLOBAL_ACTION_KEY_BUGREPORT.equals(actionKey)) {
+@@ -726,6 +735,10 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+             addedKeys.add(actionKey);
+         }
+ 
++        if (!factoryResetAdded) {
++            maybeAddFactoryResetAction(tempActions);
++        }
++
+         for (int i = 0; i < restartActions.length; i++) {
+             String actionKey = restartActions[i];
+             if (addedRestartKeys.contains(actionKey)) {
+@@ -947,6 +960,68 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+         }
+     }
+ 
++    private final class FactoryResetAction extends SinglePressAction {
++        FactoryResetAction() {
++            super(com.android.systemui.res.R.drawable.ic_warning,
++                    R.string.global_action_factory_reset);
++        }
++
++        @Override
++        public boolean showDuringKeyguard() {
++            return true;
++        }
++
++        @Override
++        public boolean showBeforeProvisioning() {
++            return true;
++        }
++
++        @Override
++        public boolean shouldShow() {
++            return !mDeviceProvisioned;
++        }
++
++        @Override
++        public void onPress() {
++            if (ActivityManager.isUserAMonkey()) {
++                return;
++            }
++            Log.i(TAG, "Factory reset option selected from global actions");
++            if (mDialog != null) {
++                mDialog.dismiss();
++            }
++            showFactoryResetConfirmDialog();
++        }
++    }
++
++    private void showFactoryResetConfirmDialog() {
++        SystemUIDialog dialog = new SystemUIDialog(mContext);
++        dialog.setTitle(R.string.global_action_factory_reset);
++        dialog.setMessage(mContext.getString(R.string.global_action_factory_reset_message));
++        dialog.setButton(DialogInterface.BUTTON_NEGATIVE,
++                mContext.getString(android.R.string.cancel), (d, which) -> d.dismiss());
++        dialog.setButton(DialogInterface.BUTTON_POSITIVE,
++                mContext.getString(R.string.global_action_factory_reset_confirm),
++                (d, which) -> {
++                    d.dismiss();
++                    sendFactoryResetBroadcast();
++                });
++        dialog.setCanceledOnTouchOutside(false);
++        dialog.show();
++    }
++
++    private void sendFactoryResetBroadcast() {
++        Intent intent = new Intent(Intent.ACTION_FACTORY_RESET);
++        intent.setPackage("android");
++        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
++        intent.putExtra(Intent.EXTRA_REASON, FACTORY_RESET_REASON);
++        try {
++            mContext.sendBroadcastAsUser(intent, UserHandle.SYSTEM);
++        } catch (Exception e) {
++            Log.e(TAG, "Unable to send factory reset intent", e);
++        }
++    }
++
+     @VisibleForTesting
+     protected abstract class EmergencyAction extends SinglePressAction {
+         EmergencyAction(int iconResId, int messageResId) {
+-- 
+2.34.1
+

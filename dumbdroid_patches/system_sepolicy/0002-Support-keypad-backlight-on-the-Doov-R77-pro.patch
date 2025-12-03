@@ -1,0 +1,34 @@
+From 3257cc1fe286ef022146eef3ba6522b28387d2dd Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 5 Sep 2025 10:59:47 +0200
+Subject: [PATCH 2/3] Support keypad backlight on the Doov R77 pro
+
+Change-Id: Ic4e729402e79e070e5dfd947189dbfcad8b7c181
+---
+ private/genfs_contexts | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/private/genfs_contexts b/private/genfs_contexts
+index e4baeeeda..bb33b5b2b 100644
+--- a/private/genfs_contexts
++++ b/private/genfs_contexts
+@@ -111,6 +111,8 @@ genfscon proc /vmallocinfo u:object_r:proc_vmallocinfo:s0
+ genfscon proc /vmstat u:object_r:proc_vmstat:s0
+ genfscon proc /zoneinfo u:object_r:proc_zoneinfo:s0
+ genfscon proc /vendor_sched u:object_r:proc_vendor_sched:s0
++genfscon proc /gpio3 u:object_r:sysfs_leds:s0
++
+ 
+ genfscon fusectl / u:object_r:fusectlfs:s0
+ 
+@@ -126,6 +128,7 @@ genfscon sysfs /class/android_usb                 u:object_r:sysfs_android_usb:s
+ genfscon sysfs /class/extcon                      u:object_r:sysfs_extcon:s0
+ genfscon sysfs /class/gpu                         u:object_r:sysfs_gpu:s0
+ genfscon sysfs /class/leds                        u:object_r:sysfs_leds:s0
++genfscon sysfs /class/leds/button-backlight/brightness                        u:object_r:sysfs_leds:s0
+ genfscon sysfs /class/net                         u:object_r:sysfs_net:s0
+ genfscon sysfs /class/rfkill/rfkill0/state        u:object_r:sysfs_bluetooth_writable:s0
+ genfscon sysfs /class/rfkill/rfkill1/state        u:object_r:sysfs_bluetooth_writable:s0
+-- 
+2.34.1
+

@@ -1,0 +1,88 @@
+From 6059718add5f5c1a1c13c9318cac7160f72bffb6 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 9 Oct 2025 00:12:32 +0200
+Subject: [PATCH 4/6] Add a settings toggle for waking the screen with a number
+ key
+
+Change-Id: I500c9615daf3d8a5d0c8737f15a00a6ed3b283d1
+---
+ api/lineage_current.txt                             |  1 +
+ .../LineageSettingsProvider/res/values/defaults.xml |  3 +++
+ .../lineagesettings/LineageDatabaseHelper.java      |  3 +++
+ .../java/lineageos/providers/LineageSettings.java   | 13 +++++++++++++
+ 4 files changed, 20 insertions(+)
+
+diff --git a/api/lineage_current.txt b/api/lineage_current.txt
+index a69bfa56..ce8fa212 100644
+--- a/api/lineage_current.txt
++++ b/api/lineage_current.txt
+@@ -754,6 +754,7 @@ package lineageos.providers {
+     field public static final java.lang.String KEY_MENU_ACTION = "key_menu_action";
+     field public static final java.lang.String KEY_MENU_LONG_PRESS_ACTION = "key_menu_long_press_action";
+     field public static final java.lang.String LOCKSCREEN_PIN_SCRAMBLE_LAYOUT = "lockscreen_scramble_pin_layout";
++    field public static final java.lang.String LOCKSCREEN_WAKE_ON_NUMERIC_KEY = "lockscreen_wake_on_numeric_key";
+     field public static final java.lang.String LOCKSCREEN_ROTATION = "lockscreen_rotation";
+     field public static final java.lang.String LONG_SCREEN_APPS = "long_screen_apps";
+     field public static final java.lang.String MENU_WAKE_SCREEN = "menu_wake_screen";
+diff --git a/packages/LineageSettingsProvider/res/values/defaults.xml b/packages/LineageSettingsProvider/res/values/defaults.xml
+index 32aa1c8b..11e226b2 100644
+--- a/packages/LineageSettingsProvider/res/values/defaults.xml
++++ b/packages/LineageSettingsProvider/res/values/defaults.xml
+@@ -68,6 +68,9 @@
+     <!-- Default value for swapping volume keys on rotation -->
+     <bool name="def_swap_volume_keys_on_rotation">false</bool>
+ 
++    <!-- Default for LineageSettings.System.LOCKSCREEN_WAKE_ON_NUMERIC_KEY -->
++    <bool name="def_lockscreen_wake_on_numeric_key">true</bool>
++
+     <!-- Default for LineageSettings.System.STATUS_BAR_BATTERY_STYLE
+          * 0: Display the battery as icon in portrait mode
+          * 1: Display the battery as a circle
+diff --git a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+index d54eac3e..3ea18395 100644
+--- a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
++++ b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+@@ -444,6 +444,9 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
+             loadBooleanSetting(stmt, LineageSettings.System.SWAP_VOLUME_KEYS_ON_ROTATION,
+                     R.bool.def_swap_volume_keys_on_rotation);
+ 
++            loadBooleanSetting(stmt, LineageSettings.System.LOCKSCREEN_WAKE_ON_NUMERIC_KEY,
++                    R.bool.def_lockscreen_wake_on_numeric_key);
++
+             loadIntegerSetting(stmt, LineageSettings.System.STATUS_BAR_BATTERY_STYLE,
+                     R.integer.def_battery_style);
+ 
+diff --git a/sdk/src/java/lineageos/providers/LineageSettings.java b/sdk/src/java/lineageos/providers/LineageSettings.java
+index 336ddae3..aed50663 100644
+--- a/sdk/src/java/lineageos/providers/LineageSettings.java
++++ b/sdk/src/java/lineageos/providers/LineageSettings.java
+@@ -1697,6 +1697,17 @@ public final class LineageSettings {
+         public static final Validator LOCKSCREEN_PIN_SCRAMBLE_LAYOUT_VALIDATOR =
+                 sBooleanValidator;
+ 
++        /**
++         * Whether pressing numeric keys while the screen is off wakes the device when a PIN is set
++         * 0 = off, 1 = on
++         */
++        public static final String LOCKSCREEN_WAKE_ON_NUMERIC_KEY =
++                "lockscreen_wake_on_numeric_key";
++
++        /** @hide */
++        public static final Validator LOCKSCREEN_WAKE_ON_NUMERIC_KEY_VALIDATOR =
++                sBooleanValidator;
++
+         /**
+          * Whether keyguard will rotate to landscape mode
+          * 0 = false, 1 = true
+@@ -2219,6 +2230,8 @@ public final class LineageSettings {
+             VALIDATORS.put(BLUETOOTH_ACCEPT_ALL_FILES, BLUETOOTH_ACCEPT_ALL_FILES_VALIDATOR);
+             VALIDATORS.put(LOCKSCREEN_PIN_SCRAMBLE_LAYOUT,
+                     LOCKSCREEN_PIN_SCRAMBLE_LAYOUT_VALIDATOR);
++            VALIDATORS.put(LOCKSCREEN_WAKE_ON_NUMERIC_KEY,
++                    LOCKSCREEN_WAKE_ON_NUMERIC_KEY_VALIDATOR);
+             VALIDATORS.put(LOCKSCREEN_ROTATION, LOCKSCREEN_ROTATION_VALIDATOR);
+             VALIDATORS.put(SHOW_ALARM_ICON, SHOW_ALARM_ICON_VALIDATOR);
+             VALIDATORS.put(STATUS_BAR_IME_SWITCHER, STATUS_BAR_IME_SWITCHER_VALIDATOR);
+-- 
+2.34.1
+

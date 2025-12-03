@@ -1,0 +1,34 @@
+From ade2d2c6fb3480010482f37f885fde13ec22c4ac Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 27 Jun 2025 18:10:56 +0200
+Subject: [PATCH 2/6] Remove settings for buttons that don't exist
+
+Change-Id: Ief47b67229bebf2fa13fc3a09199e519ccb439b1
+---
+ .../lineageos/lineageparts/input/ButtonSettings.java   | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/org/lineageos/lineageparts/input/ButtonSettings.java b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+index 2c42469..4595a00 100644
+--- a/src/org/lineageos/lineageparts/input/ButtonSettings.java
++++ b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+@@ -168,11 +168,11 @@ public class ButtonSettings extends SettingsPreferenceFragment
+         final boolean hasPowerKey = DeviceUtils.hasPowerKey();
+         final boolean hasHomeKey = DeviceUtils.hasHomeKey(getActivity());
+         final boolean hasBackKey = DeviceUtils.hasBackKey(getActivity());
+-        final boolean hasMenuKey = DeviceUtils.hasMenuKey(getActivity());
+-        final boolean hasAssistKey = DeviceUtils.hasAssistKey(getActivity());
+-        final boolean hasAppSwitchKey = DeviceUtils.hasAppSwitchKey(getActivity());
+-        final boolean hasCameraKey = DeviceUtils.hasCameraKey(getActivity());
+-        final boolean hasVolumeKeys = DeviceUtils.hasVolumeKeys(getActivity());
++        final boolean hasMenuKey = false;
++        final boolean hasAssistKey = false;
++        final boolean hasAppSwitchKey = false;
++        final boolean hasCameraKey = false;
++        final boolean hasVolumeKeys = false;
+ 
+         final boolean showHomeWake = DeviceUtils.canWakeUsingHomeKey(getActivity());
+         final boolean showBackWake = DeviceUtils.canWakeUsingBackKey(getActivity());
+-- 
+2.34.1
+

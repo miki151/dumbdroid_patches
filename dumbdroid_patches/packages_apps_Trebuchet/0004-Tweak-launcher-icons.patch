@@ -1,0 +1,47 @@
+From ae38571a0efd0c316ae83aa5ccda0f33a5e864c5 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 27 Jun 2025 18:10:09 +0200
+Subject: [PATCH 04/13] Tweak launcher icons
+
+Change-Id: I1343164ed716b74e858fe22671c4ca2c6a8a94df
+---
+ res/xml/default_workspace_3x3.xml | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/res/xml/default_workspace_3x3.xml b/res/xml/default_workspace_3x3.xml
+index bd75f026f4..9c7b92f965 100644
+--- a/res/xml/default_workspace_3x3.xml
++++ b/res/xml/default_workspace_3x3.xml
+@@ -87,15 +87,26 @@
+         launcher:screen="0"
+         launcher:x="1"
+ 	launcher:y="-2" >
+-        <favorite launcher:uri="#Intent;action=android.intent.action.SHOW_ALARMS;end" />
++	<favorite launcher:uri="#Intent;action=android.intent.action.SHOW_ALARMS;end" />
+     </resolve>
+ 
+ 
+     <resolve
+         launcher:screen="0"
+-        launcher:x="2"
++        launcher:x="0"
+         launcher:y="-3" >
+-        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_BROWSER;end" />
++        <favorite
++                 launcher:packageName="org.lineageos.jelly"
++		 launcher:className="org.lineageos.jelly.MainActivity" />
++    </resolve>
++
++    <resolve
++        launcher:screen="0"
++        launcher:x="2"
++	launcher:y="-3">
++	<favorite
++	        launcher:packageName="io.github.sspanak.tt9"
++		launcher:className="io.github.sspanak.tt9.preferences.PreferencesActivity"/>
+     </resolve>
+ 
+ </favorites>
+-- 
+2.34.1
+

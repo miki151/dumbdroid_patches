@@ -1,0 +1,49 @@
+From 5f20f341a7b9a498928114995511196f9ab9d71f Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 9 Oct 2025 00:10:21 +0200
+Subject: [PATCH 35/44] Always close the no-touch overlay when a call ends.
+
+Change-Id: Ic8062054ccf5befe224b6881530c0bbbc0d37dd7
+---
+ .../server/policy/HeuristicProximityController.java      | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/policy/HeuristicProximityController.java b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+index cdb0796736ca..695c4024c978 100644
+--- a/services/core/java/com/android/server/policy/HeuristicProximityController.java
++++ b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+@@ -56,6 +56,7 @@ final class HeuristicProximityController {
+     private final SensorManager mSM;
+     private final AudioManager mAM;
+ 
++    private boolean mCallActive;      // Currently on a call
+     // Sensor state
+     private boolean mActive;          // whether we should evaluate orientation at all
+     private boolean mNear;            // current debounced "near" state
+@@ -97,8 +98,11 @@ final class HeuristicProximityController {
+             new AudioManager.OnModeChangedListener() {
+                 @Override
+                 public void onModeChanged(int mode) {
++                    mCallActive = (mode == 2 || mode == 3 || mode == 1);
+                     markAudioChangeAndRefresh();
+                     Slog.d("Dumbdroid proximity", "Mode changed: " + mode);
++                    if (!mCallActive)
++                        setActive(false);
+                 }
+             };
+ 
+@@ -295,7 +299,10 @@ final class HeuristicProximityController {
+ 
+     private void setActive(boolean active) {
+         Slog.d("Dumbdroid proximity", "active: " + active);
+-        if (active == mActive) return;
++        if (active == mActive)
++            return;
++        if (!mCallActive && active)
++            return;
+         mActive = active;
+         if (mActive) {
+             Sensor grav = null;//mSM.getDefaultSensor(Sensor.TYPE_GRAVITY);
+-- 
+2.34.1
+

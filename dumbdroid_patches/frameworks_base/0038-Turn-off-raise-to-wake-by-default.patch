@@ -1,0 +1,26 @@
+From 78c04b3648af80e8f59bde67165419cf808799bf Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 26 Oct 2025 12:35:41 +0100
+Subject: [PATCH 38/44] Turn off raise to wake by default
+
+Change-Id: Ie06747d20df1e6027289cd78839580302ca34cc9
+---
+ packages/SettingsProvider/res/values/defaults.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/SettingsProvider/res/values/defaults.xml b/packages/SettingsProvider/res/values/defaults.xml
+index 73d3cc59ea47..fa5393043a9d 100644
+--- a/packages/SettingsProvider/res/values/defaults.xml
++++ b/packages/SettingsProvider/res/values/defaults.xml
+@@ -182,7 +182,7 @@
+     <string name="def_device_name_simple">%1$s</string>
+ 
+     <!-- Default for Settings.Secure.WAKE_GESTURE_ENABLED -->
+-    <bool name="def_wake_gesture_enabled">true</bool>
++    <bool name="def_wake_gesture_enabled">false</bool>
+ 
+     <!-- Default state of tap to wake -->
+     <bool name="def_double_tap_to_wake">true</bool>
+-- 
+2.34.1
+

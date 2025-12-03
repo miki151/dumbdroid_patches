@@ -1,0 +1,112 @@
+From ed9a60845b2dea8a3b5ae210ba7ba919e93d5859 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 13 Oct 2025 16:09:26 +0200
+Subject: [PATCH 6/6] Remove d-pad volume control while media is playing
+
+Change-Id: Ie542d826c61be74dda5e1ff4cd654081eb54d9dd
+---
+ res/values/strings.xml                             |  1 -
+ res/xml/button_settings.xml                        |  7 -------
+ .../lineageparts/input/ButtonSettings.java         | 14 --------------
+ 3 files changed, 22 deletions(-)
+
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 142f513..13ccb3c 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -183,7 +183,6 @@
+     <string name="hardware_keys_home_key_title">Home button</string>
+     <string name="hardware_keys_dpad_key_title">Dpad up/down buttons</string>
+     <string name="dpad_screen_off_action_title">While the screen is off</string>
+-    <string name="dpad_music_playing_action_title">While media is playing</string>
+     <string name="dpad_call_active_action_title">While a call is active</string>
+     <string name="hardware_keys_back_key_title">Back button</string>
+     <string name="hardware_keys_menu_key_title">Menu button</string>
+diff --git a/res/xml/button_settings.xml b/res/xml/button_settings.xml
+index 2d8425f..22c3e16 100644
+--- a/res/xml/button_settings.xml
++++ b/res/xml/button_settings.xml
+@@ -175,13 +175,6 @@
+             android:entries="@array/dpad_action_entries"
+             android:entryValues="@array/dpad_action_values"
+             android:persistent="false" />
+-        <ListPreference
+-            android:key="hardware_keys_dpad_music_playing"
+-            android:dialogTitle="@string/dpad_music_playing_action_title"
+-            android:title="@string/dpad_music_playing_action_title"
+-            android:entries="@array/dpad_action_entries"
+-            android:entryValues="@array/dpad_action_values"
+-            android:persistent="false" />
+         <ListPreference
+             android:key="hardware_keys_dpad_call_active"
+             android:dialogTitle="@string/dpad_call_active_action_title"
+diff --git a/src/org/lineageos/lineageparts/input/ButtonSettings.java b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+index f8d68d1..a74bb7f 100644
+--- a/src/org/lineageos/lineageparts/input/ButtonSettings.java
++++ b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+@@ -69,7 +69,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+     private static final String KEY_HOME_WAKE_SCREEN = "home_wake_screen";
+     private static final String KEY_POWER_BUTTON_ACTION = "power_button_action";
+     private static final String KEY_DPAD_SCREEN_OFF = "hardware_keys_dpad_screen_off";
+-    private static final String KEY_DPAD_MUSIC_PLAYING = "hardware_keys_dpad_music_playing";
+     private static final String KEY_DPAD_CALL_ACTIVE = "hardware_keys_dpad_call_active";
+     private static final String KEY_MENU_PRESS = "hardware_keys_menu_press";
+     private static final String KEY_MENU_LONG_PRESS = "hardware_keys_menu_long_press";
+@@ -122,7 +121,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+     private ListPreference mHomeDoubleTapAction;
+     private ListPreference mPowerButtonAction;
+     private ListPreference mDpadScreenOffAction;
+-    private ListPreference mDpadMusicPlayingAction;
+     private ListPreference mDpadCallActiveAction;
+     private ListPreference mMenuPressAction;
+     private ListPreference mMenuLongPressAction;
+@@ -227,8 +225,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+                 org.lineageos.platform.internal.R.integer.config_powerButtonBehavior));
+         Action defaultDpadScreenOffAction = Action.fromIntSafe(res.getInteger(
+                 org.lineageos.platform.internal.R.integer.config_screenOffDpadBehavior));
+-        Action defaultDpadMusicPlayingAction = Action.fromIntSafe(res.getInteger(
+-                org.lineageos.platform.internal.R.integer.config_musicPlayingDpadBehavior));
+         Action defaultDpadCallActiveAction = Action.fromIntSafe(res.getInteger(
+                 org.lineageos.platform.internal.R.integer.config_callActiveDpadBehavior));
+         Action defaultAppSwitchLongPressAction = Action.fromIntSafe(res.getInteger(
+@@ -248,9 +244,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+         Action dpadScreenOffAction = Action.fromSettings(resolver,
+                 LineageSettings.System.KEY_DPAD_SCREEN_OFF_ACTION,
+                 defaultDpadScreenOffAction);
+-        Action dpadMusicPlayingAction = Action.fromSettings(resolver,
+-                LineageSettings.System.KEY_DPAD_MUSIC_PLAYING_ACTION,
+-                defaultDpadMusicPlayingAction);
+         Action dpadCallActiveAction = Action.fromSettings(resolver,
+                 LineageSettings.System.KEY_DPAD_CALL_ACTIVE_ACTION,
+                 defaultDpadCallActiveAction);
+@@ -582,7 +575,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+         mPowerButtonAction.setEntryValues(powerButtonValues.toArray(new String[0]));
+ 
+ 	mDpadScreenOffAction = initList(KEY_DPAD_SCREEN_OFF, dpadScreenOffAction);
+-	mDpadMusicPlayingAction = initList(KEY_DPAD_MUSIC_PLAYING, dpadMusicPlayingAction);
+ 	mDpadCallActiveAction = initList(KEY_DPAD_CALL_ACTIVE, dpadCallActiveAction);
+         List<String> dpadEntries = new ArrayList<>(
+                 Arrays.asList(res.getStringArray(R.array.dpad_action_entries)));
+@@ -590,8 +582,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+                 Arrays.asList(res.getStringArray(R.array.dpad_action_values)));
+         mDpadScreenOffAction.setEntries(dpadEntries.toArray(new String[0]));
+         mDpadScreenOffAction.setEntryValues(dpadValues.toArray(new String[0]));
+-        mDpadMusicPlayingAction.setEntries(dpadEntries.toArray(new String[0]));
+-        mDpadMusicPlayingAction.setEntryValues(dpadValues.toArray(new String[0]));
+         mDpadCallActiveAction.setEntries(dpadEntries.toArray(new String[0]));
+         mDpadCallActiveAction.setEntryValues(dpadValues.toArray(new String[0]));
+     }
+@@ -668,10 +658,6 @@ public class ButtonSettings extends SettingsPreferenceFragment
+             handleListChange((ListPreference) preference, newValue,
+                     LineageSettings.System.KEY_DPAD_SCREEN_OFF_ACTION);
+             return true;
+-        } else if (preference == mDpadMusicPlayingAction) {
+-            handleListChange((ListPreference) preference, newValue,
+-                    LineageSettings.System.KEY_DPAD_MUSIC_PLAYING_ACTION);
+-            return true;
+         } else if (preference == mDpadCallActiveAction) {
+             handleListChange((ListPreference) preference, newValue,
+                     LineageSettings.System.KEY_DPAD_CALL_ACTIVE_ACTION);
+-- 
+2.34.1
+

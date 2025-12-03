@@ -1,0 +1,102 @@
+From 2d5caeaacdb89037148b160e1583dba07d006684 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 10 Nov 2025 15:16:14 +0100
+Subject: [PATCH 43/44] Remove focusability from a large UI element in the lock
+ screen
+
+Change-Id: I18dbee9b7c0a96f2d44a31ab5f78b15303e419e0
+---
+ packages/SystemUI/res/layout/qs_panel.xml                     | 2 ++
+ packages/SystemUI/res/layout/status_bar_expanded.xml          | 4 +++-
+ .../src/com/android/keyguard/LockIconViewController.java      | 4 ++++
+ packages/SystemUI/src/com/android/systemui/qs/QSImpl.java     | 4 ++++
+ .../notification/stack/NotificationStackScrollLayout.java     | 4 +++-
+ 5 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/res/layout/qs_panel.xml b/packages/SystemUI/res/layout/qs_panel.xml
+index 1eb05bfd602d..e2b86e9ee363 100644
+--- a/packages/SystemUI/res/layout/qs_panel.xml
++++ b/packages/SystemUI/res/layout/qs_panel.xml
+@@ -26,6 +26,8 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:elevation="@dimen/qs_panel_elevation"
++        android:focusable="false"
++        android:focusableInTouchMode="false"
+         android:importantForAccessibility="no"
+         android:scrollbars="none"
+         android:clipChildren="false"
+diff --git a/packages/SystemUI/res/layout/status_bar_expanded.xml b/packages/SystemUI/res/layout/status_bar_expanded.xml
+index e21466671363..695693917f0c 100644
+--- a/packages/SystemUI/res/layout/status_bar_expanded.xml
++++ b/packages/SystemUI/res/layout/status_bar_expanded.xml
+@@ -131,7 +131,9 @@
+     <com.android.keyguard.LockIconView
+         android:id="@+id/lock_icon_view"
+         android:layout_width="wrap_content"
+-        android:layout_height="wrap_content">
++        android:layout_height="wrap_content"
++        android:focusable="false"
++        android:focusableInTouchMode="false">
+     </com.android.keyguard.LockIconView>
+ 
+     <include
+diff --git a/packages/SystemUI/src/com/android/keyguard/LockIconViewController.java b/packages/SystemUI/src/com/android/keyguard/LockIconViewController.java
+index 8e9815085e31..59506930118b 100644
+--- a/packages/SystemUI/src/com/android/keyguard/LockIconViewController.java
++++ b/packages/SystemUI/src/com/android/keyguard/LockIconViewController.java
+@@ -338,8 +338,12 @@ public class LockIconViewController implements Dumpable {
+     private void updateAccessibility() {
+         if (mAccessibilityManager.isEnabled()) {
+             mView.setOnClickListener(mA11yClickListener);
++            mView.setFocusable(true);
++            mView.setFocusableInTouchMode(true);
+         } else {
+             mView.setOnClickListener(null);
++            mView.setFocusable(false);
++            mView.setFocusableInTouchMode(false);
+         }
+     }
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/qs/QSImpl.java b/packages/SystemUI/src/com/android/systemui/qs/QSImpl.java
+index a000d63a2ee3..87f9269a5a17 100644
+--- a/packages/SystemUI/src/com/android/systemui/qs/QSImpl.java
++++ b/packages/SystemUI/src/com/android/systemui/qs/QSImpl.java
+@@ -237,6 +237,10 @@ public class QSImpl implements QS, CommandQueue.Callbacks, StatusBarStateControl
+         }
+ 
+         mQSPanelScrollView = mRootView.findViewById(R.id.expanded_qs_scroll_view);
++        // Prevent the large QS scroll container from ever taking focus; d-pad navigation should
++        // land on real tiles instead of highlighting the whole panel background.
++        mQSPanelScrollView.setFocusable(false);
++        mQSPanelScrollView.setFocusableInTouchMode(false);
+         mQSPanelScrollView.addOnLayoutChangeListener(
+                 (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                     updateQsBounds();
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/notification/stack/NotificationStackScrollLayout.java b/packages/SystemUI/src/com/android/systemui/statusbar/notification/stack/NotificationStackScrollLayout.java
+index d8363fa54427..86b13f8c4fb8 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/notification/stack/NotificationStackScrollLayout.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/notification/stack/NotificationStackScrollLayout.java
+@@ -2544,9 +2544,10 @@ public class NotificationStackScrollLayout extends ViewGroup implements Dumpable
+ 
+     private void updateScrollability() {
+         boolean scrollable = !mQsFullScreen && getScrollRange() > 0;
++        boolean shouldBeFocusable = scrollable && !mAmbientState.isOnKeyguard();
++        setFocusable(shouldBeFocusable);
+         if (scrollable != mScrollable) {
+             mScrollable = scrollable;
+-            setFocusable(scrollable);
+             updateForwardAndBackwardScrollability();
+         }
+     }
+@@ -5241,6 +5242,7 @@ public class NotificationStackScrollLayout extends ViewGroup implements Dumpable
+         mAmbientState.setStatusBarState(statusBarState);
+         updateSpeedBumpIndex();
+         updateDismissBehavior();
++        updateScrollability();
+     }
+ 
+     void setUpcomingStatusBarState(int upcomingStatusBarState) {
+-- 
+2.34.1
+

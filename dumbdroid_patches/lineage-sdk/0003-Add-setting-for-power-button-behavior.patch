@@ -1,0 +1,64 @@
+From f269dd93c774fba8a5827caad2f8675fe4ddf631 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 24 Jul 2025 09:12:08 +0200
+Subject: [PATCH 3/6] Add setting for power button behavior
+
+Change-Id: I38f0702b93d016a73b7e19a56e2005c7543c0f8e
+---
+ lineage/res/res/values/config.xml                     | 1 +
+ lineage/res/res/values/symbols.xml                    | 1 +
+ sdk/src/java/lineageos/providers/LineageSettings.java | 7 +++++++
+ 3 files changed, 9 insertions(+)
+
+diff --git a/lineage/res/res/values/config.xml b/lineage/res/res/values/config.xml
+index 3694d03d..ae6e58fc 100644
+--- a/lineage/res/res/values/config.xml
++++ b/lineage/res/res/values/config.xml
+@@ -208,6 +208,7 @@
+     <integer name="config_screenOffDpadBehavior">1</integer>
+     <integer name="config_musicPlayingDpadBehavior">1</integer>
+     <integer name="config_callActiveDpadBehavior">1</integer>
++    <integer name="config_powerButtonBehavior">1</integer>
+ 
+     <!-- Control the behavior when the user long presses the menu button.
+             0 - Nothing
+diff --git a/lineage/res/res/values/symbols.xml b/lineage/res/res/values/symbols.xml
+index 31307e51..dfe5b1fb 100644
+--- a/lineage/res/res/values/symbols.xml
++++ b/lineage/res/res/values/symbols.xml
+@@ -96,6 +96,7 @@
+     <java-symbol type="integer" name="config_screenOffDpadBehavior" />
+     <java-symbol type="integer" name="config_musicPlayingDpadBehavior" />
+     <java-symbol type="integer" name="config_callActiveDpadBehavior" />
++    <java-symbol type="integer" name="config_powerButtonBehavior" />
+     <java-symbol type="integer" name="config_longPressOnMenuBehavior" />
+     <java-symbol type="integer" name="config_longPressOnAppSwitchBehavior" />
+ 
+diff --git a/sdk/src/java/lineageos/providers/LineageSettings.java b/sdk/src/java/lineageos/providers/LineageSettings.java
+index a0854f72..336ddae3 100644
+--- a/sdk/src/java/lineageos/providers/LineageSettings.java
++++ b/sdk/src/java/lineageos/providers/LineageSettings.java
+@@ -1131,6 +1131,12 @@ public final class LineageSettings {
+         public static final Validator KEY_DPAD_CALL_ACTIVE_ACTION_VALIDATOR =
+                 new InclusiveIntegerRangeValidator(0, 1);
+ 
++        public static final String KEY_POWER_BUTTON_ACTION = "key_power_button_action";
++
++        /** @hide */
++        public static final Validator KEY_POWER_BUTTON_ACTION_VALIDATOR =
++                new InclusiveIntegerRangeValidator(0, 1);
++
+         /**
+          * Action to perform when the back key is long-pressed.
+          * (Default can be configured via config_longPressOnBackBehavior)
+@@ -2151,6 +2157,7 @@ public final class LineageSettings {
+             VALIDATORS.put(KEY_DPAD_SCREEN_OFF_ACTION, KEY_DPAD_SCREEN_OFF_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_DPAD_MUSIC_PLAYING_ACTION, KEY_DPAD_MUSIC_PLAYING_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_DPAD_CALL_ACTIVE_ACTION, KEY_DPAD_CALL_ACTIVE_ACTION_VALIDATOR);
++            VALIDATORS.put(KEY_POWER_BUTTON_ACTION, KEY_POWER_BUTTON_ACTION_VALIDATOR);
+             VALIDATORS.put(BACK_WAKE_SCREEN, BACK_WAKE_SCREEN_VALIDATOR);
+             VALIDATORS.put(MENU_WAKE_SCREEN, MENU_WAKE_SCREENN_VALIDATOR);
+             VALIDATORS.put(VOLUME_ANSWER_CALL, VOLUME_ANSWER_CALL_VALIDATOR);
+-- 
+2.34.1
+

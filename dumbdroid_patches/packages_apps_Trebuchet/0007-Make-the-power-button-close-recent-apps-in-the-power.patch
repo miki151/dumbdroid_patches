@@ -1,0 +1,72 @@
+From b509e28ac9593b0f13de72483a6f0b1021920d10 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 17 Aug 2025 11:13:55 +0200
+Subject: [PATCH 07/13] Make the power button close recent apps in the "power
+ button go home first" mode
+
+Change-Id: I98f014de8540e016fc0360b4aeeb5877bdb69def
+---
+ .../com/android/quickstep/SystemUiProxy.java  | 11 +++++++++++
+ src/com/android/launcher3/Launcher.java       | 19 ++++++++++++++++++-
+ 2 files changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/quickstep/src/com/android/quickstep/SystemUiProxy.java b/quickstep/src/com/android/quickstep/SystemUiProxy.java
+index 24db2edc78..70f285e323 100644
+--- a/quickstep/src/com/android/quickstep/SystemUiProxy.java
++++ b/quickstep/src/com/android/quickstep/SystemUiProxy.java
+@@ -360,6 +360,17 @@ public class SystemUiProxy implements ISystemUiProxy, NavHandle {
+         }
+     }
+ 
++    @Override
++    public void onOverviewHidden() {
++        if (mSystemUiProxy != null) {
++            try {
++                mSystemUiProxy.onOverviewHidden();
++            } catch (RemoteException e) {
++                Log.w("Dumbdroid", "Failed call onOverviewHidden", e);
++            }
++        }
++    }
++
+     @Override
+     public void onOverviewShown(boolean fromHome) {
+         onOverviewShown(fromHome, TAG);
+diff --git a/src/com/android/launcher3/Launcher.java b/src/com/android/launcher3/Launcher.java
+index e28598c21b..720338c165 100644
+--- a/src/com/android/launcher3/Launcher.java
++++ b/src/com/android/launcher3/Launcher.java
+@@ -588,6 +588,23 @@ public class Launcher extends StatefulActivity<LauncherState>
+             RuleController.getInstance(this).setRules(
+                     RuleController.parseRules(this, R.xml.split_configuration));
+         }
++
++       getStateManager().addStateListener(new StateManager.StateListener<LauncherState>() {
++            private boolean lastWasOverview = getStateManager().getState() == LauncherState.OVERVIEW;
++
++            @Override
++            public void onStateTransitionComplete(LauncherState finalState) {
++                Log.i("Dumbdroid", "End transition to " + finalState + ", last was" + lastWasOverview);
++                boolean isOverview = finalState == LauncherState.OVERVIEW;
++                try {
++                    if (isOverview)
++                        com.android.quickstep.SystemUiProxy.INSTANCE.get(Launcher.this).onOverviewShown(false);
++                    else if (lastWasOverview)
++                        com.android.quickstep.SystemUiProxy.INSTANCE.get(Launcher.this).onOverviewHidden();
++                } catch (Throwable ignore) { }
++                lastWasOverview = isOverview;
++            }
++       });
+     }
+ 
+     protected ModelCallbacks createModelCallbacks() {
+@@ -3084,4 +3101,4 @@ public class Launcher extends StatefulActivity<LauncherState>
+     }
+ 
+     // End of Getters and Setters
+-}
+\ No newline at end of file
++}
+-- 
+2.34.1
+

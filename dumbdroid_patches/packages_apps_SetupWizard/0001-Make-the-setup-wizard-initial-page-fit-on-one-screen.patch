@@ -1,0 +1,183 @@
+From 4c5229e8a2602731c8fe5f40f9a3123d25621519 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 7 Oct 2025 16:35:37 +0200
+Subject: [PATCH] Make the setup wizard initial page fit on one screen
+
+Change-Id: Ieef4ba3b67c4866293d7d3ae7fb20f6d7eef1f50
+---
+ res/layout-sw600dp/welcome_activity.xml       | 23 ++-------------
+ res/layout-television/welcome_activity.xml    | 23 ++-------------
+ res/layout/welcome_activity.xml               | 28 -------------------
+ res/values/dimens.xml                         |  6 ++--
+ res/values/strings.xml                        |  1 +
+ .../setupwizard/WelcomeActivity.java          |  2 +-
+ 6 files changed, 11 insertions(+), 72 deletions(-)
+
+diff --git a/res/layout-sw600dp/welcome_activity.xml b/res/layout-sw600dp/welcome_activity.xml
+index 6ffebf5..e61bd24 100644
+--- a/res/layout-sw600dp/welcome_activity.xml
++++ b/res/layout-sw600dp/welcome_activity.xml
+@@ -14,30 +14,13 @@
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:gravity="center_vertical"
+-        android:weightSum="100"
++        android:gravity="top|center_horizontal"
+         android:orientation="vertical">
+ 
+-        <ImageView
+-            android:id="@+id/brand_logo"
+-            android:layout_width="wrap_content"
+-            android:layout_height="0dp"
+-            android:layout_weight="65"
+-            android:layout_gravity="center"
+-            android:src="@drawable/logo"
+-            android:adjustViewBounds="true"
+-            android:scaleType="fitCenter"
+-            android:gravity="center"
+-            android:paddingTop="@dimen/content_margin_top"
+-            android:paddingRight="@dimen/content_margin_left"
+-            android:paddingLeft="@dimen/content_margin_left"
+-            android:paddingBottom="0dp" />
+-
+         <LinearLayout
+             android:layout_width="match_parent"
+-            android:layout_height="0dp"
+-            android:layout_weight="35"
+-            android:gravity="center_vertical"
++            android:layout_height="wrap_content"
++            android:gravity="center_horizontal"
+             android:orientation="vertical">
+ 
+             <TextView
+diff --git a/res/layout-television/welcome_activity.xml b/res/layout-television/welcome_activity.xml
+index 6ffebf5..e61bd24 100644
+--- a/res/layout-television/welcome_activity.xml
++++ b/res/layout-television/welcome_activity.xml
+@@ -14,30 +14,13 @@
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:gravity="center_vertical"
+-        android:weightSum="100"
++        android:gravity="top|center_horizontal"
+         android:orientation="vertical">
+ 
+-        <ImageView
+-            android:id="@+id/brand_logo"
+-            android:layout_width="wrap_content"
+-            android:layout_height="0dp"
+-            android:layout_weight="65"
+-            android:layout_gravity="center"
+-            android:src="@drawable/logo"
+-            android:adjustViewBounds="true"
+-            android:scaleType="fitCenter"
+-            android:gravity="center"
+-            android:paddingTop="@dimen/content_margin_top"
+-            android:paddingRight="@dimen/content_margin_left"
+-            android:paddingLeft="@dimen/content_margin_left"
+-            android:paddingBottom="0dp" />
+-
+         <LinearLayout
+             android:layout_width="match_parent"
+-            android:layout_height="0dp"
+-            android:layout_weight="35"
+-            android:gravity="center_vertical"
++            android:layout_height="wrap_content"
++            android:gravity="center_horizontal"
+             android:orientation="vertical">
+ 
+             <TextView
+diff --git a/res/layout/welcome_activity.xml b/res/layout/welcome_activity.xml
+index 402d842..379a759 100644
+--- a/res/layout/welcome_activity.xml
++++ b/res/layout/welcome_activity.xml
+@@ -15,43 +15,15 @@
+         android:layout_height="match_parent"
+         android:orientation="vertical">
+ 
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="0dp"
+-            android:layout_weight="1"
+-            android:orientation="vertical"
+-            android:gravity="center_vertical">
+-
+-            <Space
+-                android:layout_width="match_parent"
+-                android:layout_height="0dp"
+-                android:layout_weight="2" />
+-
+-            <ImageView
+-                android:id="@+id/brand_logo"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:adjustViewBounds="true"
+-                android:scaleType="centerCrop"
+-                android:src="@drawable/logo" />
+-
+-            <Space
+-                android:layout_width="match_parent"
+-                android:layout_height="0dp"
+-                android:layout_weight="0.5" />
+-        </LinearLayout>
+-
+         <LinearLayout
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+-            android:layout_gravity="bottom"
+             android:orientation="vertical">
+ 
+             <LinearLayout
+                 style="@style/SudContentFrame"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"
+-                android:layout_gravity="bottom"
+                 android:orientation="vertical"
+                 android:paddingStart="@dimen/welcome_content_container_padding_start"
+                 android:paddingEnd="@dimen/welcome_content_container_padding_end"
+diff --git a/res/values/dimens.xml b/res/values/dimens.xml
+index 06e36d4..fbd1f49 100644
+--- a/res/values/dimens.xml
++++ b/res/values/dimens.xml
+@@ -16,8 +16,8 @@
+     <dimen name="welcome_content_container_padding_bottom">30dp</dimen>
+     <dimen name="welcome_content_container_padding_end">24dp</dimen>
+     <dimen name="welcome_content_container_padding_start">40dp</dimen>
+-    <dimen name="welcome_title_text_size">56sp</dimen>
+-    <dimen name="welcome_title_padding_bottom">16dp</dimen>
+-    <dimen name="welcome_title_line_height">64dp</dimen>
++    <dimen name="welcome_title_text_size">42sp</dimen>
++    <dimen name="welcome_title_padding_bottom">12dp</dimen>
++    <dimen name="welcome_title_line_height">48dp</dimen>
+     <dimen name="welcome_accessibility_text_size">20sp</dimen>
+ </resources>
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index fec0e84..0953497 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -22,6 +22,7 @@
+     <string name="loading">Just a sec\u2026</string>
+ 
+     <!-- Welcome page -->
++    <string name="setup_welcome_brand" translatable="false">Dumbdroid</string>
+     <string name="setup_welcome_message">Welcome to <xliff:g id="name" example="LineageOS">%1$s</xliff:g></string>
+     <string name="setup_managed_profile_welcome_message">Set up your work profile</string>
+     <string name="emergency_call">Emergency call</string>
+diff --git a/src/org/lineageos/setupwizard/WelcomeActivity.java b/src/org/lineageos/setupwizard/WelcomeActivity.java
+index 4dc594e..4532a9f 100644
+--- a/src/org/lineageos/setupwizard/WelcomeActivity.java
++++ b/src/org/lineageos/setupwizard/WelcomeActivity.java
+@@ -58,7 +58,7 @@ public class WelcomeActivity extends SubBaseActivity {
+             welcomeTitle.setText(getString(R.string.setup_managed_profile_welcome_message));
+         } else {
+             welcomeTitle.setText(getString(R.string.setup_welcome_message,
+-                    getString(R.string.os_name)));
++                    getString(R.string.setup_welcome_brand)));
+         }
+     }
+ 
+-- 
+2.34.1
+

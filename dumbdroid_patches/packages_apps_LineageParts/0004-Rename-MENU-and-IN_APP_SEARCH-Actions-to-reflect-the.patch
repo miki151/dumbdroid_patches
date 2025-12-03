@@ -1,0 +1,108 @@
+From c1a20bc18a8037cb9f80fa076b308557915433b4 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 25 Jul 2025 14:26:26 +0200
+Subject: [PATCH 4/6] Rename MENU and IN_APP_SEARCH Actions to reflect their
+ real behavior
+
+Change-Id: I53a3421b9bbf7b281e12aa47264c1b73473d5658
+---
+ res/values-en-rAU/strings.xml | 4 ++--
+ res/values-en-rCA/strings.xml | 4 ++--
+ res/values-en-rGB/strings.xml | 4 ++--
+ res/values-en-rIN/strings.xml | 4 ++--
+ res/values/strings.xml        | 4 ++--
+ 5 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/res/values-en-rAU/strings.xml b/res/values-en-rAU/strings.xml
+index 5680061..c707bad 100644
+--- a/res/values-en-rAU/strings.xml
++++ b/res/values-en-rAU/strings.xml
+@@ -152,11 +152,11 @@
+     <string name="hardware_keys_long_press_title">Long press action</string>
+     <string name="hardware_keys_double_tap_title">Double tap action</string>
+     <string name="hardware_keys_action_nothing">No action</string>
+-    <string name="hardware_keys_action_menu">Open/close menu</string>
++    <string name="hardware_keys_action_menu">Open quick settings</string>
+     <string name="hardware_keys_action_app_switch">Recent apps switcher</string>
+     <string name="hardware_keys_action_search">Search assistant</string>
+     <string name="hardware_keys_action_voice_search">Voice search</string>
+-    <string name="hardware_keys_action_in_app_search">In-app search</string>
++    <string name="hardware_keys_action_in_app_search">Go home</string>
+     <string name="hardware_keys_action_launch_camera">Launch camera</string>
+     <string name="hardware_keys_action_sleep">Turn screen off</string>
+     <string name="hardware_keys_action_last_app">Last app</string>
+diff --git a/res/values-en-rCA/strings.xml b/res/values-en-rCA/strings.xml
+index 2b319a8..22ddc94 100644
+--- a/res/values-en-rCA/strings.xml
++++ b/res/values-en-rCA/strings.xml
+@@ -152,11 +152,11 @@
+     <string name="hardware_keys_long_press_title">Long press action</string>
+     <string name="hardware_keys_double_tap_title">Double tap action</string>
+     <string name="hardware_keys_action_nothing">No action</string>
+-    <string name="hardware_keys_action_menu">Open/close menu</string>
++    <string name="hardware_keys_action_menu">Open quick settings</string>
+     <string name="hardware_keys_action_app_switch">Recent apps switcher</string>
+     <string name="hardware_keys_action_search">Search assistant</string>
+     <string name="hardware_keys_action_voice_search">Voice search</string>
+-    <string name="hardware_keys_action_in_app_search">In-app search</string>
++    <string name="hardware_keys_action_in_app_search">Go home</string>
+     <string name="hardware_keys_action_launch_camera">Launch camera</string>
+     <string name="hardware_keys_action_sleep">Turn screen off</string>
+     <string name="hardware_keys_action_last_app">Last app</string>
+diff --git a/res/values-en-rGB/strings.xml b/res/values-en-rGB/strings.xml
+index 6721532..cd53aeb 100644
+--- a/res/values-en-rGB/strings.xml
++++ b/res/values-en-rGB/strings.xml
+@@ -152,11 +152,11 @@
+     <string name="hardware_keys_long_press_title">Long press action</string>
+     <string name="hardware_keys_double_tap_title">Double tap action</string>
+     <string name="hardware_keys_action_nothing">No action</string>
+-    <string name="hardware_keys_action_menu">Open/close menu</string>
++    <string name="hardware_keys_action_menu">Open quick settings</string>
+     <string name="hardware_keys_action_app_switch">Recent apps switcher</string>
+     <string name="hardware_keys_action_search">Search assistant</string>
+     <string name="hardware_keys_action_voice_search">Voice search</string>
+-    <string name="hardware_keys_action_in_app_search">In-app search</string>
++    <string name="hardware_keys_action_in_app_search">Go home</string>
+     <string name="hardware_keys_action_launch_camera">Launch camera</string>
+     <string name="hardware_keys_action_sleep">Turn screen off</string>
+     <string name="hardware_keys_action_last_app">Last app</string>
+diff --git a/res/values-en-rIN/strings.xml b/res/values-en-rIN/strings.xml
+index dee2c65..c58e791 100644
+--- a/res/values-en-rIN/strings.xml
++++ b/res/values-en-rIN/strings.xml
+@@ -152,11 +152,11 @@
+     <string name="hardware_keys_long_press_title">Long press action</string>
+     <string name="hardware_keys_double_tap_title">Double tap action</string>
+     <string name="hardware_keys_action_nothing">No action</string>
+-    <string name="hardware_keys_action_menu">Open/close menu</string>
++    <string name="hardware_keys_action_menu">Open quick settings</string>
+     <string name="hardware_keys_action_app_switch">Recent apps switcher</string>
+     <string name="hardware_keys_action_search">Search assistant</string>
+     <string name="hardware_keys_action_voice_search">Voice search</string>
+-    <string name="hardware_keys_action_in_app_search">In-app search</string>
++    <string name="hardware_keys_action_in_app_search">Go home</string>
+     <string name="hardware_keys_action_launch_camera">Launch camera</string>
+     <string name="hardware_keys_action_sleep">Turn screen off</string>
+     <string name="hardware_keys_action_last_app">Last app</string>
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 952c5a3..142f513 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -195,11 +195,11 @@
+     <string name="hardware_keys_long_press_title">Long press action</string>
+     <string name="hardware_keys_double_tap_title">Double tap action</string>
+     <string name="hardware_keys_action_nothing">No action</string>
+-    <string name="hardware_keys_action_menu">Open/close menu</string>
++    <string name="hardware_keys_action_menu">Open quick settings</string>
+     <string name="hardware_keys_action_app_switch">Recent apps switcher</string>
+     <string name="hardware_keys_action_search">Search assistant</string>
+     <string name="hardware_keys_action_voice_search">Voice search</string>
+-    <string name="hardware_keys_action_in_app_search">In-app search</string>
++    <string name="hardware_keys_action_in_app_search">Go home</string>
+     <string name="hardware_keys_action_launch_camera">Launch camera</string>
+     <string name="hardware_keys_action_sleep">Turn screen off</string>
+     <string name="hardware_keys_action_last_app">Last app</string>
+-- 
+2.34.1
+

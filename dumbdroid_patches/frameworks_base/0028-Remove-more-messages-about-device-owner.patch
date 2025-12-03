@@ -1,0 +1,45 @@
+From 824c7ad7263ebc7f9bc7ad0247a724efac253e32 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 26 Sep 2025 09:56:36 +0200
+Subject: [PATCH 28/44] Remove more messages about device owner
+
+Change-Id: I078f5c09f590bcb154f079052f0ba4528fcf4cc1
+---
+ .../KeyguardIndicationController.java         | 21 +------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+index 57061ff9f5a0..c4302e93dddd 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/KeyguardIndicationController.java
+@@ -489,26 +489,7 @@ public class KeyguardIndicationController {
+     }
+ 
+     private void updateLockScreenDisclosureMsg() {
+-        if (mOrganizationOwnedDevice) {
+-            mBackgroundExecutor.execute(() -> {
+-                final CharSequence organizationName = getOrganizationOwnedDeviceOrganizationName();
+-                final CharSequence disclosure = getDisclosureText(organizationName);
+-
+-                mExecutor.execute(() -> {
+-                    if (mKeyguardStateController.isShowing()) {
+-                        mRotateTextViewController.updateIndication(
+-                              INDICATION_TYPE_DISCLOSURE,
+-                              new KeyguardIndication.Builder()
+-                                      .setMessage(disclosure)
+-                                      .setTextColor(mInitialTextColorState)
+-                                      .build(),
+-                              /* updateImmediately */ false);
+-                    }
+-                });
+-            });
+-        } else {
+-            mRotateTextViewController.hideIndication(INDICATION_TYPE_DISCLOSURE);
+-        }
++        mRotateTextViewController.hideIndication(INDICATION_TYPE_DISCLOSURE);
+     }
+ 
+     private CharSequence getDisclosureText(@Nullable CharSequence organizationName) {
+-- 
+2.34.1
+

@@ -1,0 +1,64 @@
+From 5494e370eedc4cf557ebe2268ea14c0929a249c2 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 13 Oct 2025 16:09:05 +0200
+Subject: [PATCH 5/6] Remove d-pad volume control while media is playing
+
+Change-Id: If4eec7589415c6192f602be058b5d5d7dee8fbc1
+---
+ lineage/res/res/values/config.xml                     | 1 -
+ lineage/res/res/values/symbols.xml                    | 1 -
+ sdk/src/java/lineageos/providers/LineageSettings.java | 7 -------
+ 3 files changed, 9 deletions(-)
+
+diff --git a/lineage/res/res/values/config.xml b/lineage/res/res/values/config.xml
+index ae6e58fc..d437b029 100644
+--- a/lineage/res/res/values/config.xml
++++ b/lineage/res/res/values/config.xml
+@@ -206,7 +206,6 @@
+     <integer name="config_doubleTapOnHomeBehavior">0</integer>
+ 
+     <integer name="config_screenOffDpadBehavior">1</integer>
+-    <integer name="config_musicPlayingDpadBehavior">1</integer>
+     <integer name="config_callActiveDpadBehavior">1</integer>
+     <integer name="config_powerButtonBehavior">1</integer>
+ 
+diff --git a/lineage/res/res/values/symbols.xml b/lineage/res/res/values/symbols.xml
+index dfe5b1fb..3ad0891c 100644
+--- a/lineage/res/res/values/symbols.xml
++++ b/lineage/res/res/values/symbols.xml
+@@ -94,7 +94,6 @@
+     <java-symbol type="integer" name="config_longPressOnHomeBehavior" />
+     <java-symbol type="integer" name="config_doubleTapOnHomeBehavior" />
+     <java-symbol type="integer" name="config_screenOffDpadBehavior" />
+-    <java-symbol type="integer" name="config_musicPlayingDpadBehavior" />
+     <java-symbol type="integer" name="config_callActiveDpadBehavior" />
+     <java-symbol type="integer" name="config_powerButtonBehavior" />
+     <java-symbol type="integer" name="config_longPressOnMenuBehavior" />
+diff --git a/sdk/src/java/lineageos/providers/LineageSettings.java b/sdk/src/java/lineageos/providers/LineageSettings.java
+index aed50663..fb68b695 100644
+--- a/sdk/src/java/lineageos/providers/LineageSettings.java
++++ b/sdk/src/java/lineageos/providers/LineageSettings.java
+@@ -1119,12 +1119,6 @@ public final class LineageSettings {
+         public static final Validator KEY_DPAD_SCREEN_OFF_ACTION_VALIDATOR =
+                 new InclusiveIntegerRangeValidator(0, 1);
+ 
+-        public static final String KEY_DPAD_MUSIC_PLAYING_ACTION = "key_dpad_music_playing_action";
+-
+-        /** @hide */
+-        public static final Validator KEY_DPAD_MUSIC_PLAYING_ACTION_VALIDATOR =
+-                new InclusiveIntegerRangeValidator(0, 1);
+-
+         public static final String KEY_DPAD_CALL_ACTIVE_ACTION = "key_dpad_call_active_action";
+ 
+         /** @hide */
+@@ -2166,7 +2160,6 @@ public final class LineageSettings {
+             VALIDATORS.put(KEY_HOME_LONG_PRESS_ACTION, KEY_HOME_LONG_PRESS_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_HOME_DOUBLE_TAP_ACTION, KEY_HOME_DOUBLE_TAP_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_DPAD_SCREEN_OFF_ACTION, KEY_DPAD_SCREEN_OFF_ACTION_VALIDATOR);
+-            VALIDATORS.put(KEY_DPAD_MUSIC_PLAYING_ACTION, KEY_DPAD_MUSIC_PLAYING_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_DPAD_CALL_ACTIVE_ACTION, KEY_DPAD_CALL_ACTIVE_ACTION_VALIDATOR);
+             VALIDATORS.put(KEY_POWER_BUTTON_ACTION, KEY_POWER_BUTTON_ACTION_VALIDATOR);
+             VALIDATORS.put(BACK_WAKE_SCREEN, BACK_WAKE_SCREEN_VALIDATOR);
+-- 
+2.34.1
+

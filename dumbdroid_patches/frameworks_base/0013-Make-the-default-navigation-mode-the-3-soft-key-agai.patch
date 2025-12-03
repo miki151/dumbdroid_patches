@@ -1,0 +1,25 @@
+From 21fad723fa1b4b1a0d526216411a3fded94746fc Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 24 Jul 2025 11:06:58 +0200
+Subject: [PATCH 13/44] Make the default navigation mode the 3 soft key again,
+ with the soft key bar hidden
+
+Change-Id: Ie3658caa3b70898c26194f4ce4b67d22668bbaf8
+---
+ .../NavigationBarMode3ButtonOverlay/res/values/config.xml       | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/overlays/NavigationBarMode3ButtonOverlay/res/values/config.xml b/packages/overlays/NavigationBarMode3ButtonOverlay/res/values/config.xml
+index 16dc05217b24..4c2a9eb10e52 100644
+--- a/packages/overlays/NavigationBarMode3ButtonOverlay/res/values/config.xml
++++ b/packages/overlays/NavigationBarMode3ButtonOverlay/res/values/config.xml
+@@ -21,5 +21,5 @@
+          0: 3 button mode (back, home, overview buttons)
+          1: 2 button mode (back, home buttons + swipe up for overview)
+          2: gestures only for back, home and overview -->
+-    <integer name="config_navBarInteractionMode">2</integer>
++    <integer name="config_navBarInteractionMode">0</integer>
+ </resources>
+-- 
+2.34.1
+

@@ -1,0 +1,170 @@
+From cefbefc8880d203ec5157aff3688ca38ad7fe463 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 15 Sep 2025 10:53:56 +0200
+Subject: [PATCH 4/4] Add an extra sharpening step for Doov R77 pro back camera
+
+Change-Id: I3b67f9ab1ab4a02832894d7ae0daae089e39cad0
+---
+ .../org/lineageos/aperture/CameraActivity.kt  | 55 +++++++++++++++++++
+ .../java/org/lineageos/aperture/ext/Bitmap.kt | 53 ++++++++++++++++++
+ 2 files changed, 108 insertions(+)
+
+diff --git a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+index d914d39..4abe2cc 100644
+--- a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
++++ b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+@@ -13,6 +13,7 @@ import android.content.Context
+ import android.content.Intent
+ import android.content.IntentFilter
+ import android.content.pm.ActivityInfo
++import android.graphics.Bitmap
+ import android.graphics.BitmapFactory
+ import android.graphics.Color
+ import android.graphics.Rect
+@@ -1293,6 +1294,43 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+                     Log.d(LOG_TAG, "Photo capture succeeded: ${output.savedUri}")
+                     cameraState = CameraState.IDLE
+                     shutterButton.isEnabled = true
++
++                    if (shouldSharpen(camera.cameraFacing == CameraFacing.BACK)) {
++                        try {
++                            if (photoOutputStream != null) {
++                                val processed = BitmapFactory.decodeByteArray(
++                                    photoOutputStream.toByteArray(), 0, photoOutputStream.size()
++                                ).unsharpMask(
++                                    this@CameraActivity,
++                                    UNSHARP_MASK_RADIUS,
++                                    UNSHARP_MASK_AMOUNT
++                                )
++                                Log.i("Dumbdroid", "Sharpening photo output")
++                                photoOutputStream.reset()
++                                processed.compress(Bitmap.CompressFormat.JPEG, 100, photoOutputStream)
++                            } else {
++                                output.savedUri?.let { uri ->
++                                    val bitmap = contentResolver.openInputStream(uri)?.use { input ->
++                                        BitmapFactory.decodeStream(input)
++                                    }
++                                    bitmap?.let {
++                                        val processed = it.unsharpMask(
++                                            this@CameraActivity,
++                                            UNSHARP_MASK_RADIUS,
++                                            UNSHARP_MASK_AMOUNT
++                                        )
++                                        Log.i("Dumbdroid", "Sharpening photo output")
++                                        contentResolver.openOutputStream(uri, "w")?.use { out ->
++                                            processed.compress(Bitmap.CompressFormat.JPEG, 100, out)
++                                        }
++                                    }
++                                }
++                            }
++                        } catch (e: Exception) {
++                            Log.e(LOG_TAG, "Failed to apply unsharp mask", e)
++                        }
++                    }
++
+                     if (!singleCaptureMode) {
+                         onCapturedMedia(output.savedUri)
+                         output.savedUri?.let {
+@@ -1313,6 +1351,20 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+         )
+     }
+ 
++    private fun shouldSharpen(cameraBackFacing : Boolean): Boolean {
++         // Android 12+ exposes SoC strings (e.g., "MT6762") via Build.SOC_MODEL
++         val isR77BySoc = Build.SOC_MODEL.contains("MT6762", ignoreCase = true)
++
++         // Fallbacks in case SOC_MODEL is unavailable or vendor left it blank
++         val model = Build.MODEL ?: ""
++         val product = Build.PRODUCT ?: ""
++         val brand = Build.BRAND ?: ""
++         val isR77ByBrand = model.contains("R77", true) || product.contains("r77", true) ||
++         brand.contains("doov", true)
++
++         return cameraBackFacing && (isR77BySoc || isR77ByBrand)
++    }
++
+     private fun captureVideo() {
+         if (cameraState != CameraState.IDLE) {
+             if (cameraController.isRecording) {
+@@ -2618,6 +2670,9 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+     companion object {
+         private const val LOG_TAG = "Aperture"
+ 
++        private const val UNSHARP_MASK_RADIUS = 6
++        private const val UNSHARP_MASK_AMOUNT = 1.4f
++
+         private const val MSG_HIDE_ZOOM_SLIDER = 0
+         private const val MSG_HIDE_FOCUS_RING = 1
+         private const val MSG_HIDE_EXPOSURE_SLIDER = 2
+diff --git a/app/src/main/java/org/lineageos/aperture/ext/Bitmap.kt b/app/src/main/java/org/lineageos/aperture/ext/Bitmap.kt
+index 38a557d..f60b694 100644
+--- a/app/src/main/java/org/lineageos/aperture/ext/Bitmap.kt
++++ b/app/src/main/java/org/lineageos/aperture/ext/Bitmap.kt
+@@ -5,7 +5,15 @@
+ 
+ package org.lineageos.aperture.ext
+ 
++import android.content.Context
+ import android.graphics.Bitmap
++import android.renderscript.Allocation
++import android.renderscript.Element
++import android.renderscript.Matrix4f
++import android.renderscript.RenderScript
++import android.renderscript.ScriptIntrinsicBlend
++import android.renderscript.ScriptIntrinsicBlur
++import android.renderscript.ScriptIntrinsicColorMatrix
+ import androidx.core.graphics.scale
+ import org.lineageos.aperture.models.Transform
+ import kotlin.math.abs
+@@ -298,3 +306,48 @@ internal fun Bitmap.scale(maxSideLen: Int): Bitmap {
+         scale(newWidth, newHeight)
+     }
+ }
++
++internal fun Bitmap.unsharpMask(context: Context, radius: Int, amount: Float): Bitmap {
++    val rs = RenderScript.create(context)
++    val output = Bitmap.createBitmap(width, height, config)
++
++    val inputAlloc = Allocation.createFromBitmap(rs, this)
++    val blurAlloc = Allocation.createTyped(rs, inputAlloc.type)
++    val highpassAlloc = Allocation.createTyped(rs, inputAlloc.type)
++    val outputAlloc = Allocation.createFromBitmap(rs, output)
++
++    highpassAlloc.copyFrom(this)
++    outputAlloc.copyFrom(this)
++
++    ScriptIntrinsicBlur.create(rs, Element.U8_4(rs)).apply {
++        setRadius(radius.toFloat())
++        setInput(inputAlloc)
++        forEach(blurAlloc)
++        destroy()
++    }
++
++    val blend = ScriptIntrinsicBlend.create(rs, Element.U8_4(rs))
++    blend.forEachSubtract(blurAlloc, highpassAlloc)
++
++    ScriptIntrinsicColorMatrix.create(rs, Element.U8_4(rs)).apply {
++        setColorMatrix(
++            Matrix4f(
++                floatArrayOf(
++                    amount, 0f, 0f, 0f,
++                    0f, amount, 0f, 0f,
++                    0f, 0f, amount, 0f,
++                    0f, 0f, 0f, 1f
++                )
++            )
++        )
++        forEach(highpassAlloc, highpassAlloc)
++        destroy()
++    }
++
++    blend.forEachAdd(highpassAlloc, outputAlloc)
++    blend.destroy()
++
++    outputAlloc.copyTo(output)
++    rs.destroy()
++    return output
++}
+-- 
+2.34.1
+

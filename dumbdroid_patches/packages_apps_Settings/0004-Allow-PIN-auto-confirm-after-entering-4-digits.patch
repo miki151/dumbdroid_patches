@@ -1,0 +1,131 @@
+From f440be5bf6d38bed206a4ea4dccded10355a8451 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 7 Oct 2025 09:30:21 +0200
+Subject: [PATCH 4/8] Allow PIN auto-confirm after entering 4 digits
+
+Change-Id: Idefa4228ff52c112bfff01d926b5fa8dd1ceca96
+---
+ res/values/strings.xml                             |  2 +-
+ .../settings/password/ChooseLockPassword.java      |  3 ++-
+ .../settings/password/ChooseLockPasswordTest.java  | 14 +++++++-------
+ .../AutoPinConfirmPreferenceControllerTest.java    |  8 ++++----
+ 4 files changed, 14 insertions(+), 13 deletions(-)
+
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index c59a4e4e70a..118edd3e311 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -1456,7 +1456,7 @@
+     <!-- Title of the lock screen auto pin confirm setting. [CHAR LIMIT=NONE] -->
+     <string name="lock_screen_auto_pin_confirm_title">Auto-confirm unlock</string>
+     <!-- Summary of the lock screen auto pin confirm setting. [CHAR LIMIT=NONE] -->
+-    <string name="lock_screen_auto_pin_confirm_summary">Unlock automatically if you input a correct PIN of 6 digits or more. This is slightly less secure than tapping Enter to confirm.</string>
++    <string name="lock_screen_auto_pin_confirm_summary">Unlock automatically once you enter the correct PIN. This is slightly less secure than tapping Enter to confirm.</string>
+     <!-- Message shown to check auto pin confirmation feature when the user is updating the PIN. [CHAR LIMIT=NONE] -->
+     <string name="auto_pin_confirm_user_message">Auto-confirm correct PIN</string>
+     <!-- Message shown to explain the security concern if a user opts-in to the auto-pin feature. [CHAR LIMIT=NONE] -->
+diff --git a/src/com/android/settings/password/ChooseLockPassword.java b/src/com/android/settings/password/ChooseLockPassword.java
+index 8f7dfcbed88..c279322ee4b 100644
+--- a/src/com/android/settings/password/ChooseLockPassword.java
++++ b/src/com/android/settings/password/ChooseLockPassword.java
+@@ -229,7 +229,8 @@ public class ChooseLockPassword extends SettingsActivity {
+         private static final String KEY_IS_AUTO_CONFIRM_CHECK_MANUALLY_CHANGED =
+                 "auto_confirm_option_set_manually";
+ 
+-        private static final int MIN_AUTO_PIN_REQUIREMENT_LENGTH = 6;
++        private static final int MIN_AUTO_PIN_REQUIREMENT_LENGTH =
++                LockPatternUtils.MIN_AUTO_PIN_REQUIREMENT_LENGTH;
+ 
+         private LockscreenCredential mCurrentCredential;
+         private LockscreenCredential mChosenPassword;
+diff --git a/tests/robotests/src/com/android/settings/password/ChooseLockPasswordTest.java b/tests/robotests/src/com/android/settings/password/ChooseLockPasswordTest.java
+index dea936d1602..92cd39abec3 100644
+--- a/tests/robotests/src/com/android/settings/password/ChooseLockPasswordTest.java
++++ b/tests/robotests/src/com/android/settings/password/ChooseLockPasswordTest.java
+@@ -457,25 +457,25 @@ public class ChooseLockPasswordTest {
+         TextView securityMessage =
+                 passwordActivity.findViewById(R.id.auto_pin_confirm_security_message);
+ 
+-        passwordEntry.setText("1234");
++        passwordEntry.setText("123");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.GONE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.GONE);
+         assertThat(pinAutoConfirmOption.isChecked()).isFalse();
+ 
+-        passwordEntry.setText("123456");
++        passwordEntry.setText("1234");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(pinAutoConfirmOption.isChecked()).isTrue();
+ 
+-        passwordEntry.setText("12345678");
++        passwordEntry.setText("12345");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(pinAutoConfirmOption.isChecked()).isFalse();
+ 
+-        passwordEntry.setText("123456");
++        passwordEntry.setText("1234");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+@@ -493,7 +493,7 @@ public class ChooseLockPasswordTest {
+         TextView securityMessage =
+                 passwordActivity.findViewById(R.id.auto_pin_confirm_security_message);
+ 
+-        passwordEntry.setText("123456");
++        passwordEntry.setText("1234");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+@@ -502,13 +502,13 @@ public class ChooseLockPasswordTest {
+         pinAutoConfirmOption.performClick();
+         assertThat(pinAutoConfirmOption.isChecked()).isFalse();
+ 
+-        passwordEntry.setText("12345678");
++        passwordEntry.setText("12345");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(pinAutoConfirmOption.isChecked()).isFalse();
+ 
+-        passwordEntry.setText("123456");
++        passwordEntry.setText("1234");
+         fragment.updateUi();
+         assertThat(pinAutoConfirmOption.getVisibility()).isEqualTo(View.VISIBLE);
+         assertThat(securityMessage.getVisibility()).isEqualTo(View.VISIBLE);
+diff --git a/tests/robotests/src/com/android/settings/security/screenlock/AutoPinConfirmPreferenceControllerTest.java b/tests/robotests/src/com/android/settings/security/screenlock/AutoPinConfirmPreferenceControllerTest.java
+index 86c1244c8b0..920597b76d3 100644
+--- a/tests/robotests/src/com/android/settings/security/screenlock/AutoPinConfirmPreferenceControllerTest.java
++++ b/tests/robotests/src/com/android/settings/security/screenlock/AutoPinConfirmPreferenceControllerTest.java
+@@ -72,20 +72,20 @@ public class AutoPinConfirmPreferenceControllerTest {
+     }
+ 
+     @Test
+-    public void isAvailable_featureEnabledAndLockSetToPIN_lengthLessThanSix_shouldReturnFalse() {
++    public void isAvailable_featureEnabledAndLockSetToPIN_lengthLessThanMinimum_shouldReturnFalse() {
+         when(mLockPatternUtils.getCredentialTypeForUser(TEST_USER_ID))
+                 .thenReturn(LockPatternUtils.CREDENTIAL_TYPE_PIN);
+-        when(mLockPatternUtils.getPinLength(TEST_USER_ID)).thenReturn(5);
++        when(mLockPatternUtils.getPinLength(TEST_USER_ID)).thenReturn(3);
+ 
+         assertThat(mController.isAvailable()).isFalse();
+     }
+ 
+     @Test
+-    public void isAvailable_featureEnabledAndLockSetToPIN_lengthMoreThanEqSix_shouldReturnTrue() {
++    public void isAvailable_featureEnabledAndLockSetToPIN_lengthAtLeastMinimum_shouldReturnTrue() {
+         when(mLockPatternUtils.isSecure(TEST_USER_ID)).thenReturn(true);
+         when(mLockPatternUtils.getCredentialTypeForUser(TEST_USER_ID))
+                 .thenReturn(LockPatternUtils.CREDENTIAL_TYPE_PIN);
+-        when(mLockPatternUtils.getPinLength(TEST_USER_ID)).thenReturn(6);
++        when(mLockPatternUtils.getPinLength(TEST_USER_ID)).thenReturn(4);
+ 
+         assertThat(mController.isAvailable()).isTrue();
+     }
+-- 
+2.34.1
+

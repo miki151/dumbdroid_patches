@@ -1,0 +1,41 @@
+From 83c19af3133d418769f7f6943c136d7fcda2d9f7 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 5 Sep 2025 10:47:30 +0200
+Subject: [PATCH 24/44] Fix some key mappings on the Qin F22 pro
+
+Change-Id: I5faaea15db3b63931513a6e73fb192ded2f39a54
+---
+ data/keyboards/Generic.kl | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/data/keyboards/Generic.kl b/data/keyboards/Generic.kl
+index fd44a3663d14..cd899b70843a 100644
+--- a/data/keyboards/Generic.kl
++++ b/data/keyboards/Generic.kl
+@@ -188,6 +188,7 @@ key 165   MEDIA_PREVIOUS
+ key 166   MEDIA_STOP
+ key 167   MEDIA_RECORD
+ key 168   MEDIA_REWIND
++key 169   CALL
+ key 231   CALL
+ # key 170 "KEY_ISO"
+ key 171   MUSIC
+@@ -310,6 +311,7 @@ key 332   STYLUS_BUTTON_SECONDARY
+ 
+ # key 352 "KEY_OK"
+ key 352   DPAD_CENTER
++key 353   DPAD_CENTER
+ # key 354 "KEY_GOTO"
+ # key 355 "KEY_CLEAR"
+ # key 356 "KEY_POWER2"
+@@ -419,6 +421,7 @@ key 484   B                 FUNCTION
+ # key 504 KEY_BRL_DOT8
+ 
+ key 227   STAR
++key 522   STAR
+ key 523   POUND
+ key 580   APP_SWITCH
+ key 582   VOICE_ASSIST
+-- 
+2.34.1
+

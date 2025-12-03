@@ -1,0 +1,36 @@
+From e1fe000c066cb3e473625ef4b1270759b654e53c Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 9 Oct 2025 00:10:51 +0200
+Subject: [PATCH 36/44] Add a settings toggle for waking the screen with a
+ number key
+
+Change-Id: I8698482cc34c9f688af2126dec5871aaa97bc53d
+---
+ .../com/android/server/policy/PhoneWindowManager.java  | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index d4d4060d4b89..7884df98d18f 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -6134,8 +6134,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         }
+ 
+         final int quality = mLockPatternUtils.getKeyguardStoredPasswordQuality(mCurrentUserId);
+-        return quality == DevicePolicyManager.PASSWORD_QUALITY_NUMERIC
++        final boolean isNumericPin = quality == DevicePolicyManager.PASSWORD_QUALITY_NUMERIC
+                 || quality == DevicePolicyManager.PASSWORD_QUALITY_NUMERIC_COMPLEX;
++
++        if (!isNumericPin) {
++            return false;
++        }
++
++        return LineageSettings.System.getIntForUser(mContext.getContentResolver(),
++                LineageSettings.System.LOCKSCREEN_WAKE_ON_NUMERIC_KEY,
++                /* def= */ 1, mCurrentUserId) == 1;
+     }
+ 
+     /**
+-- 
+2.34.1
+

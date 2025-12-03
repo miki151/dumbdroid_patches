@@ -1,0 +1,67 @@
+From fa9a67bc8ed61e36220e2b298c91f52138f6a400 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 5 Sep 2025 10:56:17 +0200
+Subject: [PATCH] Remove focusing, allow browsing photos using D-pad right/left
+
+Change-Id: I1a35b0e59f68c649827d74f47c2364b3cbcf8f2b
+---
+ .../org/lineageos/glimpse/ViewActivity.kt     | 21 +++++++++++++++++++
+ app/src/main/res/layout/activity_view.xml     |  3 ++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/org/lineageos/glimpse/ViewActivity.kt b/app/src/main/java/org/lineageos/glimpse/ViewActivity.kt
+index 67b40ea..25d259d 100644
+--- a/app/src/main/java/org/lineageos/glimpse/ViewActivity.kt
++++ b/app/src/main/java/org/lineageos/glimpse/ViewActivity.kt
+@@ -12,6 +12,7 @@ import android.content.res.Configuration
+ import android.net.Uri
+ import android.os.Bundle
+ import android.provider.MediaStore
++import android.view.KeyEvent
+ import android.view.View
+ import android.webkit.MimeTypeMap
+ import android.widget.LinearLayout
+@@ -462,6 +463,26 @@ class ViewActivity : AppCompatActivity(R.layout.activity_view) {
+         updateSheetsHeight()
+     }
+ 
++    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
++        if (event.action == KeyEvent.ACTION_DOWN) {
++            when (event.keyCode) {
++                KeyEvent.KEYCODE_DPAD_LEFT -> {
++                    if (viewPager.currentItem > 0) {
++                        viewPager.setCurrentItem(viewPager.currentItem - 1, true)
++                    }
++                    return true
++                }
++                KeyEvent.KEYCODE_DPAD_RIGHT -> {
++                    if (viewPager.currentItem < mediaViewerAdapter.itemCount - 1) {
++                        viewPager.setCurrentItem(viewPager.currentItem + 1, true)
++                    }
++                    return true
++                }
++            }
++        }
++        return super.dispatchKeyEvent(event)
++    }
++
+     private fun initData(data: List<Media>) {
+         mediaViewerAdapter.submitList(data)
+ 
+diff --git a/app/src/main/res/layout/activity_view.xml b/app/src/main/res/layout/activity_view.xml
+index 3e02376..5797c74 100644
+--- a/app/src/main/res/layout/activity_view.xml
++++ b/app/src/main/res/layout/activity_view.xml
+@@ -9,7 +9,8 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:background="@android:color/black"
+-    tools:context=".ViewActivity">
++    tools:context=".ViewActivity"
++    android:descendantFocusability="blocksDescendants">
+ 
+     <androidx.viewpager2.widget.ViewPager2
+         android:id="@+id/viewPager"
+-- 
+2.34.1
+

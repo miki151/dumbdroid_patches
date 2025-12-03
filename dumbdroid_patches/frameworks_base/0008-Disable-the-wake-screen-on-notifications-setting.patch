@@ -1,0 +1,26 @@
+From 3a64df4a1dcb97179b30823f35008803c3f1b339 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 27 Jun 2025 18:13:26 +0200
+Subject: [PATCH 08/44] Disable the "wake screen on notifications" setting
+
+Change-Id: Ic2c88df7b18a398fd44930b3a953ba48d3b1127f
+---
+ core/res/res/values/config.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
+index b5f9096172d5..7d796a003b85 100644
+--- a/core/res/res/values/config.xml
++++ b/core/res/res/values/config.xml
+@@ -6814,7 +6814,7 @@
+     </string-array>
+ 
+     <!-- Whether the wake screen on notifications feature is available. -->
+-    <bool name="config_pulseOnNotificationsAvailable">true</bool>
++    <bool name="config_pulseOnNotificationsAvailable">false</bool>
+ 
+     <!-- The number of tasks to scan to get the visibility of Home -->
+     <integer name="config_maxScanTasksForHomeVisibility">10</integer>
+-- 
+2.34.1
+

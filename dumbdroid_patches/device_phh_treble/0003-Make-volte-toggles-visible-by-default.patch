@@ -1,0 +1,29 @@
+From 4716f153a12a55cc7050b0a5186e666d43ae6998 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 15 Jun 2025 11:35:58 +0200
+Subject: [PATCH 03/21] Make volte toggles visible by default
+
+Change-Id: I289db485a324d97d2c9f84ba008b94bfb5e9c483
+---
+ lineage.mk | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/lineage.mk b/lineage.mk
+index bbb758c..6cb684b 100644
+--- a/lineage.mk
++++ b/lineage.mk
+@@ -6,3 +6,11 @@ $(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+ PRODUCT_SYSTEM_PROPERTIES += \
+     persist.sys.bt.unsupported.commands=182
+ 
++PRODUCT_SYSTEM_PROPERTIES += \
++    persist.dbg.volte_avail_ovr=1
++PRODUCT_SYSTEM_PROPERTIES += \
++    persist.dbg.wfc_avail_ovr=1
++PRODUCT_SYSTEM_PROPERTIES += \
++    persist.dbg.allow_ims_off=1
++
++
+-- 
+2.34.1
+

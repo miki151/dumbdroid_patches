@@ -1,0 +1,26 @@
+From 7aab15c74328c7429dbac6a5025b62392b224970 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 5 Aug 2025 15:43:28 +0200
+Subject: [PATCH 17/44] Make PIN keypad digits smaller
+
+Change-Id: Id6ac47b040e7e744de1cf3fce5dbc55179b66633
+---
+ packages/SystemUI/res-keyguard/values/styles.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/SystemUI/res-keyguard/values/styles.xml b/packages/SystemUI/res-keyguard/values/styles.xml
+index c43e394cb97a..7c11618b0e71 100644
+--- a/packages/SystemUI/res-keyguard/values/styles.xml
++++ b/packages/SystemUI/res-keyguard/values/styles.xml
+@@ -69,7 +69,7 @@
+         <item name="android:singleLine">true</item>
+         <item name="android:gravity">center_horizontal|center_vertical</item>
+         <item name="android:background">@null</item>
+-        <item name="android:textSize">32dp</item>
++        <item name="android:textSize">24dp</item>
+         <item name="android:textColor">?android:attr/textColorPrimary</item>
+         <item name="android:fontFamily">@*android:string/config_bodyFontFamily</item>
+         <item name="android:paddingBottom">-16dp</item>
+-- 
+2.34.1
+

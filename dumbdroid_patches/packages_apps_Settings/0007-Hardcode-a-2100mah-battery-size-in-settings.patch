@@ -1,0 +1,87 @@
+From ad6552970e74fb104ac04ef9095f219adaaa0a91 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 20 Nov 2025 07:27:01 +0100
+Subject: [PATCH 7/8] Hardcode a 2100mah battery size in settings
+
+Change-Id: I0b533e640f74440ea92441b37df9c71d58a807f4
+---
+ .../BatteryDesignCapacityPreferenceController.java   |  6 ++++++
+ .../BatteryMaximumCapacityPreferenceController.java  |  6 ++++++
+ .../fuelgauge/BatteryHeaderPreferenceController.java | 12 +++++++++---
+ 3 files changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/src/com/android/settings/deviceinfo/batteryinfo/BatteryDesignCapacityPreferenceController.java b/src/com/android/settings/deviceinfo/batteryinfo/BatteryDesignCapacityPreferenceController.java
+index ab40d30607c..f1ecaf59f24 100644
+--- a/src/com/android/settings/deviceinfo/batteryinfo/BatteryDesignCapacityPreferenceController.java
++++ b/src/com/android/settings/deviceinfo/batteryinfo/BatteryDesignCapacityPreferenceController.java
+@@ -22,6 +22,7 @@ import android.os.BatteryManager;
+ 
+ import com.android.settings.R;
+ import com.android.settings.core.BasePreferenceController;
++import com.android.settings.fuelgauge.BatteryCapacityOverride;
+ import com.android.settingslib.fuelgauge.BatteryUtils;
+ 
+ /**
+@@ -40,6 +41,11 @@ public class BatteryDesignCapacityPreferenceController extends BasePreferenceCon
+ 
+     @Override
+     public CharSequence getSummary() {
++        if (BatteryCapacityOverride.isEnabled()) {
++            return mContext.getString(R.string.battery_design_capacity_summary,
++                    BatteryCapacityOverride.getCapacityMah());
++        }
++
+         Intent batteryIntent = BatteryUtils.getBatteryIntent(mContext);
+         final int designCapacityUah =
+                 batteryIntent.getIntExtra(BatteryManager.EXTRA_DESIGN_CAPACITY, -1);
+diff --git a/src/com/android/settings/deviceinfo/batteryinfo/BatteryMaximumCapacityPreferenceController.java b/src/com/android/settings/deviceinfo/batteryinfo/BatteryMaximumCapacityPreferenceController.java
+index 186945efde8..e766c953422 100644
+--- a/src/com/android/settings/deviceinfo/batteryinfo/BatteryMaximumCapacityPreferenceController.java
++++ b/src/com/android/settings/deviceinfo/batteryinfo/BatteryMaximumCapacityPreferenceController.java
+@@ -22,6 +22,7 @@ import android.os.BatteryManager;
+ 
+ import com.android.settings.R;
+ import com.android.settings.core.BasePreferenceController;
++import com.android.settings.fuelgauge.BatteryCapacityOverride;
+ import com.android.settingslib.fuelgauge.BatteryUtils;
+ 
+ /**
+@@ -40,6 +41,11 @@ public class BatteryMaximumCapacityPreferenceController extends BasePreferenceCo
+ 
+     @Override
+     public CharSequence getSummary() {
++        if (BatteryCapacityOverride.isEnabled()) {
++            final int capacity = BatteryCapacityOverride.getCapacityMah();
++            return mContext.getString(R.string.battery_maximum_capacity_summary, capacity, 100);
++        }
++
+         Intent batteryIntent = BatteryUtils.getBatteryIntent(mContext);
+         final int maxCapacityUah =
+                 batteryIntent.getIntExtra(BatteryManager.EXTRA_MAXIMUM_CAPACITY, -1);
+diff --git a/src/com/android/settings/fuelgauge/BatteryHeaderPreferenceController.java b/src/com/android/settings/fuelgauge/BatteryHeaderPreferenceController.java
+index 80f337f4ecd..95a1d46f147 100644
+--- a/src/com/android/settings/fuelgauge/BatteryHeaderPreferenceController.java
++++ b/src/com/android/settings/fuelgauge/BatteryHeaderPreferenceController.java
+@@ -136,10 +136,16 @@ public class BatteryHeaderPreferenceController extends BasePreferenceController
+         mBatteryUsageProgressBarPref.setUsageSummary(formatBatteryPercentageText(batteryLevel));
+         mBatteryUsageProgressBarPref.setPercent(batteryLevel, BATTERY_MAX_LEVEL);
+ 
+-        if (chargeCounterUah > 0) {
+-            int chargeCounter = chargeCounterUah / 1_000;
++        int chargeCounterMah = -1;
++        if (BatteryCapacityOverride.isEnabled()) {
++            chargeCounterMah = BatteryCapacityOverride.getChargeCounterMah(batteryLevel);
++        } else if (chargeCounterUah > 0) {
++            chargeCounterMah = chargeCounterUah / 1_000;
++        }
++
++        if (chargeCounterMah > 0) {
+             mBatteryUsageProgressBarPref.setTotalSummary(
+-                    formatBatteryChargeCounterText(chargeCounter));
++                    formatBatteryChargeCounterText(chargeCounterMah));
+         }
+     }
+ 
+-- 
+2.34.1
+

@@ -1,0 +1,90 @@
+From a918b174e26e7e008d9798b667cd4180b273655c Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 14 Oct 2025 09:03:23 +0200
+Subject: [PATCH 3/4] Fix keypad brightness control, don't include battery led
+
+Change-Id: Id29705e548c93e24f2a6fd2f4b754ab949a3100c
+---
+ light/aidl/default/lights.rs | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
+
+diff --git a/light/aidl/default/lights.rs b/light/aidl/default/lights.rs
+index 3a94162279..4f47a872ad 100644
+--- a/light/aidl/default/lights.rs
++++ b/light/aidl/default/lights.rs
+@@ -17,6 +17,7 @@
+ 
+ use std::collections::HashMap;
+ use std::sync::Mutex;
++use std::cmp;
+ 
+ use log::info;
+ 
+@@ -26,9 +27,10 @@ use android_hardware_light::aidl::android::hardware::light::{
+ 
+ use binder::{ExceptionCode, Interface, Status};
+ 
++
+ struct Light {
+     hw_light: HwLight,
+-    state: HwLightState,
++    state: u8,
+ }
+ 
+ /// Defined so we can implement the ILights AIDL interface.
+@@ -84,19 +86,22 @@ fn write_led_value(path: &str, value: u8) {
+     }
+ }
+ 
+-fn write_backlight(value: u8) {
++fn write_screen_backlight(value: u8) {
++    write_led_value(SCREEN_BACKLIGHT_PATH, value);
++}
++
++fn write_key_backlight(value: u8) {
+     write_led_value(KEYPAD_BACKLIGHT_PATH, if value > 0 { 6 } else { 0 });
+     write_led_value(KEYPAD_BACKLIGHT_PATH2, if value > 0 { 1 } else { 0 });
+     write_led_value(KEYPAD_BACKLIGHT_PATH3, if value > 0 { 1 } else { 0 });
+-    write_led_value(SCREEN_BACKLIGHT_PATH, value);
+ }
+ 
+ impl Default for LightsService {
+     fn default() -> Self {
+         let lights = vec![
+             HwLight { id: 1, ordinal: 1, r#type: LightType::BACKLIGHT },
+-            HwLight { id: 2, ordinal: 2, r#type: LightType::KEYBOARD },
+-            HwLight { id: 3, ordinal: 3, r#type: LightType::NOTIFICATIONS },
++            HwLight { id: 2, ordinal: 2, r#type: LightType::NOTIFICATIONS },
++//            HwLight { id: 2, ordinal: 2, r#type: LightType::BATTERY },
+         ];
+         Self::new(lights)
+     }
+@@ -105,15 +110,18 @@ impl Default for LightsService {
+ impl ILights for LightsService {
+     fn setLightState(&self, id: i32, state: &HwLightState) -> binder::Result<()> {
+         info!("Lights setting state for id={} to color {:x}", id, state.color);
+-
+-        if let Some(light) = self.lights.lock().unwrap().get_mut(&id) {
+-            light.state = *state;
+-
++        let mut states = self.lights.lock().unwrap();
++        if let Some(light) = states.get_mut(&id) {
++            let brightness = compute_brightness(state.color);
++            light.state = brightness;
+             if light.hw_light.r#type == LightType::BACKLIGHT {
+-                let brightness = compute_brightness(state.color);
+-                write_backlight(brightness);
++                write_screen_backlight(brightness);
+             }
+-
++            let mut key_brightness = 0;
++            for (_id, state) in states.iter() {
++                key_brightness = cmp::max(key_brightness, state.state);
++            }
++            write_key_backlight(key_brightness);
+             Ok(())
+         } else {
+             Err(Status::new_exception(ExceptionCode::UNSUPPORTED_OPERATION, None))
+-- 
+2.34.1
+

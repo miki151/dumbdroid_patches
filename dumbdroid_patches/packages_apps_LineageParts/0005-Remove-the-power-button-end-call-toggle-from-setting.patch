@@ -1,0 +1,26 @@
+From 79f63c4fe9a6dea559605071bd0fda656e2e6408 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 9 Oct 2025 00:23:54 +0200
+Subject: [PATCH 5/6] Remove the power-button-end-call toggle from settings
+
+Change-Id: Id4fe2f5f7c5cf402336ce61fc6acba69993743e5
+---
+ src/org/lineageos/lineageparts/input/ButtonSettings.java | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/org/lineageos/lineageparts/input/ButtonSettings.java b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+index c4ff71d..f8d68d1 100644
+--- a/src/org/lineageos/lineageparts/input/ButtonSettings.java
++++ b/src/org/lineageos/lineageparts/input/ButtonSettings.java
+@@ -196,6 +196,8 @@ public class ButtonSettings extends SettingsPreferenceFragment
+ 
+         // Power button ends calls.
+         mPowerEndCall = findPreference(KEY_POWER_END_CALL);
++        prefScreen.removePreference(mPowerEndCall);
++        powerCategory.removePreference(mPowerEndCall);
+ 
+         // Long press power while display is off to activate torchlight
+         SwitchPreferenceCompat torchLongPressPowerGesture =
+-- 
+2.34.1
+

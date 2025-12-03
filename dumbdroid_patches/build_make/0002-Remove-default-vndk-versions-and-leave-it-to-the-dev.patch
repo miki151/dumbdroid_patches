@@ -1,0 +1,29 @@
+From 12641b73a97057f11b2c073adf51b05d6ac00a04 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 21 Jul 2025 15:52:38 +0200
+Subject: [PATCH 2/2] Remove default vndk versions and leave it to the device
+ makefile to define
+
+Change-Id: I82ec87741e098db74f3ff1dd2753cd615b67aaad
+---
+ target/product/gsi_release.mk | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/target/product/gsi_release.mk b/target/product/gsi_release.mk
+index 3b70b3edef..6ecac49c48 100644
+--- a/target/product/gsi_release.mk
++++ b/target/product/gsi_release.mk
+@@ -60,10 +60,6 @@ PRODUCT_COPY_FILES += \
+ # b/308878144 no more VNDK on 24Q1 and beyond
+ KEEP_VNDK ?= false
+ 
+-# Support additional VNDK snapshots
+-PRODUCT_EXTRA_VNDK_VERSIONS := \
+-    30 \
+-
+ # Do not build non-GSI partition images.
+ PRODUCT_BUILD_CACHE_IMAGE := false
+ PRODUCT_BUILD_DEBUG_BOOT_IMAGE := false
+-- 
+2.34.1
+

@@ -1,0 +1,105 @@
+From b27a42c5df64815b8fa9f897e1e31e63f7bb0700 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 27 Jun 2025 18:12:24 +0200
+Subject: [PATCH 1/4] Make camera preview full screen and add d-pad support
+
+Change-Id: I4db77a499911a38a50e4c8a0a230ff6228e6945f
+---
+ .../org/lineageos/aperture/CameraActivity.kt  | 42 +++++++++++++++++++
+ app/src/main/res/layout/activity_camera.xml   |  7 ++--
+ 2 files changed, 46 insertions(+), 3 deletions(-)
+
+diff --git a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+index 49ee12d..d575fb9 100644
+--- a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
++++ b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+@@ -1734,6 +1734,22 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+         )
+     }
+ 
++    private fun changeCameraLeft() {
++        when (this.cameraMode) {
++            CameraMode.PHOTO -> changeCameraMode(CameraMode.QR)
++            CameraMode.VIDEO -> changeCameraMode(CameraMode.PHOTO)
++            CameraMode.QR -> changeCameraMode(CameraMode.VIDEO)
++        }
++    }
++
++    private fun changeCameraRight() {
++        when (this.cameraMode) {
++            CameraMode.PHOTO -> changeCameraMode(CameraMode.VIDEO)
++            CameraMode.VIDEO -> changeCameraMode(CameraMode.QR)
++            CameraMode.QR -> changeCameraMode(CameraMode.PHOTO)
++        }
++    }
++
+     /**
+      * Change the current camera mode and restarts the stream
+      */
+@@ -2457,6 +2473,32 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+         }
+     }
+ 
++    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
++        if (event.action == KeyEvent.ACTION_UP) {
++            if (event.keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
++                changeCameraLeft()
++                return true
++            }
++            if (event.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
++                changeCameraRight()
++                return true
++            }
++            if (event.action == KeyEvent.ACTION_UP) {
++                shutterButton.performClick()  // or call your actual capture method
++                return true
++            }
++        }
++        return super.dispatchKeyEvent(event)
++    }
++
++    override fun onWindowFocusChanged(hasFocus: Boolean) {
++        super.onWindowFocusChanged(hasFocus)
++        if (hasFocus) {
++            findViewById<ViewGroup>(R.id.mainLayout)
++                .descendantFocusability = ViewGroup.FOCUS_BLOCK_DESCENDANTS
++        }
++    }
++
+     private fun handleHardwareKeyDown(
+         keyCode: Int, event: KeyEvent?
+     ) = HardwareKey.match(keyCode)?.let { (hardwareKey, tempIncrease) ->
+diff --git a/app/src/main/res/layout/activity_camera.xml b/app/src/main/res/layout/activity_camera.xml
+index f3b4c70..c77ef88 100644
+--- a/app/src/main/res/layout/activity_camera.xml
++++ b/app/src/main/res/layout/activity_camera.xml
+@@ -18,7 +18,7 @@
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         android:soundEffectsEnabled="false"
+-        app:layout_constraintBottom_toTopOf="@+id/secondaryBottomBarLayout"
++        app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+@@ -267,14 +267,15 @@
+             android:id="@+id/shutterButton"
+             android:layout_width="75dp"
+             android:layout_height="75dp"
+-            android:background="@null"
++		android:background="@null"
++	    android:visibility="gone"
+             android:contentDescription="@string/shutter_button_description"
+             android:soundEffectsEnabled="false"
+             android:src="@drawable/avd_photo_capture"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toRightOf="parent"
+-            app:layout_constraintTop_toTopOf="parent" />
++    app:layout_constraintTop_toTopOf="parent" />
+ 
+         <androidx.cardview.widget.CardView
+             android:id="@+id/galleryButtonCardView"
+-- 
+2.34.1
+

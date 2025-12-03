@@ -1,0 +1,246 @@
+From f2bcf5aac35ebf66aca79167faba577236469a50 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 26 Sep 2025 10:00:37 +0200
+Subject: [PATCH 3/8] Remove collapsable title bars to fix dpad navigation
+
+Change-Id: Ifd31893eb01d65b168bb9bf0ff0c94a0b41e9f98
+---
+ ..._homepage_app_bar_regular_phone_layout.xml |  9 ++------
+ res/values/dimens.xml                         |  2 --
+ res/values/styles.xml                         |  7 -------
+ .../ManageApplications.java                   | 15 ++-----------
+ .../deviceadmin/DeviceAdminAdd.java           |  2 ++
+ .../settings/core/SettingsBaseActivity.java   | 21 ++-----------------
+ .../datetime/timezone/BaseTimeZonePicker.java | 16 +++-----------
+ .../history/NotificationHistoryActivity.java  |  2 ++
+ 8 files changed, 13 insertions(+), 61 deletions(-)
+
+diff --git a/res/layout/settings_homepage_app_bar_regular_phone_layout.xml b/res/layout/settings_homepage_app_bar_regular_phone_layout.xml
+index f817dd49f40..a8aa149c648 100644
+--- a/res/layout/settings_homepage_app_bar_regular_phone_layout.xml
++++ b/res/layout/settings_homepage_app_bar_regular_phone_layout.xml
+@@ -29,15 +29,10 @@
+         android:layout_marginTop="@dimen/avatar_margin_top"
+         android:layout_marginEnd="@dimen/avatar_margin_end"
+         android:layout_gravity="end"
+-        android:visibility="invisible"
+-        android:accessibilityTraversalAfter="@id/homepage_title"
++        android:visibility="gone"
++        android:accessibilityTraversalAfter="@id/search_bar"
+         android:contentDescription="@string/search_bar_account_avatar_content_description"/>
+ 
+-    <TextView
+-        android:id="@+id/homepage_title"
+-        android:text="@string/settings_label"
+-        style="@style/HomepageTitleText"/>
+-
+     <FrameLayout
+         android:id="@+id/suggestion_content"
+         android:layout_width="match_parent"
+diff --git a/res/values/dimens.xml b/res/values/dimens.xml
+index cbfd3a80578..676a37916fc 100755
+--- a/res/values/dimens.xml
++++ b/res/values/dimens.xml
+@@ -96,8 +96,6 @@
+     <dimen name="multiple_users_user_icon_size">40dp</dimen>
+ 
+     <!-- Homepage -->
+-    <dimen name="homepage_title_margin_bottom">8dp</dimen>
+-    <dimen name="homepage_title_margin_horizontal">24dp</dimen>
+     <dimen name="homepage_padding_horizontal_two_pane">24dp</dimen>
+     <dimen name="homepage_preference_corner_radius">28dp</dimen>
+     <dimen name="homepage_preference_min_height">88sp</dimen>
+diff --git a/res/values/styles.xml b/res/values/styles.xml
+index 0a28b016ca9..0d553a5699c 100644
+--- a/res/values/styles.xml
++++ b/res/values/styles.xml
+@@ -758,13 +758,6 @@
+         <item name="android:gravity">start</item>
+     </style>
+ 
+-    <style name="HomepageTitleText" parent="CollapsingToolbarTitle.Expanded">
+-        <item name="android:layout_width">wrap_content</item>
+-        <item name="android:layout_height">wrap_content</item>
+-        <item name="android:layout_marginBottom">@dimen/homepage_title_margin_bottom</item>
+-        <item name="android:layout_marginHorizontal">@dimen/homepage_title_margin_horizontal</item>
+-    </style>
+-
+     <style name="RequestManageCredentialsButtonPanel">
+         <item name="android:paddingStart">12dp</item>
+         <item name="android:paddingEnd">12dp</item>
+diff --git a/src/com/android/settings/applications/manageapplications/ManageApplications.java b/src/com/android/settings/applications/manageapplications/ManageApplications.java
+index c2fabff680d..6794123760a 100644
+--- a/src/com/android/settings/applications/manageapplications/ManageApplications.java
++++ b/src/com/android/settings/applications/manageapplications/ManageApplications.java
+@@ -86,7 +86,6 @@ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+ import androidx.annotation.VisibleForTesting;
+ import androidx.annotation.WorkerThread;
+-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+ import androidx.core.view.ViewCompat;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
+@@ -157,6 +156,7 @@ import com.android.settings.notification.app.AppNotificationSettings;
+ import com.android.settings.spa.SpaActivity;
+ import com.android.settings.spa.app.appinfo.AppInfoSettingsProvider;
+ import com.android.settings.spa.app.appinfo.CloneAppInfoSettingsProvider;
++import com.android.settings.widget.AppBarUtils;
+ import com.android.settings.widget.LoadingViewController;
+ import com.android.settings.wifi.AppStateChangeWifiStateBridge;
+ import com.android.settings.wifi.ChangeWifiStateDetails;
+@@ -1028,18 +1028,7 @@ public class ManageApplications extends InstrumentedFragment
+     }
+ 
+     private void autoSetCollapsingToolbarLayoutScrolling() {
+-        final CoordinatorLayout.LayoutParams params =
+-                (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+-        final AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+-        behavior.setDragCallback(
+-                new AppBarLayout.Behavior.DragCallback() {
+-                    @Override
+-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+-                        return appBarLayout.getResources().getConfiguration().orientation
+-                                == Configuration.ORIENTATION_LANDSCAPE;
+-                    }
+-                });
+-        params.setBehavior(behavior);
++        AppBarUtils.configureAppBarLayout(mAppBarLayout);
+     }
+ 
+     /**
+diff --git a/src/com/android/settings/applications/specialaccess/deviceadmin/DeviceAdminAdd.java b/src/com/android/settings/applications/specialaccess/deviceadmin/DeviceAdminAdd.java
+index bb9876bd212..0b31d3cf6a5 100644
+--- a/src/com/android/settings/applications/specialaccess/deviceadmin/DeviceAdminAdd.java
++++ b/src/com/android/settings/applications/specialaccess/deviceadmin/DeviceAdminAdd.java
+@@ -87,6 +87,7 @@ import com.android.settingslib.RestrictedLockUtils;
+ import com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
+ import com.android.settingslib.RestrictedLockUtilsInternal;
+ import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
++import com.android.settings.widget.AppBarUtils;
+ 
+ import org.xmlpull.v1.XmlPullParserException;
+ 
+@@ -350,6 +351,7 @@ public class DeviceAdminAdd extends CollapsingToolbarBaseActivity {
+             return;
+         }
+         setContentView(R.layout.device_admin_add);
++        AppBarUtils.configureAppBarLayout(findViewById(R.id.app_bar));
+ 
+         mAdminIcon = (ImageView) findViewById(R.id.admin_icon);
+         mAdminName = (TextView) findViewById(R.id.admin_name);
+diff --git a/src/com/android/settings/core/SettingsBaseActivity.java b/src/com/android/settings/core/SettingsBaseActivity.java
+index e43772e118a..dc86170d49e 100644
+--- a/src/com/android/settings/core/SettingsBaseActivity.java
++++ b/src/com/android/settings/core/SettingsBaseActivity.java
+@@ -22,7 +22,6 @@ import android.app.ActivityManager;
+ import android.content.ComponentName;
+ import android.content.Intent;
+ import android.content.pm.PackageManager;
+-import android.content.res.Configuration;
+ import android.content.res.TypedArray;
+ import android.graphics.text.LineBreakConfig;
+ import android.os.Bundle;
+@@ -34,15 +33,14 @@ import android.view.ViewGroup;
+ import android.view.Window;
+ import android.widget.Toolbar;
+ 
+-import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+ import androidx.fragment.app.FragmentActivity;
+ 
+ import com.android.settings.R;
+ import com.android.settings.SetupWizardUtils;
+ import com.android.settings.SubSettings;
+ import com.android.settings.core.CategoryMixin.CategoryHandler;
++import com.android.settings.widget.AppBarUtils;
+ import com.android.settingslib.core.lifecycle.HideNonSystemOverlayMixin;
+ import com.android.settingslib.transition.SettingsTransitionHelper.TransitionType;
+ 
+@@ -265,22 +263,7 @@ public class SettingsBaseActivity extends FragmentActivity implements CategoryHa
+     }
+ 
+     private void autoSetCollapsingToolbarLayoutScrolling() {
+-        if (mAppBarLayout == null) {
+-            return;
+-        }
+-        final CoordinatorLayout.LayoutParams params =
+-                (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+-        final AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+-        behavior.setDragCallback(
+-                new AppBarLayout.Behavior.DragCallback() {
+-                    @Override
+-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+-                        // Header can be scrolling while device in landscape mode.
+-                        return appBarLayout.getResources().getConfiguration().orientation
+-                                == Configuration.ORIENTATION_LANDSCAPE;
+-                    }
+-                });
+-        params.setBehavior(behavior);
++        AppBarUtils.configureAppBarLayout(mAppBarLayout);
+     }
+ 
+     private int getTransitionType(Intent intent) {
+diff --git a/src/com/android/settings/datetime/timezone/BaseTimeZonePicker.java b/src/com/android/settings/datetime/timezone/BaseTimeZonePicker.java
+index adbedee7998..efc1278899b 100644
+--- a/src/com/android/settings/datetime/timezone/BaseTimeZonePicker.java
++++ b/src/com/android/settings/datetime/timezone/BaseTimeZonePicker.java
+@@ -29,7 +29,6 @@ import android.widget.SearchView;
+ import android.widget.TextView;
+ 
+ import androidx.annotation.NonNull;
+-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+ import androidx.core.view.ViewCompat;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
+@@ -39,6 +38,8 @@ import com.android.settings.core.InstrumentedFragment;
+ import com.android.settings.datetime.timezone.model.TimeZoneData;
+ import com.android.settings.datetime.timezone.model.TimeZoneDataLoader;
+ 
++import com.android.settings.widget.AppBarUtils;
++
+ import com.google.android.material.appbar.AppBarLayout;
+ 
+ import java.util.Locale;
+@@ -196,17 +197,6 @@ public abstract class BaseTimeZonePicker extends InstrumentedFragment
+     }
+ 
+     private void autoSetCollapsingToolbarLayoutScrolling() {
+-        CoordinatorLayout.LayoutParams params =
+-                (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+-        AppBarLayout.Behavior behavior = new AppBarLayout.Behavior();
+-        behavior.setDragCallback(
+-                new AppBarLayout.Behavior.DragCallback() {
+-                    @Override
+-                    public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+-                        return appBarLayout.getResources().getConfiguration().orientation
+-                                == Configuration.ORIENTATION_LANDSCAPE;
+-                    }
+-                });
+-        params.setBehavior(behavior);
++        AppBarUtils.configureAppBarLayout(mAppBarLayout);
+     }
+ }
+diff --git a/src/com/android/settings/notification/history/NotificationHistoryActivity.java b/src/com/android/settings/notification/history/NotificationHistoryActivity.java
+index 6609d7d583f..5913ded4fc4 100644
+--- a/src/com/android/settings/notification/history/NotificationHistoryActivity.java
++++ b/src/com/android/settings/notification/history/NotificationHistoryActivity.java
+@@ -65,6 +65,7 @@ import com.android.internal.widget.LockPatternUtils;
+ import com.android.internal.widget.NotificationExpandButton;
+ import com.android.settings.R;
+ import com.android.settings.notification.NotificationBackend;
++import com.android.settings.widget.AppBarUtils;
+ import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
+ import com.android.settingslib.utils.StringUtil;
+ import com.android.settingslib.utils.ThreadUtils;
+@@ -244,6 +245,7 @@ public class NotificationHistoryActivity extends CollapsingToolbarBaseActivity {
+         super.onCreate(savedInstanceState);
+         setTitle(R.string.notification_history);
+         setContentView(R.layout.notification_history);
++        AppBarUtils.configureAppBarLayout(findViewById(R.id.app_bar));
+         mTodayView = findViewById(R.id.apps);
+         mSnoozeView = findViewById(R.id.snoozed_list);
+         mDismissView = findViewById(R.id.recently_dismissed_list);
+-- 
+2.34.1
+

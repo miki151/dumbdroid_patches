@@ -1,0 +1,26 @@
+From ca1f949daed65acc46ed03d991a0cc89564f2073 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Tue, 7 Oct 2025 09:23:36 +0200
+Subject: [PATCH 30/44] Allow PIN auto-confirm with 4 digits
+
+Change-Id: I30a019c38c80ee6d768d70ce72f2525a17eae411
+---
+ core/java/com/android/internal/widget/LockPatternUtils.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/java/com/android/internal/widget/LockPatternUtils.java b/core/java/com/android/internal/widget/LockPatternUtils.java
+index 5ee4fe866f61..e351c487d5fd 100644
+--- a/core/java/com/android/internal/widget/LockPatternUtils.java
++++ b/core/java/com/android/internal/widget/LockPatternUtils.java
+@@ -125,7 +125,7 @@ public class LockPatternUtils {
+     public static final int PIN_LENGTH_UNAVAILABLE = -1;
+ 
+     // This is the minimum pin length at which auto confirmation is supported
+-    public static final int MIN_AUTO_PIN_REQUIREMENT_LENGTH = 6;
++    public static final int MIN_AUTO_PIN_REQUIREMENT_LENGTH = 4;
+ 
+     /**
+      * Header used for the encryption and decryption of the device credential for
+-- 
+2.34.1
+

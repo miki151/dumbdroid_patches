@@ -1,0 +1,29 @@
+From 02d5a56ed6ce8ec2cd92090aa56e429d68bf4761 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 3 Nov 2025 11:35:33 +0100
+Subject: [PATCH 14/21] Stop removing device owner definitions on device boot
+
+Change-Id: I14e82c15ba56961c808910c157b77e863eaba58d
+---
+ ota/phh-ota.rc | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/ota/phh-ota.rc b/ota/phh-ota.rc
+index 74bfc99..062a61a 100644
+--- a/ota/phh-ota.rc
++++ b/ota/phh-ota.rc
+@@ -8,11 +8,6 @@ service phh-ota-switch /system/bin/phh-ota switch-slot
+ 	disabled
+ 	oneshot
+ 
+-on post-fs-data
+-    rm /data/system/device_owner_2.xml
+-    rm /data/system/device_policies.xml
+-    rm /data/system/device_policy_state.xml
+-
+ on property:sys.boot_completed=1
+     exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-ota delete-other-slot
+ 
+-- 
+2.34.1
+

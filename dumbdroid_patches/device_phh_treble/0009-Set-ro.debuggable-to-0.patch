@@ -1,0 +1,26 @@
+From 4372132a66b21271d1210732c1ab088c837a4377 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 27 Aug 2025 10:52:41 +0200
+Subject: [PATCH 09/21] Set ro.debuggable to 0
+
+Change-Id: Idb467c98b3d2e263ded2382ab0c11c2dbda8c1eb
+---
+ rw-system.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rw-system.sh b/rw-system.sh
+index e752712..589f201 100644
+--- a/rw-system.sh
++++ b/rw-system.sh
+@@ -790,6 +790,8 @@ chcon u:object_r:system_file:s0 /mnt/phh/xbin/su
+ 
+ mount -o bind /mnt/phh/xbin /system/xbin
+ 
++resetprop_phh ro.debuggable 0
++
+ for abi in "" 64;do
+     f=/vendor/lib$abi/libstagefright_foundation.so
+     if [ -f "$f" ];then
+-- 
+2.34.1
+

@@ -1,0 +1,60 @@
+From 5923bbf5d9d51968f63cfb26e9eb8102f0e9b48c Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 14 Jul 2025 09:16:13 +0200
+Subject: [PATCH 05/13] Add weather, maps and music player to main launcher
+ screen
+
+Change-Id: Ia6c9cd2a57fbeca40af75a49d7229a974b6669ca
+---
+ res/xml/default_workspace_3x3.xml | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/res/xml/default_workspace_3x3.xml b/res/xml/default_workspace_3x3.xml
+index 9c7b92f965..d0150abd4c 100644
+--- a/res/xml/default_workspace_3x3.xml
++++ b/res/xml/default_workspace_3x3.xml
+@@ -80,7 +80,9 @@
+         launcher:screen="0"
+         launcher:x="0"
+ 	launcher:y="-2" >
+-        <favorite launcher:uri="#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MUSIC;end" />
++	<favorite
++	        launcher:packageName="org.breezyweather"
++		launcher:className="org.breezyweather.ui.main.MainActivity"/>
+     </resolve>
+ 
+     <resolve
+@@ -90,7 +92,16 @@
+ 	<favorite launcher:uri="#Intent;action=android.intent.action.SHOW_ALARMS;end" />
+     </resolve>
+ 
++    <resolve
++        launcher:screen="0"
++        launcher:x="2"
++	launcher:y="-2" >
++	<favorite
++	        launcher:packageName="app.organicmaps.web"
++		launcher:className="app.organicmaps.DownloadResourcesActivity"/>
++    </resolve>
+ 
++    <!-- Top row -->
+     <resolve
+         launcher:screen="0"
+         launcher:x="0"
+@@ -109,4 +120,13 @@
+ 		launcher:className="io.github.sspanak.tt9.preferences.PreferencesActivity"/>
+     </resolve>
+ 
++    <resolve
++        launcher:screen="0"
++        launcher:x="1"
++	launcher:y="-3">
++	<favorite
++	        launcher:packageName="com.github.anrimian.musicplayer"
++		launcher:className="com.github.anrimian.musicplayer.ui.main.MainActivity"/>
++    </resolve>
++
+ </favorites>
+-- 
+2.34.1
+

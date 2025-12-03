@@ -1,0 +1,44 @@
+From 1c9ff1d78f32205d2eb82e3a00726a83816cf59f Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 21 Nov 2025 11:33:58 +0100
+Subject: [PATCH 10/13] Make dpad-up dismiss tasks in recents
+
+Change-Id: Iad65038af68e5cae47aaf716f1be1a96a81c8bf8
+---
+ .../src/com/android/quickstep/views/RecentsView.java     | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/quickstep/src/com/android/quickstep/views/RecentsView.java b/quickstep/src/com/android/quickstep/views/RecentsView.java
+index 646c726fa0..f473628f8f 100644
+--- a/quickstep/src/com/android/quickstep/views/RecentsView.java
++++ b/quickstep/src/com/android/quickstep/views/RecentsView.java
+@@ -4218,11 +4218,13 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
+         dismissAllTasks(null);
+     }
+ 
+-    private void dismissCurrentTask() {
++    private boolean dismissCurrentTask() {
+         TaskView taskView = getNextPageTaskView();
+         if (taskView != null) {
+             dismissTask(taskView, true /*animateTaskView*/, true /*removeTask*/);
++            return true;
+         }
++        return false;
+     }
+ 
+     @Override
+@@ -4239,7 +4241,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
+             case KeyEvent.KEYCODE_DPAD_LEFT:
+                 return snapToPageRelative(mIsRtl ? 1 : -1, true /* cycle */, DIRECTION_LEFT);
+             case KeyEvent.KEYCODE_DPAD_UP:
+-                return snapToPageRelative(1, false /* cycle */, DIRECTION_UP);
++                if (dismissCurrentTask()) {
++                    return true;
++                }
++                break;
+             case KeyEvent.KEYCODE_DPAD_DOWN:
+                 return snapToPageRelative(1, false /* cycle */, DIRECTION_DOWN);
+             case KeyEvent.KEYCODE_DEL:
+-- 
+2.34.1
+

@@ -1,0 +1,26 @@
+From 756877cc027335b5d90ecbd7817371475e271af9 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 27 Aug 2025 10:54:04 +0200
+Subject: [PATCH 23/44] Fix locking the screen using power with alternative
+ launchers
+
+Change-Id: I7f44cd8b3ff43db5afdf177ad2307ea8d6f33acd
+---
+ .../core/java/com/android/server/policy/PhoneWindowManager.java  | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 6b879d6177ad..ec5e110d9b88 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -1351,6 +1351,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+             }
+             if (!isOnHomeScreen() && mPowerButtonAction != 0) {
+                 shortPressPowerGoHome();
++		mRecentsVisible = false;
+                 return;
+             }
+             switch (mShortPressOnPowerBehavior) {
+-- 
+2.34.1
+

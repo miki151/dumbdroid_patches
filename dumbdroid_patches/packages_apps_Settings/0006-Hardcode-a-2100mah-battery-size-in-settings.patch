@@ -1,0 +1,69 @@
+From 21193de3399503969148ca9d4aa15b69478b17bc Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 20 Nov 2025 07:26:35 +0100
+Subject: [PATCH 6/8] Hardcode a 2100mah battery size in settings
+
+Change-Id: Idbaad3646884b9b8a6351a25f2166085f262b905
+---
+ .../fuelgauge/BatteryCapacityOverride.java    | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 src/com/android/settings/fuelgauge/BatteryCapacityOverride.java
+
+diff --git a/src/com/android/settings/fuelgauge/BatteryCapacityOverride.java b/src/com/android/settings/fuelgauge/BatteryCapacityOverride.java
+new file mode 100644
+index 00000000000..07e519ed33b
+--- /dev/null
++++ b/src/com/android/settings/fuelgauge/BatteryCapacityOverride.java
+@@ -0,0 +1,49 @@
++/*
++ * Copyright (C) 2024
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.settings.fuelgauge;
++
++/** Utility class that exposes the hard-coded battery capacity override. */
++public final class BatteryCapacityOverride {
++
++    private static final int BATTERY_CAPACITY_MAH = 2_100;
++
++    private BatteryCapacityOverride() {}
++
++    /** Returns {@code true} when an override is active. */
++    public static boolean isEnabled() {
++        return BATTERY_CAPACITY_MAH > 0;
++    }
++
++    /** Returns the overridden nominal capacity in mAh. */
++    public static int getCapacityMah() {
++        return BATTERY_CAPACITY_MAH;
++    }
++
++    /** Returns the overridden nominal capacity in uAh. */
++    public static int getCapacityUah() {
++        return BATTERY_CAPACITY_MAH * 1_000;
++    }
++
++    /**
++     * Returns the remaining capacity (in mAh) for the provided percentage when the override is
++     * active.
++     */
++    public static int getChargeCounterMah(int batteryLevel) {
++        final int clampedLevel = Math.min(Math.max(batteryLevel, 0), 100);
++        return (BATTERY_CAPACITY_MAH * clampedLevel) / 100;
++    }
++}
+-- 
+2.34.1
+

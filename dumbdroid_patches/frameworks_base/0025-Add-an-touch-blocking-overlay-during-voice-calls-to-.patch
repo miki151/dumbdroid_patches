@@ -1,0 +1,2640 @@
+From 4d6ee8e83bd23d46ab791485f4453e6b1ef4ed26 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 12 Sep 2025 13:13:34 +0200
+Subject: [PATCH 25/44] Add an touch-blocking overlay during voice calls to
+ prevent accidental touches on device without a proximity sensor
+
+Change-Id: If5989f1eac3547bf772afa63bb5467676913da9e
+---
+ core/res/assets/images/progress_font.png      | Bin 17515 -> 39708 bytes
+ core/res/res/values-af/strings.xml            |   1 +
+ core/res/res/values-am/strings.xml            |   1 +
+ core/res/res/values-ar/strings.xml            |   1 +
+ core/res/res/values-as/strings.xml            |   1 +
+ core/res/res/values-az/strings.xml            |   1 +
+ core/res/res/values-b+sr+Latn/strings.xml     |   1 +
+ core/res/res/values-be/strings.xml            |   1 +
+ core/res/res/values-bg/strings.xml            |   1 +
+ core/res/res/values-bn/strings.xml            |   1 +
+ core/res/res/values-bs/strings.xml            |   1 +
+ core/res/res/values-ca/strings.xml            |   1 +
+ core/res/res/values-cs/strings.xml            |   1 +
+ core/res/res/values-da/strings.xml            |   1 +
+ core/res/res/values-de/strings.xml            |   1 +
+ core/res/res/values-el/strings.xml            |   1 +
+ core/res/res/values-en-rAU/strings.xml        |   1 +
+ core/res/res/values-en-rCA/strings.xml        |   1 +
+ core/res/res/values-en-rGB/strings.xml        |   1 +
+ core/res/res/values-en-rIN/strings.xml        |   1 +
+ core/res/res/values-en-rSG/strings.xml        |   1 +
+ core/res/res/values-en-rUS/strings.xml        |   1 +
+ core/res/res/values-en-rXC/strings.xml        |   1 +
+ core/res/res/values-es-rUS/strings.xml        |   1 +
+ core/res/res/values-es/strings.xml            |   1 +
+ core/res/res/values-et/strings.xml            |   1 +
+ core/res/res/values-eu/strings.xml            |   1 +
+ core/res/res/values-fa/strings.xml            |   1 +
+ core/res/res/values-fi/strings.xml            |   1 +
+ core/res/res/values-fr-rCA/strings.xml        |   1 +
+ core/res/res/values-fr/strings.xml            |   1 +
+ core/res/res/values-gl/strings.xml            |   1 +
+ core/res/res/values-gu/strings.xml            |   1 +
+ core/res/res/values-hi/strings.xml            |   1 +
+ core/res/res/values-hr/strings.xml            |   1 +
+ core/res/res/values-hu/strings.xml            |   1 +
+ core/res/res/values-hy/strings.xml            |   1 +
+ core/res/res/values-in/strings.xml            |   1 +
+ core/res/res/values-is/strings.xml            |   1 +
+ core/res/res/values-it/strings.xml            |   1 +
+ core/res/res/values-iw/strings.xml            |   1 +
+ core/res/res/values-ja/strings.xml            |   1 +
+ core/res/res/values-ka/strings.xml            |   1 +
+ core/res/res/values-kk/strings.xml            |   1 +
+ core/res/res/values-km/strings.xml            |   1 +
+ core/res/res/values-kn/strings.xml            |   1 +
+ core/res/res/values-ko/strings.xml            |   1 +
+ core/res/res/values-ky/strings.xml            |   1 +
+ core/res/res/values-lo/strings.xml            |   1 +
+ core/res/res/values-lt/strings.xml            |   1 +
+ core/res/res/values-lv/strings.xml            |   1 +
+ core/res/res/values-mk/strings.xml            |   1 +
+ core/res/res/values-ml/strings.xml            |   1 +
+ core/res/res/values-mn/strings.xml            |   1 +
+ core/res/res/values-mr/strings.xml            |   1 +
+ core/res/res/values-ms/strings.xml            |   1 +
+ core/res/res/values-my/strings.xml            |   1 +
+ core/res/res/values-nb/strings.xml            |   1 +
+ core/res/res/values-ne/strings.xml            |   1 +
+ core/res/res/values-nl/strings.xml            |   1 +
+ core/res/res/values-or/strings.xml            |   1 +
+ core/res/res/values-pa/strings.xml            |   1 +
+ core/res/res/values-pl/strings.xml            |   1 +
+ core/res/res/values-pt-rBR/strings.xml        |   1 +
+ core/res/res/values-pt-rPT/strings.xml        |   1 +
+ core/res/res/values-pt/strings.xml            |   1 +
+ core/res/res/values-ro/strings.xml            |   1 +
+ core/res/res/values-ru/strings.xml            |   1 +
+ core/res/res/values-si/strings.xml            |   1 +
+ core/res/res/values-sk/strings.xml            |   1 +
+ core/res/res/values-sl/strings.xml            |   1 +
+ core/res/res/values-sq/strings.xml            |   1 +
+ core/res/res/values-sr/strings.xml            |   1 +
+ core/res/res/values-sv/strings.xml            |   1 +
+ core/res/res/values-sw/strings.xml            |   1 +
+ core/res/res/values-ta/strings.xml            |   1 +
+ core/res/res/values-te/strings.xml            |   1 +
+ core/res/res/values-th/strings.xml            |   1 +
+ core/res/res/values-tl/strings.xml            |   1 +
+ core/res/res/values-tr/strings.xml            |   1 +
+ core/res/res/values-uk/strings.xml            |   1 +
+ core/res/res/values-ur/strings.xml            |   1 +
+ core/res/res/values-uz/strings.xml            |   1 +
+ core/res/res/values-vi/strings.xml            |   1 +
+ core/res/res/values-zh-rCN/strings.xml        |   1 +
+ core/res/res/values-zh-rHK/strings.xml        |   1 +
+ core/res/res/values-zh-rTW/strings.xml        |   1 +
+ core/res/res/values-zu/strings.xml            |   1 +
+ core/res/res/values/strings.xml               |   1 +
+ .../policy/HeuristicProximityController.java  | 376 ++++++++++++++++++
+ .../server/policy/PhoneWindowManager.java     |  38 ++
+ .../policy/ProximityTouchBlockOverlay.java    | 176 ++++++++
+ 92 files changed, 678 insertions(+)
+ create mode 100644 services/core/java/com/android/server/policy/HeuristicProximityController.java
+ create mode 100644 services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
+
+diff --git a/core/res/assets/images/progress_font.png b/core/res/assets/images/progress_font.png
+index 78c3ed9cd6998f140c9dce9578ddc0ea15156043..e292e70cb1ed08f49173ebf61e2c588651e147bc 100644
+GIT binary patch
+literal 39708
+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
+zHF0|gR*i4or)yQA%0D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
+ZcP~$&*htMU;O7;9y^XVV<M{yce*xLCWa|I`
+
+literal 17515
+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
+
+diff --git a/core/res/res/values-af/strings.xml b/core/res/res/values-af/strings.xml
+index 55c5174944a4..d6ee5910aef6 100644
+--- a/core/res/res/values-af/strings.xml
++++ b/core/res/res/values-af/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Jy kan boodskappe stuur en ontvang sonder ’n selfoon- of wi-fi-netwerk"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Maak Boodskappe oop"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Hoe dit werk"</string>
++    <string name="prox_touch_block_message">Voorkoming van toevallige aanrakings. Druk Terug om te sluit.</string>
+ </resources>
+diff --git a/core/res/res/values-am/strings.xml b/core/res/res/values-am/strings.xml
+index e513a07722ed..10ba2eeda42b 100644
+--- a/core/res/res/values-am/strings.xml
++++ b/core/res/res/values-am/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ያለ ሞባይል ወይም የWi-Fi አውታረ መረብ መልዕክቶችን መላክ እና መቀበል ይችላሉ"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"መልዕክቶች ይክፈቱ"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"እንዴት እንደሚሠራ"</string>
++    <string name="prox_touch_block_message">በድንገት መንካትን እየከላከልን ነው። ለመዝጋት መመለስ ይጫኑ።</string>
+ </resources>
+diff --git a/core/res/res/values-ar/strings.xml b/core/res/res/values-ar/strings.xml
+index 24ff9c112c5b..da3b457f633f 100644
+--- a/core/res/res/values-ar/strings.xml
++++ b/core/res/res/values-ar/strings.xml
+@@ -2397,4 +2397,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"‏يمكنك إرسال الرسائل واستلامها بدون شبكة الجوّال أو شبكة Wi-Fi."</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"فتح تطبيق \"الرسائل\""</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"طريقة العمل"</string>
++    <string name="prox_touch_block_message">منع اللمسات غير المقصودة. اضغط رجوع للإغلاق.</string>
+ </resources>
+diff --git a/core/res/res/values-as/strings.xml b/core/res/res/values-as/strings.xml
+index 8cbb1a3da6b7..899185b91ce6 100644
+--- a/core/res/res/values-as/strings.xml
++++ b/core/res/res/values-as/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"আপুনি ম’বাইল বা ৱাই-ফাই নেটৱৰ্কৰ জৰিয়তে পাঠ বাৰ্তা পঠিয়াব বা লাভ কৰিব পাৰে"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages খোলক"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ই কেনেকৈ কাম কৰে"</string>
++    <string name="prox_touch_block_message">অযাচিত স্পৰ্শ ৰোধ কৰা হৈছে। বন্ধ কৰিবলৈ ‘Back’ টিপক।</string>
+ </resources>
+diff --git a/core/res/res/values-az/strings.xml b/core/res/res/values-az/strings.xml
+index 5c3c652bb629..47d31facfd45 100644
+--- a/core/res/res/values-az/strings.xml
++++ b/core/res/res/values-az/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Mobil və ya Wi-Fi şəbəkəsi olmadan mesaj göndərə və qəbul edə bilərsiniz"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Mesajı açın"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Haqqında"</string>
++    <string name="prox_touch_block_message">Təsadüfi toxunuşların qarşısı alınır. Bağlamaq üçün Geri düyməsini basın.</string>
+ </resources>
+diff --git a/core/res/res/values-b+sr+Latn/strings.xml b/core/res/res/values-b+sr+Latn/strings.xml
+index 9ecd72c023b8..a7cf1f570202 100644
+--- a/core/res/res/values-b+sr+Latn/strings.xml
++++ b/core/res/res/values-b+sr+Latn/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Možete da šaljete i primate poruke bez mobilne ili WiFi mreže"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otvori Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Princip rada"</string>
++    <string name="prox_touch_block_message">Sprečavanje nenamernih dodira. Pritisnite Nazad za zatvaranje.</string>
+ </resources>
+diff --git a/core/res/res/values-be/strings.xml b/core/res/res/values-be/strings.xml
+index 38b8e4354445..5a19285bd3b6 100644
+--- a/core/res/res/values-be/strings.xml
++++ b/core/res/res/values-be/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Вы можаце адпраўляць і атрымліваць паведамленні без доступу да мабільнай сеткі або Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Адкрыць Паведамленні"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Як гэта працуе"</string>
++    <string name="prox_touch_block_message">Прадухіленне выпадковых дотыкаў. Націсніце «Назад», каб закрыць.</string>
+ </resources>
+diff --git a/core/res/res/values-bg/strings.xml b/core/res/res/values-bg/strings.xml
+index 77933bae46f4..c4e5286660e5 100644
+--- a/core/res/res/values-bg/strings.xml
++++ b/core/res/res/values-bg/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Можете да изпращате и получавате съобщения без мобилна или Wi-Fi мрежа"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Отваряне на Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Начин на работа"</string>
++    <string name="prox_touch_block_message">Предотвратяване на случайни докосвания. Натиснете „Назад“, за да затворите.</string>
+ </resources>
+diff --git a/core/res/res/values-bn/strings.xml b/core/res/res/values-bn/strings.xml
+index bd06cadeaf50..79c8f05c3434 100644
+--- a/core/res/res/values-bn/strings.xml
++++ b/core/res/res/values-bn/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"আপনি কোনও মেবাইল বা ওয়াই-ফাই নেটওয়ার্ক ছাড়াই মেসেজ পাঠাতে ও পেতে পারবেন"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages খুলুন"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"এটি কীভাবে কাজ করে"</string>
++    <string name="prox_touch_block_message">অনিচ্ছাকৃত স্পর্শ প্রতিরোধ করা হচ্ছে। বন্ধ করতে ‘ব্যাক’ চাপুন।</string>
+ </resources>
+diff --git a/core/res/res/values-bs/strings.xml b/core/res/res/values-bs/strings.xml
+index 3fba128a01ce..7e681d563c14 100644
+--- a/core/res/res/values-bs/strings.xml
++++ b/core/res/res/values-bs/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Možete slati i primati poruke bez mobilne ili WiFi mreže"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otvorite Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Kako ovo funkcionira"</string>
++    <string name="prox_touch_block_message">Sprečavanje neželjenih dodira. Pritisnite Nazad za zatvaranje.</string>
+ </resources>
+diff --git a/core/res/res/values-ca/strings.xml b/core/res/res/values-ca/strings.xml
+index 98cc8eb80a53..d9e42a4e30cd 100644
+--- a/core/res/res/values-ca/strings.xml
++++ b/core/res/res/values-ca/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Pots enviar i rebre missatges sense una xarxa mòbil o Wi‑Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Obre Missatges"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Com funciona"</string>
++    <string name="prox_touch_block_message">S’eviten tocs accidentals. Prem Enrere per tancar.</string>
+ </resources>
+diff --git a/core/res/res/values-cs/strings.xml b/core/res/res/values-cs/strings.xml
+index 13d6de691001..d3cf0b498f13 100644
+--- a/core/res/res/values-cs/strings.xml
++++ b/core/res/res/values-cs/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Zprávy můžete odesílat a přijímat bez mobilní sítě nebo sítě Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otevřít Zprávy"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Jak to funguje"</string>
++    <string name="prox_touch_block_message">Zabraňujeme nechtěným dotykům. Stiskněte Zpět pro zavření.</string>
+ </resources>
+diff --git a/core/res/res/values-da/strings.xml b/core/res/res/values-da/strings.xml
+index e5416c227980..8a75a59134dd 100644
+--- a/core/res/res/values-da/strings.xml
++++ b/core/res/res/values-da/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Du kan sende og modtage beskeder uden et mobil- eller Wi-Fi-netværk"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Åbn Beskeder"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Sådan fungerer det"</string>
++    <string name="prox_touch_block_message">Forhindrer utilsigtede berøringer. Tryk på Tilbage for at lukke.</string>
+ </resources>
+diff --git a/core/res/res/values-de/strings.xml b/core/res/res/values-de/strings.xml
+index a8437465e277..af2c8b34b6e3 100644
+--- a/core/res/res/values-de/strings.xml
++++ b/core/res/res/values-de/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Du kannst Nachrichten ohne Mobilfunknetz oder WLAN senden und empfangen"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages öffnen"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"So funktionierts"</string>
++    <string name="prox_touch_block_message">Unbeabsichtigte Berührungen werden verhindert. Drücke „Zurück“, um zu schließen.</string>
+ </resources>
+diff --git a/core/res/res/values-el/strings.xml b/core/res/res/values-el/strings.xml
+index d18ae33caa94..44b1782d3e15 100644
+--- a/core/res/res/values-el/strings.xml
++++ b/core/res/res/values-el/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Μπορείτε να στέλνετε και να λαμβάνετε μηνύματα χωρίς δίκτυο κινητής τηλεφωνίας ή Wi-Fi."</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Άνοιγμα Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Πώς λειτουργεί"</string>
++    <string name="prox_touch_block_message">Αποτροπή τυχαίων αγγιγμάτων. Πατήστε Πίσω για έξοδο.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rAU/strings.xml b/core/res/res/values-en-rAU/strings.xml
+index 7dd6a5c668df..28cda6d917fc 100644
+--- a/core/res/res/values-en-rAU/strings.xml
++++ b/core/res/res/values-en-rAU/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"You can send and receive messages without a mobile or Wi-Fi network"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Open Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"How it works"</string>
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rCA/strings.xml b/core/res/res/values-en-rCA/strings.xml
+index 58c015b5ddd9..7c6accf16848 100644
+--- a/core/res/res/values-en-rCA/strings.xml
++++ b/core/res/res/values-en-rCA/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"You can send and receive messages without a mobile or Wi-Fi network"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Open Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"How it works"</string>
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rGB/strings.xml b/core/res/res/values-en-rGB/strings.xml
+index fd0cdd520a8f..5ded9c10b2f3 100644
+--- a/core/res/res/values-en-rGB/strings.xml
++++ b/core/res/res/values-en-rGB/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"You can send and receive messages without a mobile or Wi-Fi network"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Open Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"How it works"</string>
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rIN/strings.xml b/core/res/res/values-en-rIN/strings.xml
+index 3dfadb2d3771..53d34a8ea007 100644
+--- a/core/res/res/values-en-rIN/strings.xml
++++ b/core/res/res/values-en-rIN/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"You can send and receive messages without a mobile or Wi-Fi network"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Open Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"How it works"</string>
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rSG/strings.xml b/core/res/res/values-en-rSG/strings.xml
+index 5ba1082b3f61..3b7e3c899d92 100644
+--- a/core/res/res/values-en-rSG/strings.xml
++++ b/core/res/res/values-en-rSG/strings.xml
+@@ -1190,4 +1190,5 @@
+     <skip />
+     <!-- no translation found for candidates_style (7738463880139922176) -->
+     <skip />
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rUS/strings.xml b/core/res/res/values-en-rUS/strings.xml
+index adae7f4906c5..da0a0306e2f7 100644
+--- a/core/res/res/values-en-rUS/strings.xml
++++ b/core/res/res/values-en-rUS/strings.xml
+@@ -1231,4 +1231,5 @@
+     <skip />
+     <!-- no translation found for candidates_style (7738463880139922176) -->
+     <skip />
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-en-rXC/strings.xml b/core/res/res/values-en-rXC/strings.xml
+index 6c6f1c98fbaa..20ad63ebbf4f 100644
+--- a/core/res/res/values-en-rXC/strings.xml
++++ b/core/res/res/values-en-rXC/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‎‎‎‏‎‎‏‎‎‎‎‏‏‏‏‏‏‏‏‎‎‏‎‎‎‎‏‎‎‎‏‎‎‎‏‎‎‎‏‏‎‎‎‎‏‏‎‎‎‎‏‎‏‎‎‏‎‏‏‏‎‎‎‎‎‏‏‏‎‏‎‏‎‎‎‏‏‏‎‏‎‎You can send and receive messages without a mobile or Wi-Fi network‎‏‎‎‏‎"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‎‎‎‏‎‎‏‎‎‎‎‏‏‏‏‏‏‎‏‏‏‎‎‏‏‎‎‏‎‏‎‏‎‎‎‎‏‎‏‏‎‎‏‏‏‎‏‎‏‏‏‏‏‏‎‏‏‏‏‏‎‎‎‏‏‏‎‏‎‏‏‏‎‏‎‎‎‎‎‏‎Open Messages‎‏‎‎‏‎"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"‎‏‎‎‎‎‎‏‎‏‏‏‎‎‎‎‎‎‏‎‎‏‎‎‎‎‏‏‏‏‏‏‎‏‎‏‎‏‏‎‏‏‏‎‏‏‏‎‏‎‏‏‎‎‎‎‏‏‏‎‏‎‎‎‎‏‏‎‏‎‎‎‏‎‏‏‏‏‎‎‏‏‎‎‎‎‏‏‎‎‎‎‏‏‏‎How it works‎‏‎‎‏‎"</string>
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+ </resources>
+diff --git a/core/res/res/values-es-rUS/strings.xml b/core/res/res/values-es-rUS/strings.xml
+index 69c5cdab662e..5ac22d5250c6 100644
+--- a/core/res/res/values-es-rUS/strings.xml
++++ b/core/res/res/values-es-rUS/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Puedes enviar y recibir mensajes incluso si no tienes conexión a una red móvil o Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abrir Mensajes"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cómo funciona"</string>
++    <string name="prox_touch_block_message">Evitar toques accidentales. Presiona Atrás para cerrar.</string>
+ </resources>
+diff --git a/core/res/res/values-es/strings.xml b/core/res/res/values-es/strings.xml
+index 2dd4f7b863fe..36ba381718ef 100644
+--- a/core/res/res/values-es/strings.xml
++++ b/core/res/res/values-es/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Puedes enviar y recibir mensajes sin una red móvil o Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abre Mensajes"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cómo funciona"</string>
++    <string name="prox_touch_block_message">Evitando toques accidentales. Pulsa Atrás para cerrar.</string>
+ </resources>
+diff --git a/core/res/res/values-et/strings.xml b/core/res/res/values-et/strings.xml
+index 2fe8731d9cda..6ca046778808 100644
+--- a/core/res/res/values-et/strings.xml
++++ b/core/res/res/values-et/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Teil on võimalik sõnumeid saata ja vastu võtta ilma mobiilside- ja WiFi-võrguta"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Ava rakendus Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Tööpõhimõtted"</string>
++    <string name="prox_touch_block_message">Vältitakse juhuslikke puudutusi. Vajuta Tagasi sulgemiseks.</string>
+ </resources>
+diff --git a/core/res/res/values-eu/strings.xml b/core/res/res/values-eu/strings.xml
+index 9960a2d7d030..6ebef2a24f1a 100644
+--- a/core/res/res/values-eu/strings.xml
++++ b/core/res/res/values-eu/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Mezuak bidal eta jaso ditzakezu sare mugikorrik edo wifi-sarerik gabe"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Ireki Mezuak"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Nola funtzionatzen du?"</string>
++    <string name="prox_touch_block_message">Ukipen ustekabekoak saihesten. Sakatu Atzera ixteko.</string>
+ </resources>
+diff --git a/core/res/res/values-fa/strings.xml b/core/res/res/values-fa/strings.xml
+index 7155bf4241e6..085771144ebe 100644
+--- a/core/res/res/values-fa/strings.xml
++++ b/core/res/res/values-fa/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"‏می‌توانید بدون شبکه تلفن همراه یا Wi-Fi پیام ارسال و دریافت کنید"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"باز کردن «پیام‌ها»"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"روش کار"</string>
++    <string name="prox_touch_block_message">جلوگیری از لمس‌های تصادفی. برای بستن، «بازگشت» را فشار دهید.</string>
+ </resources>
+diff --git a/core/res/res/values-fi/strings.xml b/core/res/res/values-fi/strings.xml
+index 6b279810e999..c273b8e84181 100644
+--- a/core/res/res/values-fi/strings.xml
++++ b/core/res/res/values-fi/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Voit lähettää ja vastaanottaa viestejä ilman mobiili‑ tai Wi-Fi-verkkoa"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Avaa Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Näin se toimii"</string>
++    <string name="prox_touch_block_message">Estetään tahattomat kosketukset. Paina Takaisin sulkeaksesi.</string>
+ </resources>
+diff --git a/core/res/res/values-fr-rCA/strings.xml b/core/res/res/values-fr-rCA/strings.xml
+index bec2f1fdcbe3..460107e1e819 100644
+--- a/core/res/res/values-fr-rCA/strings.xml
++++ b/core/res/res/values-fr-rCA/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Vous pouvez envoyer et recevoir des messages sans avoir recours à un appareil mobile ou à un réseau Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Ouvrir Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Fonctionnement"</string>
++    <string name="prox_touch_block_message">Prévention des appuis accidentels. Appuyez sur Retour pour fermer.</string>
+ </resources>
+diff --git a/core/res/res/values-fr/strings.xml b/core/res/res/values-fr/strings.xml
+index cec8fff9a258..6ef91eb3ab7d 100644
+--- a/core/res/res/values-fr/strings.xml
++++ b/core/res/res/values-fr/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Vous pouvez envoyer et recevoir des messages sans connexion au réseau mobile ou Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Ouvrir Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Fonctionnement"</string>
++    <string name="prox_touch_block_message">Prévention des appuis accidentels. Appuyez sur Retour pour fermer.</string>
+ </resources>
+diff --git a/core/res/res/values-gl/strings.xml b/core/res/res/values-gl/strings.xml
+index e373f29b22a7..c253ded6c645 100644
+--- a/core/res/res/values-gl/strings.xml
++++ b/core/res/res/values-gl/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Podes enviar e recibir mensaxes sen unha rede de telefonía móbil ou wifi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abrir Mensaxes"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Como funciona?"</string>
++    <string name="prox_touch_block_message">Evitando toques accidentais. Preme Atrás para pechar.</string>
+ </resources>
+diff --git a/core/res/res/values-gu/strings.xml b/core/res/res/values-gu/strings.xml
+index 9f4919dfadde..1357e541a189 100644
+--- a/core/res/res/values-gu/strings.xml
++++ b/core/res/res/values-gu/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"તમે મોબાઇલ અથવા વાઇ-ફાઇ નેટવર્ક વિના મેસેજ મોકલી અને પ્રાપ્ત કરી શકો છો"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ખોલો"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"તેની કામ કરવાની રીત"</string>
++    <string name="prox_touch_block_message">અનિચ્છિત સ્પર્શ અટકાવી રહ્યા છીએ. બંધ કરવા માટે ‘બેક’ દબાવો.</string>
+ </resources>
+diff --git a/core/res/res/values-hi/strings.xml b/core/res/res/values-hi/strings.xml
+index 5e68bea04044..6f42e1d7c308 100644
+--- a/core/res/res/values-hi/strings.xml
++++ b/core/res/res/values-hi/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"मोबाइल या वाई-फ़ाई नेटवर्क के बिना भी मैसेज भेजे और पाए जा सकते हैं"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ऐप्लिकेशन खोलें"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"यह सेटिंग कैसे काम करती है"</string>
++    <string name="prox_touch_block_message">अनचाहे स्पर्शों को रोका जा रहा है। बंद करने के लिए ‘बैक’ दबाएँ।</string>
+ </resources>
+diff --git a/core/res/res/values-hr/strings.xml b/core/res/res/values-hr/strings.xml
+index 2f23bbf97bb5..e2db28eefecd 100644
+--- a/core/res/res/values-hr/strings.xml
++++ b/core/res/res/values-hr/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Možete slati i primati poruke bez mobilne mreže ili Wi-Fi mreže"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otvori Poruke"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Kako to funkcionira"</string>
++    <string name="prox_touch_block_message">Sprječavanje neželjenih dodira. Pritisnite Natrag za zatvaranje.</string>
+ </resources>
+diff --git a/core/res/res/values-hu/strings.xml b/core/res/res/values-hu/strings.xml
+index bde17d0e3052..77cdc38cb44a 100644
+--- a/core/res/res/values-hu/strings.xml
++++ b/core/res/res/values-hu/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Küldhet és fogadhat üzeneteket mobil- és Wi-Fi-hálózat nélkül is"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"A Messages megnyitása"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Hogyan működik?"</string>
++    <string name="prox_touch_block_message">Megakadályozzuk a véletlen érintéseket. Nyomja meg a Vissza gombot a bezáráshoz.</string>
+ </resources>
+diff --git a/core/res/res/values-hy/strings.xml b/core/res/res/values-hy/strings.xml
+index bacc05722491..80377ec4ed28 100644
+--- a/core/res/res/values-hy/strings.xml
++++ b/core/res/res/values-hy/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Դուք կարող եք ուղարկել և ստանալ հաղորդագրություններ՝ առանց բջջային կամ Wi-Fi կապի"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Բացել Messages-ը"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Ինչպես է դա աշխատում"</string>
++    <string name="prox_touch_block_message">Պատահական հպումները կանխվում են։ Փակելու համար սեղմեք «Հետ»։</string>
+ </resources>
+diff --git a/core/res/res/values-in/strings.xml b/core/res/res/values-in/strings.xml
+index 32609563ae15..68e842474835 100644
+--- a/core/res/res/values-in/strings.xml
++++ b/core/res/res/values-in/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Anda dapat mengirim dan menerima pesan tanpa jaringan seluler atau Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Buka Message"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cara kerjanya"</string>
++    <string name="prox_touch_block_message">Mencegah sentuhan tidak sengaja. Tekan Kembali untuk menutup.</string>
+ </resources>
+diff --git a/core/res/res/values-is/strings.xml b/core/res/res/values-is/strings.xml
+index 90ca80a1aa19..9304ef9653e9 100644
+--- a/core/res/res/values-is/strings.xml
++++ b/core/res/res/values-is/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Þú getur sent og móttekið skilaboð án tengingar við farsímakerfi eða Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Opna Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Svona virkar þetta"</string>
++    <string name="prox_touch_block_message">Koma í veg fyrir óviljandi snertingar. Ýttu á Til baka til að loka.</string>
+ </resources>
+diff --git a/core/res/res/values-it/strings.xml b/core/res/res/values-it/strings.xml
+index 06fa36f60e0b..02488463820d 100644
+--- a/core/res/res/values-it/strings.xml
++++ b/core/res/res/values-it/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Puoi inviare e ricevere messaggi senza una rete mobile o Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Apri Messaggi"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Come funziona"</string>
++    <string name="prox_touch_block_message">Prevenzione dei tocchi accidentali. Premi Indietro per chiudere.</string>
+ </resources>
+diff --git a/core/res/res/values-iw/strings.xml b/core/res/res/values-iw/strings.xml
+index 86aab07a4021..2217d1995434 100644
+--- a/core/res/res/values-iw/strings.xml
++++ b/core/res/res/values-iw/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"‏אפשר לשלוח ולקבל הודעות ללא רשת סלולרית או רשת Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"‏לפתיחת Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"איך זה עובד"</string>
++    <string name="prox_touch_block_message">מונעים נגיעות מקריות. לחץ על חזרה כדי לסגור.</string>
+ </resources>
+diff --git a/core/res/res/values-ja/strings.xml b/core/res/res/values-ja/strings.xml
+index 7fa5dd0c28ee..fdef7f04c62a 100644
+--- a/core/res/res/values-ja/strings.xml
++++ b/core/res/res/values-ja/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"モバイル ネットワークや Wi-Fi ネットワークを使わずにメッセージを送受信できます"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"メッセージ アプリを開く"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"仕組み"</string>
++    <string name="prox_touch_block_message">誤タッチを防止しています。戻るを押して閉じます。</string>
+ </resources>
+diff --git a/core/res/res/values-ka/strings.xml b/core/res/res/values-ka/strings.xml
+index a1e489a0dc62..3fbdbafeba5e 100644
+--- a/core/res/res/values-ka/strings.xml
++++ b/core/res/res/values-ka/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"შეგიძლიათ გაგზავნოთ და მიიღოთ შეტყობინებები მობილური ან Wi-Fi ქსელის გარეშე"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages-ის გახსნა"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"მუშაობის პრინციპი"</string>
++    <string name="prox_touch_block_message">შემთხვევითი შეხებების თავიდან აცილება. დასაფქვევად დააჭირეთ „უკან“.</string>
+ </resources>
+diff --git a/core/res/res/values-kk/strings.xml b/core/res/res/values-kk/strings.xml
+index 2c5db0db24b8..eb1de6e752f8 100644
+--- a/core/res/res/values-kk/strings.xml
++++ b/core/res/res/values-kk/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Мобильдік не Wi-Fi желісіне қосылмастан хабар жібере аласыз және ала аласыз."</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages қолданбасын ашу"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Бұл қалай орындалады?"</string>
++    <string name="prox_touch_block_message">Кездейсоқ түртулердің алдын алу. Жабу үшін «Артқа» пернесін басыңыз.</string>
+ </resources>
+diff --git a/core/res/res/values-km/strings.xml b/core/res/res/values-km/strings.xml
+index f695e8e15428..11f92b3869df 100644
+--- a/core/res/res/values-km/strings.xml
++++ b/core/res/res/values-km/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"អ្នកអាចផ្ញើ និងទទួលសារដោយមិនប្រើបណ្តាញទូរសព្ទចល័ត ឬ Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"បើក​កម្មវិធី Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"របៀបដែលវាដំណើរការ"</string>
++    <string name="prox_touch_block_message">ការការពារការប៉ះដោយចៃដន្យ។ ចុច ថយក្រោយ ដើម្បីបិទ។</string>
+ </resources>
+diff --git a/core/res/res/values-kn/strings.xml b/core/res/res/values-kn/strings.xml
+index f2402518be10..270dadc5b183 100644
+--- a/core/res/res/values-kn/strings.xml
++++ b/core/res/res/values-kn/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ನೀವು ಮೊಬೈಲ್ ಅಥವಾ ವೈ-ಫೈ ನೆಟ್‌ವರ್ಕ್ ಇಲ್ಲದೆಯೇ ಸಂದೇಶಗಳನ್ನು ಕಳುಹಿಸಬಹುದು ಮತ್ತು ಸ್ವೀಕರಿಸಬಹುದು"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ಅನ್ನು ತೆರೆಯಿರಿ"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ"</string>
++    <string name="prox_touch_block_message">ಅನೈಚ್ಛಿಕ ಸ್ಪರ್ಶಗಳನ್ನು ತಡೆಯಲಾಗುತ್ತಿದೆ. ಮುಚ್ಚಲು ‘ಬ್ಯಾಕ್’ ಒತ್ತಿರಿ.</string>
+ </resources>
+diff --git a/core/res/res/values-ko/strings.xml b/core/res/res/values-ko/strings.xml
+index 9b7556ab607b..20c2e1b93b8a 100644
+--- a/core/res/res/values-ko/strings.xml
++++ b/core/res/res/values-ko/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"모바일 또는 Wi-Fi 네트워크 없이 메시지를 주고 받을 수 있습니다"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"메시지 열기"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"작동 방식"</string>
++    <string name="prox_touch_block_message">오작동 터치를 방지합니다. 닫으려면 뒤로가기를 누르세요.</string>
+ </resources>
+diff --git a/core/res/res/values-ky/strings.xml b/core/res/res/values-ky/strings.xml
+index 46407ab9b424..0e94ffd4ac3c 100644
+--- a/core/res/res/values-ky/strings.xml
++++ b/core/res/res/values-ky/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Сиз мобилдик же Wi-Fi тармагы жок эле билдирүүлөрдү жөнөтүп, ала аласыз"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Жазышуулар колдонмосун ачуу"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Ал кантип иштейт"</string>
++    <string name="prox_touch_block_message">Кокус тийүүлөрдүн алдын алуу. Жабуу үчүн «Артка» басыңыз.</string>
+ </resources>
+diff --git a/core/res/res/values-lo/strings.xml b/core/res/res/values-lo/strings.xml
+index 9f0a666de395..d0ec09424bd0 100644
+--- a/core/res/res/values-lo/strings.xml
++++ b/core/res/res/values-lo/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ທ່ານສາມາດສົ່ງ ແລະ ຮັບຂໍ້ຄວາມໂດຍບໍ່ຕ້ອງໃຊ້ເຄືອຂ່າຍມືຖື ຫຼື Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"ເປີດ Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ມັນເຮັດວຽກແນວໃດ"</string>
++    <string name="prox_touch_block_message">ປ້ອງກັນການແຕະໂດຍບໍ່ໄດ້ຕັ້ງໃຈ. ກົດ Back ເພື່ອປິດ.</string>
+ </resources>
+diff --git a/core/res/res/values-lt/strings.xml b/core/res/res/values-lt/strings.xml
+index bf227d04961e..4421532dcd93 100644
+--- a/core/res/res/values-lt/strings.xml
++++ b/core/res/res/values-lt/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Galite siųsti ir gauti pranešimus be mobiliojo ryšio ar „Wi-Fi“ tinklo"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Atidaryti programą „Messages“"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Kaip tai veikia"</string>
++    <string name="prox_touch_block_message">Vengiama atsitiktinių palietimų. Paspauskite Grįžti, kad uždarytumėte.</string>
+ </resources>
+diff --git a/core/res/res/values-lv/strings.xml b/core/res/res/values-lv/strings.xml
+index 0bc5e1cb6d7c..80c048d1007d 100644
+--- a/core/res/res/values-lv/strings.xml
++++ b/core/res/res/values-lv/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Varat sūtīt un saņemt ziņojumus bez mobilā vai Wi-Fi tīkla."</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Atvērt lietotni Ziņojumi"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Darbības principi"</string>
++    <string name="prox_touch_block_message">Novērš nejaušus pieskārienus. Nospiediet Atpakaļ, lai aizvērtu.</string>
+ </resources>
+diff --git a/core/res/res/values-mk/strings.xml b/core/res/res/values-mk/strings.xml
+index 7366e044672a..3912f7d88153 100644
+--- a/core/res/res/values-mk/strings.xml
++++ b/core/res/res/values-mk/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Може да испраќате и примате пораки без мобилна или Wi-Fi мрежа"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Отворете ја Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Дознајте како функционира"</string>
++    <string name="prox_touch_block_message">Спречување на ненамерни допири. Притиснете Назад за да затворите.</string>
+ </resources>
+diff --git a/core/res/res/values-ml/strings.xml b/core/res/res/values-ml/strings.xml
+index 77ae86658c7d..94581fc85073 100644
+--- a/core/res/res/values-ml/strings.xml
++++ b/core/res/res/values-ml/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"മൊബൈലോ വൈഫൈ നെറ്റ്‌വർക്കോ ഇല്ലാതെ തന്നെ സന്ദേശങ്ങൾ അയയ്‌ക്കാനും സ്വീകരിക്കാനും നിങ്ങൾക്ക് കഴിയും"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages തുറക്കുക"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ഇത് പ്രവർത്തിക്കുന്നത് എങ്ങനെയാണ്"</string>
++    <string name="prox_touch_block_message">അനാവശ്യ സ്പർശങ്ങൾ തടയുന്നു. അടയ്ക്കാൻ ‘ബാക്ക്’ അമർത്തുക.</string>
+ </resources>
+diff --git a/core/res/res/values-mn/strings.xml b/core/res/res/values-mn/strings.xml
+index bdbc54010d3c..0fe7fff13848 100644
+--- a/core/res/res/values-mn/strings.xml
++++ b/core/res/res/values-mn/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Та мобайл эсвэл Wi-Fi сүлжээгүйгээр мессеж илгээх болон хүлээн авах боломжтой"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Мессежийг нээх"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Энэ хэрхэн ажилладаг вэ?"</string>
++    <string name="prox_touch_block_message">Санамсаргүй хүрэлтээс сэргийлж байна. Хаахын тулд «Буцах»-ыг дарна уу.</string>
+ </resources>
+diff --git a/core/res/res/values-mr/strings.xml b/core/res/res/values-mr/strings.xml
+index 0c625c7399af..8d1872d3e722 100644
+--- a/core/res/res/values-mr/strings.xml
++++ b/core/res/res/values-mr/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"तुम्ही मोबाइल किंवा वाय-फाय नेटवर्कशिवाय मेसेज पाठवू आणि मिळवू शकता"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages उघडा"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ते कसे काम करते"</string>
++    <string name="prox_touch_block_message">अनावधानाने स्पर्श होऊ नयेत म्हणून प्रतिबंध. बंद करण्यासाठी ‘बॅक’ दाबा.</string>
+ </resources>
+diff --git a/core/res/res/values-ms/strings.xml b/core/res/res/values-ms/strings.xml
+index 09a646760b73..e22a40af8394 100644
+--- a/core/res/res/values-ms/strings.xml
++++ b/core/res/res/values-ms/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Anda boleh menghantar dan menerima mesej tanpa rangkaian mudah alih atau Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Buka Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cara ciri ini berfungsi"</string>
++    <string name="prox_touch_block_message">Mengelakkan sentuhan tidak sengaja. Tekan Kembali untuk menutup.</string>
+ </resources>
+diff --git a/core/res/res/values-my/strings.xml b/core/res/res/values-my/strings.xml
+index db41356820c6..f4b8828aa074 100644
+--- a/core/res/res/values-my/strings.xml
++++ b/core/res/res/values-my/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"မိုဘိုင်း (သို့) Wi-Fi ကွန်ရက်မရှိဘဲ မက်ဆေ့ဂျ်များကို ပို့နိုင်၊ လက်ခံနိုင်သည်"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ဖွင့်ရန်"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"အလုပ်လုပ်ပုံ"</string>
++    <string name="prox_touch_block_message">မတော်တဆ ထိမှုများကို တားဆီးနေသည်။ ပိတ်ရန် Back ကိုနှိပ်ပါ။</string>
+ </resources>
+diff --git a/core/res/res/values-nb/strings.xml b/core/res/res/values-nb/strings.xml
+index 2ea9d4031b71..dba5a9d31cf0 100644
+--- a/core/res/res/values-nb/strings.xml
++++ b/core/res/res/values-nb/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Du kan sende og motta meldinger uten mobil- eller wifi-nettverk"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Åpne Meldinger"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Slik fungerer det"</string>
++    <string name="prox_touch_block_message">Forhindrer utilsiktede berøringer. Trykk Tilbake for å lukke.</string>
+ </resources>
+diff --git a/core/res/res/values-ne/strings.xml b/core/res/res/values-ne/strings.xml
+index a2f75ca49eb4..eece41ed2e4b 100644
+--- a/core/res/res/values-ne/strings.xml
++++ b/core/res/res/values-ne/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"तपाईं मोबाइल वा Wi-Fi नेटवर्कविनै म्यासेज पठाउन र प्राप्त गर्न सक्नुहुन्छ"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages खोल्नुहोस्"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"यसले काम गर्ने तरिका"</string>
++    <string name="prox_touch_block_message">अनियोजित स्पर्श रोक्दै। बन्द गर्न ‘ब्याक’ थिच्नुहोस्।</string>
+ </resources>
+diff --git a/core/res/res/values-nl/strings.xml b/core/res/res/values-nl/strings.xml
+index 10e65073e446..50211661612f 100644
+--- a/core/res/res/values-nl/strings.xml
++++ b/core/res/res/values-nl/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Je kunt berichten sturen en krijgen zonder een mobiel of wifi-netwerk"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Berichten openen"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Hoe het werkt"</string>
++    <string name="prox_touch_block_message">Onbedoelde aanrakingen voorkomen. Druk op Terug om te sluiten.</string>
+ </resources>
+diff --git a/core/res/res/values-or/strings.xml b/core/res/res/values-or/strings.xml
+index de137bdfc185..a3d09c792edd 100644
+--- a/core/res/res/values-or/strings.xml
++++ b/core/res/res/values-or/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ଏକ ମୋବାଇଲ କିମ୍ବା ୱାଇ-ଫାଇ ନେଟୱାର୍କ ବିନା ଆପଣ ମେସେଜ ପଠାଇପାରିବେ ଏବଂ ପାଇପାରିବେ"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ଖୋଲନ୍ତୁ"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ଏହା କିପରି କାମ କରେ"</string>
++    <string name="prox_touch_block_message">ଅନଇଚ୍ଛିତ ଛୁଆଁକୁ ରୋକାଯାଉଛି। ବନ୍ଦ କରିବାକୁ ‘Back’ ଦବାନ୍ତୁ।</string>
+ </resources>
+diff --git a/core/res/res/values-pa/strings.xml b/core/res/res/values-pa/strings.xml
+index 2d0a778bf9f2..b0951649af7f 100644
+--- a/core/res/res/values-pa/strings.xml
++++ b/core/res/res/values-pa/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ਤੁਸੀਂ ਮੋਬਾਈਲ ਜਾਂ ਵਾਈ-ਫਾਈ ਨੈੱਟਵਰਕ ਤੋਂ ਬਿਨਾਂ ਸੁਨੇਹੇ ਭੇਜ ਅਤੇ ਪ੍ਰਾਪਤ ਕਰ ਸਕਦੇ ਹੋ"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ਐਪ ਖੋਲ੍ਹੋ"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ਇਹ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ"</string>
++    <string name="prox_touch_block_message">ਅਣਚਾਹੇ ਟਚ ਰੋਕੇ ਜਾ ਰਹੇ ਹਨ। ਬੰਦ ਕਰਨ ਲਈ ‘ਬੈਕ’ ਦਬਾਓ।</string>
+ </resources>
+diff --git a/core/res/res/values-pl/strings.xml b/core/res/res/values-pl/strings.xml
+index d9b81f6d17c0..7fda94aa8a4a 100644
+--- a/core/res/res/values-pl/strings.xml
++++ b/core/res/res/values-pl/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Możesz wymieniać wiadomości bez dostępu do sieci komórkowej lub Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otwórz Wiadomości"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Jak to działa"</string>
++    <string name="prox_touch_block_message">Zapobieganie przypadkowym dotknięciom. Naciśnij Wstecz, aby zamknąć.</string>
+ </resources>
+diff --git a/core/res/res/values-pt-rBR/strings.xml b/core/res/res/values-pt-rBR/strings.xml
+index 843026f19736..5e189756cb43 100644
+--- a/core/res/res/values-pt-rBR/strings.xml
++++ b/core/res/res/values-pt-rBR/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Você pode enviar e receber mensagens sem um dispositivo móvel ou uma rede Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abrir o app Mensagens"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Como funciona"</string>
++    <string name="prox_touch_block_message">Evitando toques acidentais. Pressione Voltar para fechar.</string>
+ </resources>
+diff --git a/core/res/res/values-pt-rPT/strings.xml b/core/res/res/values-pt-rPT/strings.xml
+index 78894217d19b..008b54953cc9 100644
+--- a/core/res/res/values-pt-rPT/strings.xml
++++ b/core/res/res/values-pt-rPT/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Pode enviar e receber mensagens sem uma rede móvel ou Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abre a app Mensagens"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Como funciona"</string>
++    <string name="prox_touch_block_message">A evitar toques acidentais. Prima Retroceder para fechar.</string>
+ </resources>
+diff --git a/core/res/res/values-pt/strings.xml b/core/res/res/values-pt/strings.xml
+index 843026f19736..58f70800ce98 100644
+--- a/core/res/res/values-pt/strings.xml
++++ b/core/res/res/values-pt/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Você pode enviar e receber mensagens sem um dispositivo móvel ou uma rede Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Abrir o app Mensagens"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Como funciona"</string>
++    <string name="prox_touch_block_message">A evitar toques acidentais. Prima Retroceder para fechar.</string>
+ </resources>
+diff --git a/core/res/res/values-ro/strings.xml b/core/res/res/values-ro/strings.xml
+index 6bf199e5ca9d..ee89a9fdae41 100644
+--- a/core/res/res/values-ro/strings.xml
++++ b/core/res/res/values-ro/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Poți să trimiți și să primești mesaje fără o rețea mobilă sau Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Deschide Mesaje"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cum funcționează"</string>
++    <string name="prox_touch_block_message">Se previn atingerile accidentale. Apasă Înapoi pentru a închide.</string>
+ </resources>
+diff --git a/core/res/res/values-ru/strings.xml b/core/res/res/values-ru/strings.xml
+index 3063f3d89897..d3232d2f5221 100644
+--- a/core/res/res/values-ru/strings.xml
++++ b/core/res/res/values-ru/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Вы можете отправлять и получать сообщения без доступа к мобильной сети или Wi-Fi."</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Открыть Сообщения"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Узнать принцип работы"</string>
++    <string name="prox_touch_block_message">Предотвращение случайных касаний. Нажмите «Назад», чтобы закрыть.</string>
+ </resources>
+diff --git a/core/res/res/values-si/strings.xml b/core/res/res/values-si/strings.xml
+index 5078ee0f2d1d..b6d62567c887 100644
+--- a/core/res/res/values-si/strings.xml
++++ b/core/res/res/values-si/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"ඔබට ජංගම හෝ Wi-Fi ජාලයක් නොමැතිව පණිවිඩ යැවීමට සහ ලැබීමට හැක"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages විවෘත කරන්න"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"එය ක්‍රියා කරන ආකාරය"</string>
++    <string name="prox_touch_block_message">අහම්බෙන් ස්පර්ශ වීම වැළැක්වෙයි. වසන්න ‘පසු’ ඔබන්න.</string>
+ </resources>
+diff --git a/core/res/res/values-sk/strings.xml b/core/res/res/values-sk/strings.xml
+index d724d9276ef1..0ccb9932ae19 100644
+--- a/core/res/res/values-sk/strings.xml
++++ b/core/res/res/values-sk/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Správy môžete odosielať a prijímať bez mobilnej siete či siete Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Otvoriť Správy"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Ako to funguje"</string>
++    <string name="prox_touch_block_message">Zabraňuje sa nechceným dotykom. Stlačte Späť na zatvorenie.</string>
+ </resources>
+diff --git a/core/res/res/values-sl/strings.xml b/core/res/res/values-sl/strings.xml
+index 70eb803b1511..7e7b12aa9d9b 100644
+--- a/core/res/res/values-sl/strings.xml
++++ b/core/res/res/values-sl/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Sporočila SMS lahko pošiljate in prejemate brez mobilnega omrežja ali omrežja Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Odpri Sporočila"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Kako deluje"</string>
++    <string name="prox_touch_block_message">Preprečevanje nenamernih dotikov. Pritisnite Nazaj za zapiranje.</string>
+ </resources>
+diff --git a/core/res/res/values-sq/strings.xml b/core/res/res/values-sq/strings.xml
+index 61d815de10e7..dfdb231230cc 100644
+--- a/core/res/res/values-sq/strings.xml
++++ b/core/res/res/values-sq/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Mund të dërgosh dhe të marrësh mesazhe pa një rrjet celular apo rrjet Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Hap \"Mesazhet\""</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Si funksionon"</string>
++    <string name="prox_touch_block_message">Parandalohen prekjet aksidentale. Shtypni Mbrapa për të mbyllur.</string>
+ </resources>
+diff --git a/core/res/res/values-sr/strings.xml b/core/res/res/values-sr/strings.xml
+index bacba914e47b..00ad36313680 100644
+--- a/core/res/res/values-sr/strings.xml
++++ b/core/res/res/values-sr/strings.xml
+@@ -2394,4 +2394,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Можете да шаљете и примате поруке без мобилне или WiFi мреже"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Отвори Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Принцип рада"</string>
++    <string name="prox_touch_block_message">Спречавање ненамерних додира. Притисните Назад да затворите.</string>
+ </resources>
+diff --git a/core/res/res/values-sv/strings.xml b/core/res/res/values-sv/strings.xml
+index f53c3c6ec359..ac0248c5ebb8 100644
+--- a/core/res/res/values-sv/strings.xml
++++ b/core/res/res/values-sv/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Du kan skicka och ta emot meddelanden utan mobil- eller wifi-nätverk"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Öppna Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Så fungerar det"</string>
++    <string name="prox_touch_block_message">Förhindrar oavsiktliga tryck. Tryck på Tillbaka för att stänga.</string>
+ </resources>
+diff --git a/core/res/res/values-sw/strings.xml b/core/res/res/values-sw/strings.xml
+index 7921c21e61a6..df9675f795e5 100644
+--- a/core/res/res/values-sw/strings.xml
++++ b/core/res/res/values-sw/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Unaweza kutuma na kupokea ujumbe bila mtandao wa simu au Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Fungua Programu ya Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Utaratibu wake"</string>
++    <string name="prox_touch_block_message">Kuzuia miguso isiyokusudiwa. Bonyeza Nyuma ili kufunga.</string>
+ </resources>
+diff --git a/core/res/res/values-ta/strings.xml b/core/res/res/values-ta/strings.xml
+index 3d339239a1f5..4a4c469c7ad1 100644
+--- a/core/res/res/values-ta/strings.xml
++++ b/core/res/res/values-ta/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"மொபைல்/வைஃபை நெட்வொர்க் இல்லாமல் நீங்கள் மெசேஜ்களை அனுப்பலாம் பெறலாம்"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messages ஆப்ஸைத் திறக்கவும்"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"இது செயல்படும் விதம்"</string>
++    <string name="prox_touch_block_message">தற்செயல் தொடுதலைத் தடுக்கிறது. மூட ‘பின் செல்ல’ அழுத்தவும்.</string>
+ </resources>
+diff --git a/core/res/res/values-te/strings.xml b/core/res/res/values-te/strings.xml
+index 19c9b372f377..962a91baf035 100644
+--- a/core/res/res/values-te/strings.xml
++++ b/core/res/res/values-te/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"మీరు మొబైల్ లేదా Wi-Fi నెట్‌వర్క్ లేకుండా మెసేజ్‌లను పంపవచ్చు, స్వీకరించవచ్చు"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Messagesను తెరవండి"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"ఇది ఎలా పని చేస్తుంది"</string>
++    <string name="prox_touch_block_message">అనుకోని స్పర్శలను నిరోధిస్తోంది. మూసివేయడానికి ‘బ్యాక్’ నొక్కండి.</string>
+ </resources>
+diff --git a/core/res/res/values-th/strings.xml b/core/res/res/values-th/strings.xml
+index 0977be214826..8467417b0745 100644
+--- a/core/res/res/values-th/strings.xml
++++ b/core/res/res/values-th/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"คุณรับส่งข้อความผ่านดาวเทียมได้โดยไม่ต้องใช้เครือข่ายมือถือหรือ Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"เปิด Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"วิธีการทำงาน"</string>
++    <string name="prox_touch_block_message">ป้องกันการสัมผัสโดยไม่ตั้งใจ กดย้อนกลับเพื่อปิด</string>
+ </resources>
+diff --git a/core/res/res/values-tl/strings.xml b/core/res/res/values-tl/strings.xml
+index 39258aae69ae..d51e81c3f333 100644
+--- a/core/res/res/values-tl/strings.xml
++++ b/core/res/res/values-tl/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Puwede kang magpadala at tumanggap ng mga mensahe nang walang mobile o Wi-Fi network"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Buksan ang Messages"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Paano ito gumagana"</string>
++    <string name="prox_touch_block_message">Pinipigilan ang aksidenteng pag-tap. Pindutin ang Back para isara.</string>
+ </resources>
+diff --git a/core/res/res/values-tr/strings.xml b/core/res/res/values-tr/strings.xml
+index 12af20ba3b49..8443440bf96a 100644
+--- a/core/res/res/values-tr/strings.xml
++++ b/core/res/res/values-tr/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Mobil veya kablosuz ağa bağlı olmadan mesaj alıp gönderebilirsiniz"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Mesajlar\'ı aç"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"İşleyiş şekli"</string>
++    <string name="prox_touch_block_message">İstenmeyen dokunmaları önlüyoruz. Kapatmak için Geri’ye basın.</string>
+ </resources>
+diff --git a/core/res/res/values-uk/strings.xml b/core/res/res/values-uk/strings.xml
+index 7ea1c9cd2e11..04a8179bc43f 100644
+--- a/core/res/res/values-uk/strings.xml
++++ b/core/res/res/values-uk/strings.xml
+@@ -2395,4 +2395,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Ви можете надсилати й отримувати повідомлення, не використовуючи Wi-Fi або мобільну мережу"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Відкрийте Повідомлення"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Як це працює"</string>
++    <string name="prox_touch_block_message">Запобігання випадковим дотикам. Натисніть «Назад», щоб закрити.</string>
+ </resources>
+diff --git a/core/res/res/values-ur/strings.xml b/core/res/res/values-ur/strings.xml
+index bed6cf872a45..5a4326c6b998 100644
+--- a/core/res/res/values-ur/strings.xml
++++ b/core/res/res/values-ur/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"‏آپ موبائل یا Wi-Fi نیٹ ورک کے بغیر پیغامات بھیج اور موصول کر سکتے ہیں"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"پیغامات ایپ کو کھولیں"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"اس کے کام کرنے کا طریقہ"</string>
++    <string name="prox_touch_block_message">غیر ارادی لمس کو روکا جا رہا ہے۔ بند کرنے کے لیے ‘بیک’ دبائیں۔</string>
+ </resources>
+diff --git a/core/res/res/values-uz/strings.xml b/core/res/res/values-uz/strings.xml
+index 8c25af92363f..1837f59c9a5a 100644
+--- a/core/res/res/values-uz/strings.xml
++++ b/core/res/res/values-uz/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Mobil yoki Wi-Fi tarmoqsiz xabarlarni yuborishingiz va qabul qilishingiz mumkin"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Xabarlar ilovasini ochish"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Ishlash tartibi"</string>
++    <string name="prox_touch_block_message">Tasodifiy tegishlarning oldi olinmoqda. Yopish uchun Orqaga bosing.</string>
+ </resources>
+diff --git a/core/res/res/values-vi/strings.xml b/core/res/res/values-vi/strings.xml
+index 8772b4ca05c0..6517a59f1c25 100644
+--- a/core/res/res/values-vi/strings.xml
++++ b/core/res/res/values-vi/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Bạn có thể gửi và nhận tin nhắn mà không cần có mạng di động hoặc mạng Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Mở ứng dụng Tin nhắn"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Cách hoạt động"</string>
++    <string name="prox_touch_block_message">Ngăn chạm nhầm. Nhấn Quay lại để đóng.</string>
+ </resources>
+diff --git a/core/res/res/values-zh-rCN/strings.xml b/core/res/res/values-zh-rCN/strings.xml
+index 584c54685631..381a3a14ff58 100644
+--- a/core/res/res/values-zh-rCN/strings.xml
++++ b/core/res/res/values-zh-rCN/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"您无需使用移动网络或 WLAN 网络便能收发消息"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"打开“信息”应用"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"运作方式"</string>
++    <string name="prox_touch_block_message">正在防止误触。按返回键以关闭。</string>
+ </resources>
+diff --git a/core/res/res/values-zh-rHK/strings.xml b/core/res/res/values-zh-rHK/strings.xml
+index b72569a90909..9e594d30d4c7 100644
+--- a/core/res/res/values-zh-rHK/strings.xml
++++ b/core/res/res/values-zh-rHK/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"你可在沒有流動/Wi-Fi 網絡的情況下收發訊息"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"開啟「訊息」"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"運作方式"</string>
++    <string name="prox_touch_block_message">正在防止誤觸。按返回鍵以關閉。</string>
+ </resources>
+diff --git a/core/res/res/values-zh-rTW/strings.xml b/core/res/res/values-zh-rTW/strings.xml
+index 01a96319df5c..15b0e8bb7070 100644
+--- a/core/res/res/values-zh-rTW/strings.xml
++++ b/core/res/res/values-zh-rTW/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"你可以收發訊息，沒有行動/Wi-Fi 網路也無妨"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"開啟「訊息」應用程式"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"運作方式"</string>
++    <string name="prox_touch_block_message">正在防止誤觸。按返回鍵以關閉。</string>
+ </resources>
+diff --git a/core/res/res/values-zu/strings.xml b/core/res/res/values-zu/strings.xml
+index c9dd914de07a..d9e7644f342e 100644
+--- a/core/res/res/values-zu/strings.xml
++++ b/core/res/res/values-zu/strings.xml
+@@ -2393,4 +2393,5 @@
+     <string name="satellite_notification_summary" msgid="5207364139430767162">"Ungathumela futhi wamukele imilayezo ngaphandle kwenethiwekhi yeselula noma ye-Wi-Fi"</string>
+     <string name="satellite_notification_open_message" msgid="4149234979688273729">"Vula Imilayezo"</string>
+     <string name="satellite_notification_how_it_works" msgid="3132069321977520519">"Indlela esebenza ngayo"</string>
++    <string name="prox_touch_block_message">Kuvimbela ukuthinta okungahleliwe. Cindezela Emuva ukuze uvale.</string>
+ </resources>
+diff --git a/core/res/res/values/strings.xml b/core/res/res/values/strings.xml
+index 59066eb83f1c..7405120bf6bc 100644
+--- a/core/res/res/values/strings.xml
++++ b/core/res/res/values/strings.xml
+@@ -55,6 +55,7 @@
+     <!-- Displayed when a carrier does not support call forwarding queries when roaming. -->
+     <string name="mmiErrorWhileRoaming">Can not change call forwarding settings from your phone while you are roaming.</string>
+ 
++    <string name="prox_touch_block_message">Preventing accidental touches. Press Back to dismiss.</string>
+     <!-- Displayed when a phone feature such as call forwarding, call waiting, or call barring was
+          activated.
+          Used to build messages of the form:
+diff --git a/services/core/java/com/android/server/policy/HeuristicProximityController.java b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+new file mode 100644
+index 000000000000..c66dff27b152
+--- /dev/null
++++ b/services/core/java/com/android/server/policy/HeuristicProximityController.java
+@@ -0,0 +1,376 @@
++package com.android.server.policy;
++
++import android.content.Context;
++import android.hardware.Sensor;
++import android.hardware.SensorEvent;
++import android.hardware.SensorEventListener;
++import android.hardware.SensorManager;
++import android.media.AudioAttributes;
++import android.media.AudioDeviceCallback;
++import android.media.AudioDeviceInfo;
++import android.media.AudioManager;
++import android.media.AudioPlaybackConfiguration;
++import android.media.AudioRecordingConfiguration;
++import android.media.MediaRecorder;
++import android.os.Handler;
++import android.os.Looper;
++import android.os.SystemClock;
++import android.util.Slog;
++
++import java.util.List;
++
++/**
++ * Approximates proximity when no hardware sensor exists.
++ *
++ * Activation (framework-wide, app-agnostic):
++ *   - Enabled while audio is routed to the BUILTIN_EARPIECE for voice/VoIP use
++ *     (MODE_IN_CALL / MODE_IN_COMMUNICATION, or active playback with USAGE_VOICE_COMMUNICATION,
++ *     or active recording with AudioSource.VOICE_COMMUNICATION), and
++ *   - Disabled when audio goes to speaker, Bluetooth SCO, wired/USB headsets, etc.
++ *
++ * When active, it uses gravity/accelerometer to infer "near ear" and notifies the
++ * listener. Policy can then toggle PROXIMITY_SCREEN_OFF_WAKE_LOCK accordingly.
++ */
++final class HeuristicProximityController {
++    interface Listener {
++        /** Called on the main thread whenever the near/away state changes. */
++        void onNearChanged(boolean near);
++    }
++
++    // --- Tunables (consider exposing as overlay resources if desired) ---
++    private static final long ENTER_MS = 350;   // debounce entering "near"
++    private static final long EXIT_MS  = 450;   // debounce exiting "near"
++    private static final float MIN_G = 7.0f;    // sanity range for |g|
++    private static final float MAX_G = 13.0f;
++    private static final float ENTER_TILT_DEG = 25.0f; // Y-axis ~ vertical
++    private static final float ENTER_ABS_GZ   = 4.0f;  // not laying flat
++
++    // Audio state settling/polling
++    private static final long SETTLE_MS = 600;        // require this long of "clean" state to treat voice as ended
++    private static final long POLL_INTERVAL_MS = 200; // how often to poll after a change
++    private static final long POLL_BURST_DURATION_MS = 3000; // poll for up to this long after a change
++
++    private final Context mContext;
++    private final Listener mListener;
++    private final Handler mHandler;
++    private final SensorManager mSM;
++    private final AudioManager mAM;
++
++    // Sensor state
++    private boolean mActive;          // whether we should evaluate orientation at all
++    private boolean mNear;            // current debounced "near" state
++    private long mCandidateSince;     // debounce timer
++    private float mGx, mGy, mGz;      // latest gravity/accel sample
++
++    // Audio settle & polling
++    private long mLastVoiceFalseTimestamp = 0L;
++    private long mLastAudioChangeRealtime = 0L;
++    private boolean mPollingScheduled = false;
++
++    HeuristicProximityController(Context ctx, Listener l) {
++        mContext = ctx;
++        mListener = l;
++        mHandler = new Handler(Looper.getMainLooper());
++        mSM = ctx.getSystemService(SensorManager.class);
++        mAM = ctx.getSystemService(AudioManager.class);
++        Slog.d("Dumbdroid proximity", "Registering listeners");
++        // --- Observe audio routing/activity so we catch both telephony and VoIP ---
++        // Mode changes are the most reliable signal at call start/end for both telephony and VoIP.
++        mAM.addOnModeChangedListener(ctx.getMainExecutor(), mOnModeChanged);
++
++        // Playback (e.g., VOICE_COMMUNICATION streams)
++        mAM.registerAudioPlaybackCallback(mPlaybackCb, mHandler);
++
++        // Recording (most VoIP records MIC with VOICE_COMMUNICATION source)
++        mAM.registerAudioRecordingCallback(mRecordingCb, mHandler);
++
++        // Device changes (headset plug/unplug, BT connect/disconnect, etc.)
++        mAM.registerAudioDeviceCallback(mDeviceCb, mHandler);
++
++        // Initial evaluation
++        markAudioChangeAndRefresh();
++    }
++
++    // ---------------------- Audio listeners ----------------------
++
++    private final AudioManager.OnModeChangedListener mOnModeChanged =
++            new AudioManager.OnModeChangedListener() {
++                @Override
++                public void onModeChanged(int mode) {
++                    markAudioChangeAndRefresh();
++                    Slog.d("Dumbdroid proximity", "Mode changed: " + mode);
++                }
++            };
++
++    private final AudioManager.AudioPlaybackCallback mPlaybackCb =
++            new AudioManager.AudioPlaybackCallback() {
++                @Override
++                public void onPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs) {
++                    markAudioChangeAndRefresh();
++                    Slog.d("Dumbdroid proximity", "Audio playback changed");
++                }
++            };
++
++    private final AudioManager.AudioRecordingCallback mRecordingCb =
++            new AudioManager.AudioRecordingCallback() {
++                @Override
++                public void onRecordingConfigChanged(List<AudioRecordingConfiguration> configs) {
++                    markAudioChangeAndRefresh();
++                    Slog.d("Dumbdroid proximity", "Audio recording changed");
++                }
++            };
++
++    private final AudioDeviceCallback mDeviceCb = new AudioDeviceCallback() {
++        @Override
++        public void onAudioDevicesAdded(AudioDeviceInfo[] addedDevices) {
++            markAudioChangeAndRefresh();
++            Slog.d("Dumbdroid proximity", "Audio device added");
++        }
++
++        @Override
++        public void onAudioDevicesRemoved(AudioDeviceInfo[] removedDevices) {
++            markAudioChangeAndRefresh();
++            Slog.d("Dumbdroid proximity", "Audio device remvoed");
++        }
++    };
++
++    private void markAudioChangeAndRefresh() {
++        mLastAudioChangeRealtime = SystemClock.elapsedRealtime();
++        refreshActiveFromAudioRoute();
++        schedulePollingBurst(); // keep nudging for a short while to catch laggy updates
++    }
++
++    private void schedulePollingBurst() {
++        if (mPollingScheduled) return;
++        mPollingScheduled = true;
++        mHandler.post(new Runnable() {
++            @Override public void run() {
++                long elapsed = SystemClock.elapsedRealtime() - mLastAudioChangeRealtime;
++                refreshActiveFromAudioRoute();
++                if (elapsed < POLL_BURST_DURATION_MS) {
++                    mHandler.postDelayed(this, POLL_INTERVAL_MS);
++                } else {
++                    mPollingScheduled = false;
++                }
++            }
++        });
++    }
++
++    /**
++     * Consider the heuristic "active" when:
++     *  - The system is in a voice communication scenario (MODE_IN_CALL or MODE_IN_COMMUNICATION,
++     *    OR any active playback uses USAGE_VOICE_COMMUNICATION,
++     *    OR any active recording uses AudioSource.VOICE_COMMUNICATION),
++     *  - AND the *output* device includes BUILTIN_EARPIECE,
++     *  - AND we're not on speakerphone, not on BT SCO, and not on a wired/USB headset.
++     *
++     * Also apply a small "settle" window after end-of-call so we don't get stuck true.
++     */
++    private void refreshActiveFromAudioRoute() {
++        boolean voiceUse = isVoiceUseOngoingWithSettle();
++        boolean earpiece = isEarpieceActive();
++        boolean blockedRoutes = isSpeakerOrHeadsetOrBtActive();
++        Slog.d("Dumbdroid proximity", "Refresh " + voiceUse + " " + earpiece + " " + blockedRoutes);
++        boolean shouldBeActive = voiceUse && earpiece && !blockedRoutes;
++        setActive(shouldBeActive);
++    }
++
++    private boolean isVoiceUseOngoingWithSettle() {
++        boolean ongoing = isVoiceUseOngoingRaw();
++
++        if (!ongoing) {
++            // Track the last time we observed "no voice use" and only treat it as ended
++            // once it stayed clear for SETTLE_MS (handles teardown lag).
++            long now = SystemClock.elapsedRealtime();
++            if (mLastVoiceFalseTimestamp == 0L) {
++                mLastVoiceFalseTimestamp = now;
++            }
++            if ((now - mLastVoiceFalseTimestamp) < SETTLE_MS) {
++                return true; // still within settle window => pretend ongoing
++            }
++            return false;
++        } else {
++            // Reset the false timer while ongoing
++            mLastVoiceFalseTimestamp = 0L;
++            return true;
++        }
++    }
++
++    private boolean isVoiceUseOngoingRaw() {
++        final int mode = mAM.getMode();
++        if (mode == AudioManager.MODE_IN_CALL || mode == AudioManager.MODE_IN_COMMUNICATION) {
++            return true;
++        }
++        // Playback side: look for active VOICE_COMMUNICATION usage
++        try {
++            List<AudioPlaybackConfiguration> plays = mAM.getActivePlaybackConfigurations();
++            for (AudioPlaybackConfiguration pc : plays) {
++                AudioAttributes aa = pc.getAudioAttributes();
++                if (aa != null && aa.getUsage() == AudioAttributes.USAGE_VOICE_COMMUNICATION) {
++                    return true;
++                }
++            }
++        } catch (Throwable ignored) {}
++
++        // Recording side: look for VOICE_COMMUNICATION source
++        try {
++            List<AudioRecordingConfiguration> recs = mAM.getActiveRecordingConfigurations();
++            for (AudioRecordingConfiguration rc : recs) {
++                int src = rc.getClientAudioSource();
++                if (src == MediaRecorder.AudioSource.VOICE_COMMUNICATION) {
++                    return true;
++                }
++            }
++        } catch (Throwable ignored) {}
++
++        return false;
++    }
++
++    private boolean isEarpieceActive() {
++        // Prefer inspecting active playback routes; if unavailable, fall back to devices list.
++        try {
++            List<AudioPlaybackConfiguration> plays = mAM.getActivePlaybackConfigurations();
++            for (AudioPlaybackConfiguration pc : plays) {
++                AudioAttributes aa = pc.getAudioAttributes();
++                if (aa == null) continue;
++                // We care about voice comm specifically; ignore media/music.
++                if (aa.getUsage() != AudioAttributes.USAGE_VOICE_COMMUNICATION) continue;
++                AudioDeviceInfo dev = pc.getAudioDeviceInfo();
++                if (dev != null && dev.getType() == AudioDeviceInfo.TYPE_BUILTIN_EARPIECE) {
++                    return true;
++                }
++            }
++        } catch (Throwable ignored) {}
++
++        // Fallback heuristic: if the earpiece exists and no conflicting routes are active,
++        // assume earpiece (some devices don't expose per-config device cleanly).
++        AudioDeviceInfo[] outs = mAM.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
++        boolean hasEarpiece = false;
++        for (AudioDeviceInfo d : outs) {
++            if (d.getType() == AudioDeviceInfo.TYPE_BUILTIN_EARPIECE) {
++                hasEarpiece = true; break;
++            }
++        }
++        if (!hasEarpiece) return false;
++        return !isSpeakerOrHeadsetOrBtActive();
++    }
++
++    private boolean isSpeakerOrHeadsetOrBtActive() {
++        if (mAM.isSpeakerphoneOn() || mAM.isBluetoothScoOn()) return true;
++
++        // Check active playback devices for BT / wired / USB headsets.
++        try {
++            List<AudioPlaybackConfiguration> plays = mAM.getActivePlaybackConfigurations();
++            for (AudioPlaybackConfiguration pc : plays) {
++                AudioDeviceInfo dev = pc.getAudioDeviceInfo();
++                if (dev != null && isHeadsetOrBt(dev.getType())) return true;
++            }
++        } catch (Throwable ignored) {}
++
++        // Fallback: scan connected output devices.
++        AudioDeviceInfo[] outs = mAM.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
++        for (AudioDeviceInfo d : outs) {
++            if (isHeadsetOrBt(d.getType())) return true;
++        }
++        return false;
++    }
++
++    private static boolean isHeadsetOrBt(int type) {
++        switch (type) {
++            case AudioDeviceInfo.TYPE_BLUETOOTH_SCO:
++            case AudioDeviceInfo.TYPE_BLUETOOTH_A2DP: // some stacks may report this briefly
++            case AudioDeviceInfo.TYPE_WIRED_HEADPHONES:
++            case AudioDeviceInfo.TYPE_WIRED_HEADSET:
++            case AudioDeviceInfo.TYPE_USB_HEADSET:
++            case AudioDeviceInfo.TYPE_USB_DEVICE:
++            case AudioDeviceInfo.TYPE_USB_ACCESSORY:
++                return true;
++            default:
++                return false;
++        }
++    }
++
++    // ---------------------- Activation & sensors ----------------------
++
++    private void setActive(boolean active) {
++        Slog.d("Dumbdroid proximity", "active: " + active);
++        if (active == mActive) return;
++        mActive = active;
++        if (mActive) {
++            Sensor grav = null;//mSM.getDefaultSensor(Sensor.TYPE_GRAVITY);
++            Sensor accel = mSM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
++            Sensor chosen = (grav != null) ? grav : accel;
++            if (chosen != null) {
++                Slog.d("Dumbdroid proximity", "Listening to sensor " + (chosen == grav ? "gravity" : "accelero"));
++                mSM.registerListener(mSensorListener, chosen, SensorManager.SENSOR_DELAY_GAME, mHandler);
++            } else
++                Slog.d("Dumbdroid proximity", "Null sensor");
++        } else {
++            mSM.unregisterListener(mSensorListener);
++            Slog.d("Dumbdroid proximity", "Stop listening to sensor");
++            setNear(false); // ensure release via listener
++        }
++    }
++
++    private final SensorEventListener mSensorListener = new SensorEventListener() {
++        @Override
++        public void onSensorChanged(SensorEvent e) {
++            if (e.sensor.getType() == Sensor.TYPE_GRAVITY
++                    || e.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
++                mGx = e.values[0];
++                mGy = e.values[1];
++                mGz = e.values[2];
++                evaluate();
++            }
++        }
++
++        @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {}
++    };
++
++    // ---------------------- Orientation heuristic ----------------------
++
++    private void evaluate() {
++        final boolean candidate = computeNear();
++	Slog.d("Dumbdroid proximity", "Near approx " + candidate);
++        final long now = SystemClock.elapsedRealtime();
++
++        if (candidate && !mNear) {
++            if (mCandidateSince == 0) mCandidateSince = now;
++            if (now - mCandidateSince > ENTER_MS) setNear(true);
++        } else if (!candidate && mNear) {
++            if (mCandidateSince == 0) mCandidateSince = now;
++            if (now - mCandidateSince > EXIT_MS) setNear(false);
++        } else if (candidate == mNear) {
++            mCandidateSince = 0; // stable, clear timer
++        }
++    }
++
++    private static final float VERTICAL_GRAVITY_THRESHOLD = SensorManager.GRAVITY_EARTH * 0.70710678f;
++
++    private boolean computeNear() {
++	Slog.d("Dumbdroid proximity", "Z: " + mGz);
++        boolean res = Math.abs(mGz) < VERTICAL_GRAVITY_THRESHOLD;
++	Slog.d("Dumbdroid proximity", "Vertical: " + res);
++        return res;
++/*        final float g = (float) Math.sqrt(mGx * mGx + mGy * mGy + mGz * mGz);
++        if (g < MIN_G || g > MAX_G) return false; // ignore bogus spikes
++
++        // Angle between device Y-axis and gravity. 0° = perfectly upright portrait.
++        final float cosTheta = Math.abs(mGy) / g;
++        final float tiltDeg = (float) Math.toDegrees(Math.acos(cosTheta));
++        final boolean upright = tiltDeg < ENTER_TILT_DEG;
++
++        // Not lying flat: screen (Z) roughly perpendicular to ground when held to ear.
++	Slog.d("Dumbdroid proximity", "mGz " + mGz);
++        final boolean notFlat = Math.abs(mGz) < ENTER_ABS_GZ;
++
++        return upright && notFlat;*/
++    }
++
++    private void setNear(boolean near) {
++        if (near == mNear) return;
++        mNear = near;
++        mListener.onNearChanged(mNear);
++    }
++}
++
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index ec5e110d9b88..a8e57364ff14 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -100,6 +100,7 @@ import static com.android.server.wm.WindowManagerPolicyProto.WINDOW_MANAGER_DRAW
+ 
+ import static org.lineageos.internal.util.DeviceKeysConstants.*;
+ 
++import com.android.server.policy.ProximityTouchBlockOverlay;
+ import android.accessibilityservice.AccessibilityService;
+ import android.annotation.NonNull;
+ import android.annotation.Nullable;
+@@ -275,6 +276,9 @@ import java.util.HashSet;
+ import java.util.List;
+ import java.util.Set;
+ import java.util.function.Supplier;
++import android.hardware.Sensor;
++import android.hardware.SensorManager;
++import android.os.PowerManager;
+ 
+ /**
+  * WindowManagerPolicy implementation for the Android phone UI.  This
+@@ -2586,6 +2590,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         init(new Injector(context, funcs));
+     }
+ 
++    private HeuristicProximityController mHeuristicProx;
++    private ProximityTouchBlockOverlay mProxOverlay;
++
+     @VisibleForTesting
+     void init(Injector injector) {
+         mContext = injector.getContext();
+@@ -2881,6 +2888,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         mContext.registerReceiver(torchReceiver, filter);
+     }
+ 
++    private static boolean deviceHasProximitySensor(Context ctx) {
++        final SensorManager sm = ctx.getSystemService(SensorManager.class);
++        return sm != null && sm.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null;
++    }
++
+     private void initKeyCombinationRules() {
+         mKeyCombinationManager = new KeyCombinationManager(mHandler);
+         final boolean screenshotChordEnabled = mContext.getResources().getBoolean(
+@@ -3961,6 +3973,15 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+             }
+         }
+ 
++        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
++            Log.d("Dumbdroid proximity", "Trying to hide the proximity overlay.");
++            if (mProxOverlay != null && mProxOverlay.isShown()) {
++                Log.d("Dumbdroid proximity", "Hiding the proximity overlay.");
++                mProxOverlay.hideThreadSafe();
++                return -1; // consume; don't let apps see this Back
++            }
++        }
++
+         return needToConsumeKey ? keyConsumed : keyNotConsumed;
+     }
+ 
+@@ -6921,6 +6942,23 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+ 
+         mAutofillManagerInternal = LocalServices.getService(AutofillManagerInternal.class);
+         mGestureLauncherService = LocalServices.getService(GestureLauncherService.class);
++        final PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
++        if (!deviceHasProximitySensor(mContext)) {
++            mProxOverlay = new ProximityTouchBlockOverlay(mContext);
++            Slog.d("Dumbdroid proximity", "Initializing controller");
++            mHeuristicProx = new HeuristicProximityController(mContext, near -> {
++                Slog.d("Dumbdroid", "Proximity near: " + near);
++                if (near) {
++                    if (!mProxOverlay.isShown()) {
++                        mProxOverlay.show();
++                    }
++                } else {
++                    if (mProxOverlay.isShown()) {
++                        mProxOverlay.hide();
++                    }
++                }
++            });
++        }
+     }
+ 
+     /** {@inheritDoc} */
+diff --git a/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java b/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
+new file mode 100644
+index 000000000000..f8c97b40b2ae
+--- /dev/null
++++ b/services/core/java/com/android/server/policy/ProximityTouchBlockOverlay.java
+@@ -0,0 +1,176 @@
++package com.android.server.policy;
++
++import android.annotation.SuppressLint;
++import android.content.Context;
++import android.graphics.PixelFormat;
++import android.os.Binder;
++import android.os.Looper;
++import android.os.Handler;
++import android.util.Slog;
++import android.view.Gravity;
++import android.view.MotionEvent;
++import android.view.View;
++import android.view.WindowManager;
++import android.app.StatusBarManager;
++import android.widget.FrameLayout;
++import android.widget.TextView;
++import android.content.res.Resources;
++import android.os.IBinder;
++import android.os.ServiceManager;
++import android.os.UserHandle;
++import com.android.internal.statusbar.IStatusBarService;
++
++
++/**
++ * Fullscreen, dim overlay that CONSUMES all touch using TYPE_INPUT_CONSUMER.
++ * Toggle from PhoneWindowManager when the heuristic says "near".
++ */
++final class ProximityTouchBlockOverlay {
++    private static final String TAG = "ProxTouchBlock";
++
++    private final Context mContext;
++    private final WindowManager mWm;
++
++    private boolean mShown;
++    private StatusBarManager mSbm;
++    private TextView mMessageView;
++    private FrameLayout mRoot;
++    private CharSequence mMessage;
++    private final Handler mUi;
++    private IStatusBarService mSbSvc;
++    private final IBinder mSbToken = new Binder();
++
++    ProximityTouchBlockOverlay(Context context) {
++        mContext = context;
++        mWm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
++        mSbm = (StatusBarManager) context.getSystemService(Context.STATUS_BAR_SERVICE);
++	mMessage = mContext.getText(com.android.internal.R.string.prox_touch_block_message);
++	mUi = new Handler(Looper.getMainLooper());
++        mSbSvc = IStatusBarService.Stub.asInterface(ServiceManager.getService("statusbar"));
++    }
++
++    private CharSequence loadFrameworkStringOrDefault(String name, CharSequence fallback) {
++        try {
++            Resources sys = Resources.getSystem();
++            int id = sys.getIdentifier(name, "string", "android");
++            if (id != 0) {
++                return sys.getText(id);
++            }
++        } catch (Throwable ignored) {}
++        return fallback;
++    }
++
++    boolean isShown() { return mShown; }
++
++    void show() {
++        if (mShown) return;
++        if (mRoot == null) mRoot = buildView();
++        try {
++            final WindowManager.LayoutParams lp = buildLayoutParams();
++            final long token = Binder.clearCallingIdentity();
++            try {
++                mWm.addView(mRoot, lp);
++            } finally {
++                Binder.restoreCallingIdentity(token);
++            }
++            mShown = true;
++            if (mSbSvc != null) {
++                Slog.i(TAG, "Disabling the status bar");
++                mSbSvc.disableForUser(StatusBarManager.DISABLE_EXPAND, mSbToken,
++                        mContext.getOpPackageName(), UserHandle.USER_CURRENT);
++                mSbSvc.disable2ForUser(StatusBarManager.DISABLE2_QUICK_SETTINGS, mSbToken,
++                        mContext.getOpPackageName(), UserHandle.USER_CURRENT);
++            }
++            Slog.i(TAG, "proximity block ENABLED");
++        } catch (Throwable t) {
++            Slog.w(TAG, "Failed to show overlay", t);
++        }
++    }
++
++    void hideThreadSafe() {
++        mUi.post(this::hide);
++    }
++
++    void hide() {
++        if (!mShown) return;
++        try {
++            if (mSbm != null) {
++                Slog.i(TAG, "Enabling the status bar again");
++                mSbm.disable(0);
++                mSbm.disable2(0);
++            }
++            final long token = Binder.clearCallingIdentity();
++            try {
++                if (mRoot != null) mWm.removeViewImmediate(mRoot);
++            } finally {
++                Binder.restoreCallingIdentity(token);
++            }
++            mShown = false;
++            Slog.i(TAG, "proximity block DISABLED");
++        } catch (Throwable t) {
++            Slog.w(TAG, "Failed to hide overlay", t);
++        }
++    }
++
++    private FrameLayout buildView() {
++        // Root container that eats ALL touches.
++        @SuppressLint("ClickableViewAccessibility")
++        FrameLayout root = new FrameLayout(mContext) {
++            @Override
++            public boolean onTouchEvent(MotionEvent event) {
++                // Eat everything so nothing reaches apps underneath.
++                if (event.getAction() == MotionEvent.ACTION_DOWN) {
++                    Slog.i(TAG, "overlay consumed touch: (" + event.getX() + "," + event.getY() + ")");
++                }
++                return true;
++            }
++        };
++        root.setClickable(true);
++        root.setBackgroundColor(0xBB000000); // ~60% dim; use 0xFF000000 for full black
++        root.setAlpha(1f);
++
++        // Centered message
++        mMessageView = new TextView(mContext);
++        mMessageView.setText(mMessage);
++        mMessageView.setTextColor(0xFFFFFFFF);
++        mMessageView.setTextSize(18f);
++        mMessageView.setGravity(Gravity.CENTER);
++        mMessageView.setShadowLayer(4f, 0f, 0f, 0x80000000);
++        mMessageView.setPadding(48, 48, 48, 48);
++
++        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
++                FrameLayout.LayoutParams.WRAP_CONTENT,
++                FrameLayout.LayoutParams.WRAP_CONTENT,
++                Gravity.CENTER);
++        root.addView(mMessageView, lp);
++
++        return root;
++    }
++    // ---------- View & LayoutParams ----------
++
++    private WindowManager.LayoutParams buildLayoutParams() {
++        final WindowManager.LayoutParams lp =
++                new WindowManager.LayoutParams(
++                        WindowManager.LayoutParams.MATCH_PARENT,
++                        WindowManager.LayoutParams.MATCH_PARENT,
++                        // Interactive, input-consuming system window
++                        WindowManager.LayoutParams.TYPE_INPUT_CONSUMER,
++                        // Do NOT set NOT_TOUCHABLE; we WANT events.
++                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
++                                | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
++                                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
++                                | WindowManager.LayoutParams.FLAG_FULLSCREEN,
++                        PixelFormat.TRANSLUCENT);
++
++        lp.setTitle("ProximityTouchBlockOverlay");
++        // Trusted overlay avoids anti-tapjacking restrictions
++        lp.privateFlags |= WindowManager.LayoutParams.PRIVATE_FLAG_TRUSTED_OVERLAY;
++        lp.layoutInDisplayCutoutMode =
++                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
++        lp.gravity = Gravity.TOP | Gravity.START;
++        lp.alpha = 1f; // draw at full opacity; background alpha controls the dim
++        lp.packageName = mContext.getOpPackageName();
++        return lp;
++    }
++}
++
+-- 
+2.34.1
+

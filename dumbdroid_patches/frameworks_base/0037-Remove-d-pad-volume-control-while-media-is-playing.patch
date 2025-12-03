@@ -1,0 +1,69 @@
+From f622a3e27d846e1e1647260d75bf495d347d4f82 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 13 Oct 2025 16:08:36 +0200
+Subject: [PATCH 37/44] Remove d-pad volume control while media is playing
+
+Change-Id: I00ad1415808ad1f57fdf6e6817549bc4b04eed3d
+---
+ .../server/policy/PhoneWindowManager.java     | 20 ++-----------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 7884df98d18f..1d8930a1e465 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -688,7 +688,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+     private Action mHomeDoubleTapAction;
+     private int mPowerButtonAction;
+     private Action mDpadScreenOffAction;
+-    private Action mDpadMusicPlayingAction;
+     private Action mDpadCallActiveAction;
+     private Action mPowerSinglePressAction;
+     private Action mMenuPressAction;
+@@ -1064,9 +1063,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+             resolver.registerContentObserver(LineageSettings.System.getUriFor(
+                     LineageSettings.System.KEY_DPAD_SCREEN_OFF_ACTION), false, this,
+                     UserHandle.USER_ALL);
+-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
+-                    LineageSettings.System.KEY_DPAD_MUSIC_PLAYING_ACTION), false, this,
+-                    UserHandle.USER_ALL);
+             resolver.registerContentObserver(LineageSettings.System.getUriFor(
+                     LineageSettings.System.KEY_DPAD_CALL_ACTIVE_ACTION), false, this,
+                     UserHandle.USER_ALL);
+@@ -3346,16 +3342,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 LineageSettings.System.KEY_DPAD_SCREEN_OFF_ACTION,
+                 mDpadScreenOffAction);
+ 
+-        mDpadMusicPlayingAction = Action.fromIntSafe(res.getInteger(
+-                org.lineageos.platform.internal.R.integer.config_musicPlayingDpadBehavior));
+-        if (mDpadMusicPlayingAction.ordinal() > Action.SLEEP.ordinal()) {
+-            mDpadMusicPlayingAction = Action.NOTHING;
+-        }
+-
+-        mDpadMusicPlayingAction = Action.fromSettings(resolver,
+-                LineageSettings.System.KEY_DPAD_MUSIC_PLAYING_ACTION,
+-                mDpadMusicPlayingAction);
+-
+         mDpadCallActiveAction = Action.fromIntSafe(res.getInteger(
+                 org.lineageos.platform.internal.R.integer.config_callActiveDpadBehavior));
+         if (mDpadCallActiveAction.ordinal() > Action.SLEEP.ordinal()) {
+@@ -4182,14 +4168,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+ 		}*/
+             case KeyEvent.KEYCODE_DPAD_UP:
+                 if (down) {
+-                    AudioManager mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                     TelecomManager telecomManager = getTelecommService();
+                     boolean isInCall = (telecomManager != null && telecomManager.isInCall()) ||
+                             getCurrentAudioMode() == AudioManager.MODE_IN_COMMUNICATION;
+-                    if ((mAudioManager.isMusicActive() && mDpadMusicPlayingAction != Action.NOTHING) ||
+-                            (isInCall && mDpadCallActiveAction != Action.NOTHING)) {
++                    if (isInCall && mDpadCallActiveAction != Action.NOTHING) {
+                         dispatchDirectAudioEvent(new KeyEvent(event.getDownTime(), event.getEventTime(),
+-                                KeyEvent.ACTION_DOWN, event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN 
++                                KeyEvent.ACTION_DOWN, event.getKeyCode() == KeyEvent.KEYCODE_DPAD_DOWN
+                                     ? KeyEvent.KEYCODE_VOLUME_DOWN : KeyEvent.KEYCODE_VOLUME_UP, 0));
+                         return true;
+                     }
+-- 
+2.34.1
+

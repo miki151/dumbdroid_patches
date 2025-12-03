@@ -1,0 +1,248 @@
+From e606976ba4d04e5be88ff8ae408288c268c718ec Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 21 Sep 2025 18:06:37 +0200
+Subject: [PATCH 26/44] Add dpad navigation to the power menu
+
+Change-Id: I9fa45f1b10fe959f52e85c0eb55494c25ee7cdfc
+---
+ packages/SystemUI/res/values/dimens.xml       |  1 +
+ .../com/android/systemui/MultiListLayout.java | 80 +++++++++++++++++++
+ .../GlobalActionsDialogLite.java              | 42 +++++++++-
+ 3 files changed, 122 insertions(+), 1 deletion(-)
+
+diff --git a/packages/SystemUI/res/values/dimens.xml b/packages/SystemUI/res/values/dimens.xml
+index 602a51bb0a36..518b16cb638d 100644
+--- a/packages/SystemUI/res/values/dimens.xml
++++ b/packages/SystemUI/res/values/dimens.xml
+@@ -1026,6 +1026,7 @@
+     <dimen name="global_actions_button_size">96dp</dimen>
+     <dimen name="global_actions_button_padding">38dp</dimen>
+     <dimen name="global_actions_corner_radius">28dp</dimen>
++    <dimen name="global_actions_focus_highlight_corner_radius">12dp</dimen>
+     <dimen name="global_actions_lite_padding">24dp</dimen>
+     <dimen name="global_actions_info_margin">32dp</dimen>
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/MultiListLayout.java b/packages/SystemUI/src/com/android/systemui/MultiListLayout.java
+index 611da0dbc890..ba4a37ee4dbf 100644
+--- a/packages/SystemUI/src/com/android/systemui/MultiListLayout.java
++++ b/packages/SystemUI/src/com/android/systemui/MultiListLayout.java
+@@ -21,6 +21,7 @@ import android.content.res.Configuration;
+ import android.util.AttributeSet;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.view.ViewTreeObserver;
+ import android.widget.BaseAdapter;
+ import android.widget.LinearLayout;
+ 
+@@ -34,6 +35,7 @@ public abstract class MultiListLayout extends LinearLayout {
+     protected MultiListAdapter mAdapter;
+     protected int mRotation;
+     protected RotationListener mRotationListener;
++    private ViewTreeObserver.OnGlobalLayoutListener mFirstFocusableChildLayoutListener;
+ 
+     public MultiListLayout(Context context, AttributeSet attrs) {
+         super(context, attrs);
+@@ -132,6 +134,84 @@ public abstract class MultiListLayout extends LinearLayout {
+         setSeparatedViewVisibility(mAdapter.hasSeparatedItems());
+     }
+ 
++    /**
++     * Requests focus for the first visible and focusable child within this layout.
++     *
++     * @return {@code true} if a child took focus, {@code false} otherwise.
++     */
++    public boolean requestFirstFocusableChildFocus() {
++        if (requestFocusOnFirstFocusableDescendant(getListView())) {
++            return true;
++        }
++        return requestFocusOnFirstFocusableDescendant(getSeparatedView());
++    }
++
++    /**
++     * Ensures the first focusable child gains focus once the layout has been measured and shown.
++     * If a child can take focus immediately this behaves like {@link #requestFirstFocusableChildFocus()}.
++     * Otherwise it listens for the next layout pass and retries once the view hierarchy is ready.
++     */
++    public void ensureFirstFocusableChildFocus() {
++        if (requestFirstFocusableChildFocus()) {
++            return;
++        }
++        if (mFirstFocusableChildLayoutListener != null) {
++            return;
++        }
++        final ViewTreeObserver observer = getViewTreeObserver();
++        if (observer == null || !observer.isAlive()) {
++            return;
++        }
++        mFirstFocusableChildLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
++            @Override
++            public void onGlobalLayout() {
++                if (!isAttachedToWindow()) {
++                    removeFirstFocusableChildLayoutListener();
++                    return;
++                }
++                if (requestFirstFocusableChildFocus()) {
++                    removeFirstFocusableChildLayoutListener();
++                }
++            }
++        };
++        observer.addOnGlobalLayoutListener(mFirstFocusableChildLayoutListener);
++    }
++
++    private void removeFirstFocusableChildLayoutListener() {
++        if (mFirstFocusableChildLayoutListener == null) {
++            return;
++        }
++        final ViewTreeObserver observer = getViewTreeObserver();
++        if (observer != null && observer.isAlive()) {
++            observer.removeOnGlobalLayoutListener(mFirstFocusableChildLayoutListener);
++        }
++        mFirstFocusableChildLayoutListener = null;
++    }
++
++    private boolean requestFocusOnFirstFocusableDescendant(View view) {
++        if (view == null || !view.isShown()) {
++            return false;
++        }
++        if (view.isFocusable() && view.isEnabled()) {
++            return view.requestFocus();
++        }
++        if (view instanceof ViewGroup) {
++            ViewGroup group = (ViewGroup) view;
++            for (int i = 0; i < group.getChildCount(); i++) {
++                if (requestFocusOnFirstFocusableDescendant(group.getChildAt(i))) {
++                    return true;
++                }
++            }
++        }
++        return false;
++    }
++
++    @Override
++    protected void onDetachedFromWindow() {
++        super.onDetachedFromWindow();
++        removeFirstFocusableChildLayoutListener();
++    }
++
+     public void setRotationListener(RotationListener listener) {
+         mRotationListener = listener;
+     }
+diff --git a/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java b/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
+index 0b2cc012f999..c579d61a75e4 100644
+--- a/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
++++ b/packages/SystemUI/src/com/android/systemui/globalactions/GlobalActionsDialogLite.java
+@@ -58,6 +58,7 @@ import android.graphics.BitmapShader;
+ import android.graphics.Canvas;
+ import android.graphics.Color;
+ import android.graphics.Matrix;
++import android.graphics.Outline;
+ import android.graphics.Paint;
+ import android.graphics.RectF;
+ import android.graphics.Shader;
+@@ -91,6 +92,7 @@ import android.view.MotionEvent;
+ import android.view.Surface;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.view.ViewOutlineProvider;
+ import android.view.Window;
+ import android.view.WindowManager;
+ import android.view.accessibility.AccessibilityEvent;
+@@ -1768,6 +1770,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+                     com.android.systemui.res.R.layout.global_actions_grid_item_lite;
+             View view = convertView != null ? convertView
+                     : LayoutInflater.from(mContext).inflate(viewLayoutResource, parent, false);
++            prepareItemViewForDpadNavigation(view);
+             view.setOnClickListener(v -> onClickItem(position));
+             if (action instanceof LongPressAction) {
+                 view.setOnLongClickListener(v -> onLongClickItem(position));
+@@ -1851,6 +1854,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+             int viewLayoutResource = com.android.systemui.res.R.layout.global_actions_grid_item_lite;
+             View view = convertView != null ? convertView
+                     : LayoutInflater.from(mContext).inflate(viewLayoutResource, parent, false);
++            prepareItemViewForDpadNavigation(view);
+             view.setOnClickListener(v -> onClickItem(position));
+             ImageView icon = view.findViewById(R.id.icon);
+             TextView messageView = view.findViewById(R.id.message);
+@@ -2119,6 +2123,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+             View v = inflater.inflate(getGridItemLayoutResource(), parent, false /* attach */);
+             // ConstraintLayout flow needs an ID to reference
+             v.setId(View.generateViewId());
++            prepareItemViewForDpadNavigation(v);
+ 
+             ImageView icon = v.findViewById(R.id.icon);
+             TextView messageView = v.findViewById(R.id.message);
+@@ -2250,6 +2255,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+             }
+ 
+             v.setEnabled(enabled);
++            prepareItemViewForDpadNavigation(v);
+ 
+             return v;
+         }
+@@ -2409,6 +2415,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+                 itemView.setSelected(selectedIndex == i);
+                 // Set up click handler
+                 itemView.setTag(i);
++                prepareItemViewForDpadNavigation(itemView);
+                 itemView.setOnClickListener(this);
+             }
+             return v;
+@@ -2509,6 +2516,38 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+     private static final int DIALOG_DISMISS_DELAY = 300; // ms
+     private static final int DIALOG_PRESS_DELAY = 850; // ms
+ 
++    private static void prepareItemViewForDpadNavigation(View view) {
++        if (view == null) {
++            return;
++        }
++        view.setFocusable(true);
++        view.setFocusableInTouchMode(true);
++        view.setDefaultFocusHighlightEnabled(true);
++        float cornerRadius = view.getResources().getDimension(
++                com.android.systemui.res.R.dimen.global_actions_focus_highlight_corner_radius);
++        view.setOutlineProvider(new RoundedCornerOutlineProvider(cornerRadius));
++        view.invalidateOutline();
++    }
++
++    private static final class RoundedCornerOutlineProvider extends ViewOutlineProvider {
++        private final float mCornerRadius;
++
++        RoundedCornerOutlineProvider(float cornerRadius) {
++            mCornerRadius = cornerRadius;
++        }
++
++        @Override
++        public void getOutline(View view, Outline outline) {
++            int width = view.getWidth();
++            int height = view.getHeight();
++            if (width <= 0 || height <= 0) {
++                outline.setEmpty();
++                return;
++            }
++            outline.setRoundRect(0, 0, width, height, mCornerRadius);
++        }
++    }
++
+     @VisibleForTesting void setZeroDialogPressDelayForTesting() {
+         mDialogPressDelay = 0; // ms
+     }
+@@ -2934,7 +2973,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+                 updateColors(colors, false /* animate */);
+             }
+ 
+-            mGlobalActionsLayout.getChildAt(0).requestFocus();
++            mGlobalActionsLayout.ensureFirstFocusableChildFocus();
+         }
+ 
+         /**
+@@ -3147,6 +3186,7 @@ public class GlobalActionsDialogLite implements DialogInterface.OnDismissListene
+ 
+             // Update the list as the max number of items per row has probably changed.
+             mGlobalActionsLayout.updateList();
++            mGlobalActionsLayout.ensureFirstFocusableChildFocus();
+         }
+ 
+         public void onRotate(int from, int to) {
+-- 
+2.34.1
+

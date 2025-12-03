@@ -1,0 +1,47 @@
+From 168a1d4e9a0da928d0dacb312d2e21e1ea1e03fa Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Thu, 24 Jul 2025 11:06:20 +0200
+Subject: [PATCH 12/44] Hide the soft navigation bar
+
+Change-Id: I78822634aadaac60d5a21821cbb649338ee02fe0
+---
+ .../NavigationBarControllerImpl.java          | 23 +------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarControllerImpl.java b/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarControllerImpl.java
+index 68be5700b6b3..eb7f3073fc47 100644
+--- a/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarControllerImpl.java
++++ b/packages/SystemUI/src/com/android/systemui/navigationbar/NavigationBarControllerImpl.java
+@@ -245,28 +245,7 @@ public class NavigationBarControllerImpl implements
+     }
+ 
+     private boolean shouldCreateNavBarAndTaskBar(Context context, int displayId) {
+-        if (displayId == mDisplayTracker.getDefaultDisplayId() &&
+-                LineageSettings.System.getIntForUser(context.getContentResolver(),
+-                        LineageSettings.System.FORCE_SHOW_NAVBAR, 0,
+-                        UserHandle.USER_CURRENT) == 1) {
+-            return true;
+-        }
+-
+-        if (mHasNavBar.indexOfKey(displayId) > -1) {
+-            return mHasNavBar.get(displayId);
+-        }
+-
+-        final IWindowManager wms = WindowManagerGlobal.getWindowManagerService();
+-
+-        try {
+-            boolean hasNavigationBar = wms.hasNavigationBar(displayId);
+-            mHasNavBar.put(displayId, hasNavigationBar);
+-            return hasNavigationBar;
+-        } catch (RemoteException e) {
+-            // Cannot get wms, just return false with warning message.
+-            Log.w(TAG, "Cannot get WindowManager.");
+-            return false;
+-        }
++	   return false;
+     }
+ 
+     /** @see #initializeTaskbarIfNecessary() */
+-- 
+2.34.1
+

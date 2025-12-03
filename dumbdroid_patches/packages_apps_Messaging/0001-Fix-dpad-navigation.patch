@@ -1,0 +1,37 @@
+From 723b35d70cd7449cbffff0eaaa5b69cbca6b0866 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 20 Sep 2025 18:16:40 +0200
+Subject: [PATCH] Fix dpad navigation
+
+Change-Id: I6d8f8705c8a4d90a854fb2d68ce81a6b3b3658c4
+---
+ .../ui/conversationlist/ConversationListItemView.java       | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/com/android/messaging/ui/conversationlist/ConversationListItemView.java b/src/com/android/messaging/ui/conversationlist/ConversationListItemView.java
+index 9331d10..38bc431 100644
+--- a/src/com/android/messaging/ui/conversationlist/ConversationListItemView.java
++++ b/src/com/android/messaging/ui/conversationlist/ConversationListItemView.java
+@@ -171,6 +171,9 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
+         if (OsUtil.isAtLeastL()) {
+             setTransitionGroup(true);
+         }
++
++        setOnClickListener(this);
++        setOnLongClickListener(this);
+     }
+ 
+     @Override
+@@ -626,7 +629,8 @@ public class ConversationListItemView extends FrameLayout implements OnClickList
+     }
+ 
+     private boolean processClick(final View v, final boolean isLongClick) {
+-        Assert.isTrue(v == mSwipeableContainer || v == mContactIconView || v == mImagePreviewView);
++        Assert.isTrue(v == this || v == mSwipeableContainer || v == mContactIconView
++                || v == mImagePreviewView);
+         Assert.notNull(mData.getName());
+ 
+         if (mHostInterface != null) {
+-- 
+2.34.1
+

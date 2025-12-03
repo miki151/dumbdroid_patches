@@ -1,0 +1,48 @@
+From 12d965626e04f28dc47ec6b1a12b713cfd6d686c Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sun, 26 Oct 2025 12:37:21 +0100
+Subject: [PATCH 3/5] Add a new default rin tone
+
+Change-Id: I8c3ef6d98caef43ee2cc75fa6ff03b85477c1c6d
+---
+ config/lineage_audio.mk | 6 +++++-
+ config/telephony.mk     | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/config/lineage_audio.mk b/config/lineage_audio.mk
+index b87dfca1..5099cfc1 100644
+--- a/config/lineage_audio.mk
++++ b/config/lineage_audio.mk
+@@ -6,6 +6,9 @@ ALARM_PATH := vendor/lineage/prebuilt/common/media/audio/alarms
+ NOTIFICATION_PATH := vendor/lineage/prebuilt/common/media/audio/notifications
+ RINGTONE_PATH := vendor/lineage/prebuilt/common/media/audio/ringtones
+ 
++CLASSIC_DUMBDROID_SRC := $(RINGTONE_PATH)/Classic_Dumbdroid.wav
++CLASSIC_DUMBDROID_DEST := $(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Classic_Dumbdroid.wav
++
+ # Alarms
+ PRODUCT_COPY_FILES += \
+     $(ALARM_PATH)/CyanAlarm.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/alarms/CyanAlarm.ogg \
+@@ -30,4 +33,5 @@ PRODUCT_COPY_FILES += \
+     $(RINGTONE_PATH)/Lyon.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Lyon.ogg \
+     $(RINGTONE_PATH)/Rockin.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Rockin.ogg \
+     $(RINGTONE_PATH)/Sheep.mp3:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Sheep.mp3 \
+-    $(RINGTONE_PATH)/Yukaay.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Yukaay.ogg
++    $(RINGTONE_PATH)/Yukaay.ogg:$(TARGET_COPY_OUT_PRODUCT)/media/audio/ringtones/Yukaay.ogg \
++    $(CLASSIC_DUMBDROID_SRC):$(CLASSIC_DUMBDROID_DEST)
+diff --git a/config/telephony.mk b/config/telephony.mk
+index 0c6ebba8..d189e0bf 100644
+--- a/config/telephony.mk
++++ b/config/telephony.mk
+@@ -18,7 +18,7 @@ PRODUCT_PACKAGES += \
+ 
+ # Default ringtone
+ PRODUCT_PRODUCT_PROPERTIES += \
+-    ro.config.ringtone=Orion.ogg
++    ro.config.ringtone=Classic_Dumbdroid.wav
+ 
+ # Tethering - allow without requiring a provisioning app
+ # (for devices that check this)
+-- 
+2.34.1
+

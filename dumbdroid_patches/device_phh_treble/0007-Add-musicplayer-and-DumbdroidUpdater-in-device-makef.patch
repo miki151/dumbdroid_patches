@@ -1,0 +1,25 @@
+From b45eff88160f3bed05d5ca537a61e916ebca938b Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 21 Jul 2025 15:56:43 +0200
+Subject: [PATCH 07/21] Add musicplayer and DumbdroidUpdater in device makefile
+
+Change-Id: Ia2f4a43c42783ecaccef25bdf149c23381d26737
+---
+ lineage.mk | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lineage.mk b/lineage.mk
+index cb1dff6..fa91409 100644
+--- a/lineage.mk
++++ b/lineage.mk
+@@ -23,5 +23,5 @@ PRODUCT_SYSTEM_PROPERTIES += \
+ #    device/phh/treble/ims/mediatek-ims-extension-plugin.jar:system/system_ext/framework/mediatek-ims-extension-plugin.jar
+ 
+ 
+-PRODUCT_PACKAGES += tt9
+-
++PRODUCT_PACKAGES += tt9 DumbdroidUpdater
++PRODUCT_PACKAGES += musicplayer
+-- 
+2.34.1
+
