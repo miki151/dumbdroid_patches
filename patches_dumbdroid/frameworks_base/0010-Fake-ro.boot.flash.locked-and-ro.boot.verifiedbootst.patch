@@ -1,7 +1,7 @@
 From 855bdf5ae5c6e2d3015ce102017d9071c9d7b38a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 9 Jul 2025 12:47:38 +0200
-Subject: [PATCH 10/44] Fake ro.boot.flash.locked and ro.boot.verifiedbootstate
+Subject: [PATCH 10/46] Fake ro.boot.flash.locked and ro.boot.verifiedbootstate
  to state that the bootloader is locked
 
 Change-Id: I10950d663dbb60eb108a7fb20be8b375e8ec7413

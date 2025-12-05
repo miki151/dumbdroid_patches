@@ -1,7 +1,7 @@
 From 7b09d53ea98762c3fd1dc19c6fbe50c09a9d560d Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 13 Jun 2025 08:53:52 +0200
-Subject: [PATCH 05/44] Switch to gesture navigation for home and back
+Subject: [PATCH 05/46] Switch to gesture navigation for home and back
 
 Change-Id: I6c98cf4e57dbad97b433dabc235bd0cf945ce52f
 ---

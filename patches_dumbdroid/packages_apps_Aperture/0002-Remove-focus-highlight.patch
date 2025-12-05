@@ -1,7 +1,7 @@
 From 926ef40cf842159809bf55100a1094d2cd2f2abd Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 3 Sep 2025 09:35:27 +0200
-Subject: [PATCH 2/4] Remove focus highlight
+Subject: [PATCH 2/5] Remove focus highlight
 
 Change-Id: I66da789cefbe3c8d29441d7986e81e27a4847cd1
 ---

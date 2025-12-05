@@ -1,7 +1,7 @@
 From 824c7ad7263ebc7f9bc7ad0247a724efac253e32 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 09:56:36 +0200
-Subject: [PATCH 28/44] Remove more messages about device owner
+Subject: [PATCH 28/46] Remove more messages about device owner
 
 Change-Id: I078f5c09f590bcb154f079052f0ba4528fcf4cc1
 ---

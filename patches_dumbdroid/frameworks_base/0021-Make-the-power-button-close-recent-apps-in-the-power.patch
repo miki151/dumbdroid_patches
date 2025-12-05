@@ -1,7 +1,7 @@
 From 55acd9e2d0c7332bd4d4badb2c2ba97038e6ba2c Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 17 Aug 2025 11:12:30 +0200
-Subject: [PATCH 21/44] Make the power button close recent apps in the "power
+Subject: [PATCH 21/46] Make the power button close recent apps in the "power
  button go home first" mode
 
 Change-Id: I5794d376f1ee2ddd2c21709718e9771e7e6140e5

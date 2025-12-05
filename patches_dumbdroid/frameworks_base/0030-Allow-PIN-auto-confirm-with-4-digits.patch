@@ -1,7 +1,7 @@
 From ca1f949daed65acc46ed03d991a0cc89564f2073 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:23:36 +0200
-Subject: [PATCH 30/44] Allow PIN auto-confirm with 4 digits
+Subject: [PATCH 30/46] Allow PIN auto-confirm with 4 digits
 
 Change-Id: I30a019c38c80ee6d768d70ce72f2525a17eae411
 ---

@@ -1,7 +1,7 @@
 From 0940fcac94e1b63941545aa860e6699bb867afc5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 27 Aug 2025 10:53:36 +0200
-Subject: [PATCH 22/44] Grant notification access to DumbdroidPanel by default
+Subject: [PATCH 22/46] Grant notification access to DumbdroidPanel by default
 
 Change-Id: Icdff78e1df3937611c2bf141092d9a75b4535653
 ---

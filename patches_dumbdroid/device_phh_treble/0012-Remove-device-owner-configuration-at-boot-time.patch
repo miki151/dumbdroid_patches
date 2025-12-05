@@ -1,7 +1,7 @@
 From c5b4535cdc417838af917c42381f681d349f0f94 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:28:16 +0200
-Subject: [PATCH 12/22] Remove device owner configuration at boot time
+Subject: [PATCH 12/23] Remove device owner configuration at boot time
 
 Change-Id: Ifcfe752daeef528bad97ee200dcd3d1c70b2e156
 ---

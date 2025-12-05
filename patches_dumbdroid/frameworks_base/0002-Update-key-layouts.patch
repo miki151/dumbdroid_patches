@@ -1,7 +1,7 @@
 From a337a2b7b22b0dd856e2f0112cb8805900ea3ed0 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:04:23 +0200
-Subject: [PATCH 02/44] Update key layouts
+Subject: [PATCH 02/46] Update key layouts
 
 Change-Id: I7ae5512cf74bc2b78f5422421352520996d408f0
 ---

@@ -1,7 +1,7 @@
 From b27a42c5df64815b8fa9f897e1e31e63f7bb0700 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:12:24 +0200
-Subject: [PATCH 1/4] Make camera preview full screen and add d-pad support
+Subject: [PATCH 1/5] Make camera preview full screen and add d-pad support
 
 Change-Id: I4db77a499911a38a50e4c8a0a230ff6228e6945f
 ---

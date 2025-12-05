@@ -1,7 +1,7 @@
 From 9c211097d8dacb9020b639bfe56f04034405c04d Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 09:51:03 +0200
-Subject: [PATCH 32/44] Only let number keys wake the screen if there is a PIN
+Subject: [PATCH 32/46] Only let number keys wake the screen if there is a PIN
  set
 
 Change-Id: I664f1e25b860a305d46b5bdb73fdde7806ee7be2

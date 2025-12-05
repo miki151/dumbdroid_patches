@@ -1,7 +1,7 @@
 From 756877cc027335b5d90ecbd7817371475e271af9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 27 Aug 2025 10:54:04 +0200
-Subject: [PATCH 23/44] Fix locking the screen using power with alternative
+Subject: [PATCH 23/46] Fix locking the screen using power with alternative
  launchers
 
 Change-Id: I7f44cd8b3ff43db5afdf177ad2307ea8d6f33acd

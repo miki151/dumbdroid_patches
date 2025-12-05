@@ -1,7 +1,7 @@
 From e606976ba4d04e5be88ff8ae408288c268c718ec Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 21 Sep 2025 18:06:37 +0200
-Subject: [PATCH 26/44] Add dpad navigation to the power menu
+Subject: [PATCH 26/46] Add dpad navigation to the power menu
 
 Change-Id: I9fa45f1b10fe959f52e85c0eb55494c25ee7cdfc
 ---

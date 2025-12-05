@@ -1,0 +1,71 @@
+From 528e095da4a11010cc9b09a1c407503b745ad292 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 5 Dec 2025 15:31:41 +0100
+Subject: [PATCH 5/5] Remove the video image stabilization option
+
+Change-Id: If007db17bd51427e9bc131fc14f89c34308f2a73
+---
+ .../main/java/org/lineageos/aperture/CameraActivity.kt | 10 +---------
+ .../org/lineageos/aperture/ext/SharedPreferences.kt    |  6 ------
+ app/src/main/res/xml/root_preferences.xml              |  7 -------
+ 3 files changed, 1 insertion(+), 22 deletions(-)
+
+diff --git a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+index 4abe2cc..ffb5ac9 100644
+--- a/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
++++ b/app/src/main/java/org/lineageos/aperture/CameraActivity.kt
+@@ -1658,15 +1658,7 @@ open class CameraActivity : AppCompatActivity(R.layout.activity_camera) {
+                                 null
+                             }
+                         )
+-                        setVideoStabilizationMode(
+-                            if (cameraMode == CameraMode.VIDEO &&
+-                                sharedPreferences.videoStabilization
+-                            ) {
+-                                VideoStabilizationMode.getMode(camera)
+-                            } else {
+-                                VideoStabilizationMode.OFF
+-                            }
+-                        )
++                        setVideoStabilizationMode(VideoStabilizationMode.OFF)
+                         sharedPreferences.edgeMode?.takeIf {
+                             camera.supportedEdgeModes.contains(it) && when (cameraMode) {
+                                 CameraMode.PHOTO -> photoCaptureMode !=
+diff --git a/app/src/main/java/org/lineageos/aperture/ext/SharedPreferences.kt b/app/src/main/java/org/lineageos/aperture/ext/SharedPreferences.kt
+index 40800ae..7365c25 100644
+--- a/app/src/main/java/org/lineageos/aperture/ext/SharedPreferences.kt
++++ b/app/src/main/java/org/lineageos/aperture/ext/SharedPreferences.kt
+@@ -329,12 +329,6 @@ internal var SharedPreferences.leveler: Boolean
+         putBoolean(LEVELER_KEY, value)
+     }
+ 
+-// Video stabilization
+-private const val VIDEO_STABILIZATION_KEY = "video_stabilization"
+-private const val VIDEO_STABILIZATION_DEFAULT = true
+-internal val SharedPreferences.videoStabilization: Boolean
+-    get() = getBoolean(VIDEO_STABILIZATION_KEY, VIDEO_STABILIZATION_DEFAULT)
+-
+ // Edge mode
+ private const val EDGE_MODE_KEY = "edge_mode"
+ private const val EDGE_MODE_DEFAULT = "default"
+diff --git a/app/src/main/res/xml/root_preferences.xml b/app/src/main/res/xml/root_preferences.xml
+index 1b7a6af..9e35792 100644
+--- a/app/src/main/res/xml/root_preferences.xml
++++ b/app/src/main/res/xml/root_preferences.xml
+@@ -77,13 +77,6 @@
+         app:iconSpaceReserved="false"
+         app:title="@string/video_header">
+ 
+-        <SwitchPreference
+-            app:defaultValue="true"
+-            app:iconSpaceReserved="false"
+-            app:key="video_stabilization"
+-            app:summary="@string/video_stabilization_summary"
+-            app:title="@string/video_stabilization_title" />
+-
+         <ListPreference
+             app:defaultValue="off"
+             app:entries="@array/video_mirror_mode_entries"
+-- 
+2.34.1
+

@@ -1,7 +1,7 @@
 From e8d1d4b957b35719cc3ebe3ec7ebb090306360ec Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 16 Aug 2025 09:12:59 +0200
-Subject: [PATCH 20/44] Allow PIN entry from the screen lock without swiping
+Subject: [PATCH 20/46] Allow PIN entry from the screen lock without swiping
 
 Change-Id: Icc4bc16fd059df7c5cf198432d98c6d1eacec936
 ---

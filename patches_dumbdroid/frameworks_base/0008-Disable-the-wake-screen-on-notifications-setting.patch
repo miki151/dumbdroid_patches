@@ -1,7 +1,7 @@
 From 3a64df4a1dcb97179b30823f35008803c3f1b339 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:13:26 +0200
-Subject: [PATCH 08/44] Disable the "wake screen on notifications" setting
+Subject: [PATCH 08/46] Disable the "wake screen on notifications" setting
 
 Change-Id: Ic2c88df7b18a398fd44930b3a953ba48d3b1127f
 ---

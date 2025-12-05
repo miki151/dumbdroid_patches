@@ -1,7 +1,7 @@
 From 8ce1724b4be619e7b73ff9418e83bc1a97c2539f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Sep 2025 10:55:40 +0200
-Subject: [PATCH 3/4] Fix camera crash while trying to do a selfie video
+Subject: [PATCH 3/5] Fix camera crash while trying to do a selfie video
 
 Change-Id: I279f3190ec3dddd33f1a20a854a9929cc78b3451
 ---

@@ -1,7 +1,7 @@
 From 9b4946af0546f44bab47319417ab65f69b0086ba Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 2 Nov 2025 17:10:27 +0100
-Subject: [PATCH 40/44] Don't allow turning on music with the D-pad if a
+Subject: [PATCH 40/46] Don't allow turning on music with the D-pad if a
  headset isn't connected
 
 Change-Id: Iefd5771e76a9cbb2eea6f4615f5989f609f148d6

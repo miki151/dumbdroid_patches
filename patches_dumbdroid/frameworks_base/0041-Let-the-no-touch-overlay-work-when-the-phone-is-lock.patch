@@ -1,7 +1,7 @@
 From 4528557d3e71c50d361bd149f55b7c0d151b9f64 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 3 Nov 2025 12:03:05 +0100
-Subject: [PATCH 41/44] Let the no-touch overlay work when the phone is locked
+Subject: [PATCH 41/46] Let the no-touch overlay work when the phone is locked
 
 Change-Id: I902c3a02bc13312c07cc2769f51935a3504374ef
 ---

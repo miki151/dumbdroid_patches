@@ -1,7 +1,7 @@
 From eac60a78ab5dde57fd52aaf9a6d0461f671741a3 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 11:05:45 +0200
-Subject: [PATCH 33/44] When a voice call is active, allow any key (except
+Subject: [PATCH 33/46] When a voice call is active, allow any key (except
  power button) to wake the screen
 
 Change-Id: Idc34a4601e1b6de2730af7ce8552a2d3fb9de150

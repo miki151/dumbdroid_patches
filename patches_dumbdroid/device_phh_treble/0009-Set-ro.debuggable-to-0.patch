@@ -1,7 +1,7 @@
 From 4372132a66b21271d1210732c1ab088c837a4377 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 27 Aug 2025 10:52:41 +0200
-Subject: [PATCH 09/22] Set ro.debuggable to 0
+Subject: [PATCH 09/23] Set ro.debuggable to 0
 
 Change-Id: Idb467c98b3d2e263ded2382ab0c11c2dbda8c1eb
 ---

@@ -1,7 +1,7 @@
 From 4008fe28084b61c6bcc1561213c154fe348c7c50 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:05:17 +0200
-Subject: [PATCH 11/44] Fix more lock screen crashes
+Subject: [PATCH 11/46] Fix more lock screen crashes
 
 Change-Id: I33b1d453dbe90382cc2fcdf5607af478b4f6f94b
 ---

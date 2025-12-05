@@ -1,7 +1,7 @@
 From 5f20f341a7b9a498928114995511196f9ab9d71f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:10:21 +0200
-Subject: [PATCH 35/44] Always close the no-touch overlay when a call ends.
+Subject: [PATCH 35/46] Always close the no-touch overlay when a call ends.
 
 Change-Id: Ic8062054ccf5befe224b6881530c0bbbc0d37dd7
 ---

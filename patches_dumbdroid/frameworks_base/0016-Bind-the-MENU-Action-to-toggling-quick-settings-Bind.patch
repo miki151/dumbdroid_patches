@@ -1,7 +1,7 @@
 From a5aa3c7a19975c525326cde948752e6c032ebc43 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:23:14 +0200
-Subject: [PATCH 16/44] Bind the MENU Action to toggling quick settings; Bind
+Subject: [PATCH 16/46] Bind the MENU Action to toggling quick settings; Bind
  IN_APP_SEARCH Action to Home
 
 Change-Id: Ib3928fb984663bbd5785c375bc13e6959ab70211

@@ -1,7 +1,7 @@
 From cf7ef535aed0ddcd4a3643d6d828901bbe77ac66 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 19:57:39 +0200
-Subject: [PATCH 09/44] Make d-pad audio control work also during whatsapp
+Subject: [PATCH 09/46] Make d-pad audio control work also during whatsapp
  calls
 
 Change-Id: I84a3a59934dae4ff5a5271800016142acca928e7

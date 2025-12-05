@@ -1,7 +1,7 @@
 From cefbefc8880d203ec5157aff3688ca38ad7fe463 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 15 Sep 2025 10:53:56 +0200
-Subject: [PATCH 4/4] Add an extra sharpening step for Doov R77 pro back camera
+Subject: [PATCH 4/5] Add an extra sharpening step for Doov R77 pro back camera
 
 Change-Id: I3b67f9ab1ab4a02832894d7ae0daae089e39cad0
 ---

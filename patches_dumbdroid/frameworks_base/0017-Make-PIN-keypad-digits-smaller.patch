@@ -1,7 +1,7 @@
 From 7aab15c74328c7429dbac6a5025b62392b224970 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 5 Aug 2025 15:43:28 +0200
-Subject: [PATCH 17/44] Make PIN keypad digits smaller
+Subject: [PATCH 17/46] Make PIN keypad digits smaller
 
 Change-Id: Id6ac47b040e7e744de1cf3fce5dbc55179b66633
 ---

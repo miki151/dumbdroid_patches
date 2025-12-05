@@ -1,7 +1,7 @@
 From e1fe000c066cb3e473625ef4b1270759b654e53c Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:10:51 +0200
-Subject: [PATCH 36/44] Add a settings toggle for waking the screen with a
+Subject: [PATCH 36/46] Add a settings toggle for waking the screen with a
  number key
 
 Change-Id: I8698482cc34c9f688af2126dec5871aaa97bc53d

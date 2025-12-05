@@ -1,7 +1,7 @@
 From 2d5caeaacdb89037148b160e1583dba07d006684 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 10 Nov 2025 15:16:14 +0100
-Subject: [PATCH 43/44] Remove focusability from a large UI element in the lock
+Subject: [PATCH 43/46] Remove focusability from a large UI element in the lock
  screen
 
 Change-Id: I18dbee9b7c0a96f2d44a31ab5f78b15303e419e0

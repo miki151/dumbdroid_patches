@@ -1,7 +1,7 @@
 From 36e03a3737a6fc9fe2957768d13d63acfb8d53fe Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 13 Jun 2025 08:57:47 +0200
-Subject: [PATCH 06/44] Fix lock screen crashing
+Subject: [PATCH 06/46] Fix lock screen crashing
 
 Change-Id: Ia46388d4970ba7c89fff55c6d2c1fabd487a4757
 ---

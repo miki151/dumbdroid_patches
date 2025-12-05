@@ -1,7 +1,7 @@
 From 06ec20a8d491f881176cbc1288ad23bce27f579a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:43:35 +0200
-Subject: [PATCH 03/44] Disable dex_preopt for SystemUI to save space in the
+Subject: [PATCH 03/46] Disable dex_preopt for SystemUI to save space in the
  ROM
 
 Change-Id: Id7a2ca6da9aec2773480242f8b348fb75b7e574d
