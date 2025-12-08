@@ -1,7 +1,7 @@
 From d0c05c99f087669def76dc9b129ad788c2f76ea0 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 11:09:34 +0100
-Subject: [PATCH 23/23] Update makefile to allow building all dumbdroid
+Subject: [PATCH 23/24] Update makefile to allow building all dumbdroid
  variants
 
 Change-Id: I38f54d3a9ff4a432cb32a2ab0354983b665a8f0a
