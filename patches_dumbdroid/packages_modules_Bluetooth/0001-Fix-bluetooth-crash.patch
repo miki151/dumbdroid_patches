@@ -1,7 +1,7 @@
 From 8d1aebd64fed5e900d6fcf252f95fd78edec7dd2 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:39:08 +0200
-Subject: [PATCH] Fix bluetooth crash
+Subject: [PATCH 1/2] Fix bluetooth crash
 
 Change-Id: I59a64cd8d03850a98ceff7757e4a196e181271cc
 ---
