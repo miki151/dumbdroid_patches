@@ -17,7 +17,7 @@ index b1b72b5d9e..c2ff517c94 100644
    void handle_command_response(EventView event, std::string logging_id) {
      TResponse response_view = TResponse::Create(event);
 -    ASSERT(response_view.IsValid());
-+    if (response_view.IsValid())
++    if (!response_view.IsValid())
 +        return;
      command_credits_ = response_view.GetNumHciCommandPackets();
      OpCode op_code = response_view.GetCommandOpCode();
