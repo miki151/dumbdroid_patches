@@ -1,7 +1,7 @@
-From 8b0a234fccd2396191b4c14dea6c0f681b497bab Mon Sep 17 00:00:00 2001
+From 92398847b9871990f19b3c1f0c5ab59224c2228a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:22:55 +0200
-Subject: [PATCH 02/24] Fix bluetooth not turning on
+Subject: [PATCH 02/25] Fix bluetooth not turning on
 
 Change-Id: Ibbdd8abc068b911e5e30b1db599454c966e5bb35
 ---
@@ -22,5 +22,5 @@ index 172bb01..bbb758c 100644
 +    persist.sys.bt.unsupported.commands=182
 +
 -- 
-2.34.1
+2.43.0
 

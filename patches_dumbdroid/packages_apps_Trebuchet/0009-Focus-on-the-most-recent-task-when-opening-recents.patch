@@ -1,4 +1,4 @@
-From 4b3467ec960cc2221d9bc6b0c0bc07a9d712bc40 Mon Sep 17 00:00:00 2001
+From 76214e70c3395219573acd08ed091d9b99da758a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 21 Sep 2025 11:25:48 +0200
 Subject: [PATCH 09/13] Focus on the most recent task when opening recents
@@ -74,5 +74,5 @@ index 97f3d81486..6e1195c676 100644
      protected DepthController getDepthController() {
          return mActivity.getDepthController();
 -- 
-2.34.1
+2.43.0
 

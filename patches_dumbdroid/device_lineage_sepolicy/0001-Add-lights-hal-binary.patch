@@ -1,4 +1,4 @@
-From a339fc9a6a7b7fe40bc7fea0cbc258ca1502e6c3 Mon Sep 17 00:00:00 2001
+From 414cc40018e2a5a9a255b6e8d194c4ebf3fba977 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:01:14 +0200
 Subject: [PATCH] Add lights hal binary
@@ -19,5 +19,5 @@ index a441605..52ccd00 100644
 +
 +/system/bin/hw/android\.hardware\.lights-service\.example    u:object_r:hal_light_default_exec:s0
 -- 
-2.34.1
+2.43.0
 

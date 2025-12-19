@@ -1,4 +1,4 @@
-From a71f42a0352d9572abea050b3bf5366c0a30f865 Mon Sep 17 00:00:00 2001
+From 1547d408278bceda1ed591ededd46eb47a47000a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:44:30 +0200
 Subject: [PATCH 14/46] Remap the top right button as menu again
@@ -22,5 +22,5 @@ index a35df9bf2b9a..fd44a3663d14 100644
  # key 141 "KEY_SETUP"
  key 142   SLEEP
 -- 
-2.34.1
+2.43.0
 

@@ -1,4 +1,4 @@
-From 7b09d53ea98762c3fd1dc19c6fbe50c09a9d560d Mon Sep 17 00:00:00 2001
+From e974796ce91ee1ba7721fc63131873fe062a3d70 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 13 Jun 2025 08:53:52 +0200
 Subject: [PATCH 05/46] Switch to gesture navigation for home and back
@@ -36,5 +36,5 @@ index 7bd0a140bb1c..16dc05217b24 100644
 +    <integer name="config_navBarInteractionMode">2</integer>
 +</resources>
 -- 
-2.34.1
+2.43.0
 

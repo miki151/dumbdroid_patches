@@ -1,7 +1,7 @@
-From 3499980db410b08ea94eb0d23ef5b3a45e66f00d Mon Sep 17 00:00:00 2001
+From 3506ed04b4e948c60ed2f6e9b85d4cdd185118fa Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:24:54 +0100
-Subject: [PATCH 17/24] Add missing build scripts and config files
+Subject: [PATCH 17/25] Add missing build scripts and config files
 
 Change-Id: I745a7ffdd482d17b230eaca5a91851e75ae6774a
 ---
@@ -82,5 +82,5 @@ index 0000000..8b594dd
 +
 +include $(BUILD_PREBUILT)
 -- 
-2.34.1
+2.43.0
 

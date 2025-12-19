@@ -1,4 +1,4 @@
-From a337a2b7b22b0dd856e2f0112cb8805900ea3ed0 Mon Sep 17 00:00:00 2001
+From 776bc4fd073c2a091adc81398f9afcb74dc57049 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:04:23 +0200
 Subject: [PATCH 02/46] Update key layouts
@@ -68,5 +68,5 @@ index f9347ee6ea09..a35df9bf2b9a 100644
  key 580   APP_SWITCH
  key 582   VOICE_ASSIST
 -- 
-2.34.1
+2.43.0
 

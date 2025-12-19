@@ -1,7 +1,7 @@
-From a918b174e26e7e008d9798b667cd4180b273655c Mon Sep 17 00:00:00 2001
+From 7b27a1158c7681ad440fadf1d89d60058ada2d76 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 14 Oct 2025 09:03:23 +0200
-Subject: [PATCH 3/4] Fix keypad brightness control, don't include battery led
+Subject: [PATCH 3/3] Fix keypad brightness control, don't include battery led
 
 Change-Id: Id29705e548c93e24f2a6fd2f4b754ab949a3100c
 ---
@@ -86,5 +86,5 @@ index 3a94162279..4f47a872ad 100644
          } else {
              Err(Status::new_exception(ExceptionCode::UNSUPPORTED_OPERATION, None))
 -- 
-2.34.1
+2.43.0
 

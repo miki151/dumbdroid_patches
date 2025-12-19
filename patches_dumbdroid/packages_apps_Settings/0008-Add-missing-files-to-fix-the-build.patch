@@ -1,4 +1,4 @@
-From aeefe0d859bc8aae115cab17fe9ad3ff64493b5f Mon Sep 17 00:00:00 2001
+From d9810cf41ff1a860a411e9e1318421f885ce7627 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:30:42 +0100
 Subject: [PATCH 8/8] Add missing files to fix the build
@@ -257,5 +257,5 @@ index 00000000000..ad41457c342
 +    }
 +}
 -- 
-2.34.1
+2.43.0
 

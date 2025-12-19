@@ -1,4 +1,4 @@
-From da7602821943156b032dd155652b4e319c914fe0 Mon Sep 17 00:00:00 2001
+From 825f8fa8d625dcd14ca6a52d1919465c8769caa0 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 8 Nov 2025 14:14:55 +0100
 Subject: [PATCH 42/46] Decouple DnD and ringer mode
@@ -121,5 +121,5 @@ index 6857869e3776..51909b34591f 100644
              ZenLog.traceSetRingerModeExternal(ringerModeOld, ringerModeNew, caller,
                      ringerModeInternal, ringerModeInternalOut);
 -- 
-2.34.1
+2.43.0
 

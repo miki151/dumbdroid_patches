@@ -1,4 +1,4 @@
-From 528e095da4a11010cc9b09a1c407503b745ad292 Mon Sep 17 00:00:00 2001
+From 3e60f934e3e03c955cd482c2fe9e3a02502ea8d9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 15:31:41 +0100
 Subject: [PATCH 5/5] Remove the video image stabilization option
@@ -67,5 +67,5 @@ index 1b7a6af..9e35792 100644
              app:defaultValue="off"
              app:entries="@array/video_mirror_mode_entries"
 -- 
-2.34.1
+2.43.0
 

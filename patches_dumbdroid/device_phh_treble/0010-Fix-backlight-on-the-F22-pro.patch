@@ -1,7 +1,7 @@
-From 9174f369a0bf58200e0712ac182f6db4662c2185 Mon Sep 17 00:00:00 2001
+From b5948fb13c9e02d3297c0bfa897334a38731f6e6 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 15 Sep 2025 11:00:25 +0200
-Subject: [PATCH 10/24] Fix backlight on the F22 pro
+Subject: [PATCH 10/25] Fix backlight on the F22 pro
 
 Change-Id: I5cf8947fb6a24acbae8c1d0db764a6485b68d8fa
 ---
@@ -20,5 +20,5 @@ index 0000000..545db1c
 +allow hal_light sysfs_type:file rw_file_perms;
 +allow hal_light sysfs_type:dir r_dir_perms;
 -- 
-2.34.1
+2.43.0
 

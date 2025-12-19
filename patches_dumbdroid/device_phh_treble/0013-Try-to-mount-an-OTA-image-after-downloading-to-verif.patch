@@ -1,7 +1,7 @@
-From 713d75d20d12cdd8e54618ab2619d07cb6277fe2 Mon Sep 17 00:00:00 2001
+From 904067d4e961f455a488d05946be0c45f72cf7f7 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:28:55 +0200
-Subject: [PATCH 13/24] Try to mount an OTA image after downloading to verify
+Subject: [PATCH 13/25] Try to mount an OTA image after downloading to verify
  it
 
 Change-Id: I3f0e66893329a4927d04aab6cd4e0fe4798b70cd
@@ -117,5 +117,5 @@ index 2cfe680..b7b981d 100644
  		android::base::WriteStringToFile(next_slot, "/metadata/phh/img");
  		return 0;
 -- 
-2.34.1
+2.43.0
 

@@ -1,7 +1,7 @@
-From 4d0f5f678fb1662cea5940bd70369ccf4ed58112 Mon Sep 17 00:00:00 2001
+From 4c5760ce0b527a7b36be5fbcbb96003efaaf979c Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 8 Dec 2025 19:40:02 +0100
-Subject: [PATCH 24/24] Update build target names
+Subject: [PATCH 24/25] Update build target names
 
 Change-Id: I49c8f02fb207deb1dcfb224f6ed0e9c472c4b003
 ---
@@ -48,5 +48,5 @@ similarity index 100%
 rename from lineage_dv31.mk
 rename to lineage_vanilla31.mk
 -- 
-2.34.1
+2.43.0
 

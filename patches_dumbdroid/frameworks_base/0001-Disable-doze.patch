@@ -1,4 +1,4 @@
-From c75719513185e2d53e24720517d0a88e2705e76b Mon Sep 17 00:00:00 2001
+From 6e64914cdf5e7b77b34c9fbd999d2a9cb6875dfc Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:03:50 +0200
 Subject: [PATCH 01/46] Disable doze
@@ -24,5 +24,5 @@ index da1496643e11..6e3d72c8129b 100644
              ArraySet<String> allowPowerExceptIdle = sysConfig.getAllowInPowerSaveExceptIdle();
              for (int i=0; i<allowPowerExceptIdle.size(); i++) {
 -- 
-2.34.1
+2.43.0
 

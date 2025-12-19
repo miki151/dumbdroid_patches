@@ -1,4 +1,4 @@
-From 2d5caeaacdb89037148b160e1583dba07d006684 Mon Sep 17 00:00:00 2001
+From 9ce0b6a779f3963b42e933447a13b94e86c25f6a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 10 Nov 2025 15:16:14 +0100
 Subject: [PATCH 43/46] Remove focusability from a large UI element in the lock
@@ -98,5 +98,5 @@ index d8363fa54427..86b13f8c4fb8 100644
  
      void setUpcomingStatusBarState(int upcomingStatusBarState) {
 -- 
-2.34.1
+2.43.0
 

@@ -1,4 +1,4 @@
-From 2f2f9c5c435b673b91abc7ed4c4301461b2108fa Mon Sep 17 00:00:00 2001
+From 66aea64b6e5a65908999f468169addb5be7fff26 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 21 Sep 2025 08:37:33 +0200
 Subject: [PATCH 2/8] Make settings scrollable with dpad
@@ -86,5 +86,5 @@ index f76815c0eda..d26a5c1258f 100644
              new BaseSearchIndexProvider(R.xml.top_level_settings) {
  
 -- 
-2.34.1
+2.43.0
 

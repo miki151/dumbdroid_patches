@@ -1,4 +1,4 @@
-From c1a20bc18a8037cb9f80fa076b308557915433b4 Mon Sep 17 00:00:00 2001
+From 7594d3b6f08baab82729d7aacf772e04e34b9232 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:26:26 +0200
 Subject: [PATCH 4/6] Rename MENU and IN_APP_SEARCH Actions to reflect their
@@ -104,5 +104,5 @@ index 952c5a3..142f513 100644
      <string name="hardware_keys_action_sleep">Turn screen off</string>
      <string name="hardware_keys_action_last_app">Last app</string>
 -- 
-2.34.1
+2.43.0
 

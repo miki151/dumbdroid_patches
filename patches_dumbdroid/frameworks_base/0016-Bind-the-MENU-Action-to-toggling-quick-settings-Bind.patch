@@ -1,4 +1,4 @@
-From a5aa3c7a19975c525326cde948752e6c032ebc43 Mon Sep 17 00:00:00 2001
+From eb4a13b6c2e18e370208a7a5ab031c3b50b3699d Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:23:14 +0200
 Subject: [PATCH 16/46] Bind the MENU Action to toggling quick settings; Bind
@@ -68,5 +68,5 @@ index dbe0c53d4cdf..6cf2953d2cb8 100644
              case LAUNCH_CAMERA:
                  launchCameraAction();
 -- 
-2.34.1
+2.43.0
 

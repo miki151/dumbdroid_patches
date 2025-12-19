@@ -1,4 +1,4 @@
-From 21ad470ef7813434f844030508762754ba76bbd8 Mon Sep 17 00:00:00 2001
+From 7390b4b346dd1a563b1c5c7cf85e4f5acd121c42 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 15:18:58 +0100
 Subject: [PATCH 46/46] Fix dpad center button on new R77 hardware
@@ -22,5 +22,5 @@ index d1b37cd750c1..65af2273b80b 100644
  key 30    CALL
  key 31    S
 -- 
-2.34.1
+2.43.0
 

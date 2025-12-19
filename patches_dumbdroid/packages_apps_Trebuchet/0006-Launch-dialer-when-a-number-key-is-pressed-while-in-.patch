@@ -1,4 +1,4 @@
-From e362fe4b08e41e1025c377055bbdd9af0cb56550 Mon Sep 17 00:00:00 2001
+From 20dfb98c21135422d12cc9a7c36696d6844596e5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 09:08:13 +0200
 Subject: [PATCH 06/13] Launch dialer when a number key is pressed while in
@@ -43,5 +43,5 @@ index e4e0bae06d..ce100d985b 100644
          if (keyCode == KeyEvent.KEYCODE_ESCAPE && event.hasNoModifiers()) {
              AbstractFloatingView topView = AbstractFloatingView.getTopOpenView(mLauncher);
 -- 
-2.34.1
+2.43.0
 

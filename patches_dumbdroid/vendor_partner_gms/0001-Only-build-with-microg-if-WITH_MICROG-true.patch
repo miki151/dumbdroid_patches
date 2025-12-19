@@ -1,4 +1,4 @@
-From 17229e3becb76228aa3dad3ee5d6fd3472f46219 Mon Sep 17 00:00:00 2001
+From a84c09658f9bfd8aeb89c7311505d02d35f7ca6a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:17:20 +0200
 Subject: [PATCH] Only build with microg if WITH_MICROG=true
@@ -25,5 +25,5 @@ index e3745b6..6641907 100644
 +
 +endif
 -- 
-2.34.1
+2.43.0
 

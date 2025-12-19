@@ -1,4 +1,4 @@
-From 4cfaed9af68eb36f37862b0dcfabfb874eefa7a7 Mon Sep 17 00:00:00 2001
+From 1f1d1e7c3e5891668732285376ea77a09cbbe507 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:45:45 +0200
 Subject: [PATCH 15/46] Add option for the power button to return to home first
@@ -125,5 +125,5 @@ index 573f44d8c003..dbe0c53d4cdf 100644
                  org.lineageos.platform.internal.R.integer.config_screenOffDpadBehavior));
          if (mDpadScreenOffAction.ordinal() > Action.SLEEP.ordinal()) {
 -- 
-2.34.1
+2.43.0
 

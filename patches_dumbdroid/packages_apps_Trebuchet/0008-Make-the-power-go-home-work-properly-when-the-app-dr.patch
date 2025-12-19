@@ -1,4 +1,4 @@
-From 8230b4cb01a18549832ecc3fb71007133fe28308 Mon Sep 17 00:00:00 2001
+From dca6f5d44c40bb16d7bfc2b20728d82f98c46a8e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 18 Aug 2025 21:05:52 +0200
 Subject: [PATCH 08/13] Make the power-go-home work properly when the app
@@ -116,5 +116,5 @@ index 720338c165..16e61c2109 100644
  
      /**
 -- 
-2.34.1
+2.43.0
 

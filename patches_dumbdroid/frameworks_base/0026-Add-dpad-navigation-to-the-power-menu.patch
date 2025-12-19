@@ -1,4 +1,4 @@
-From e606976ba4d04e5be88ff8ae408288c268c718ec Mon Sep 17 00:00:00 2001
+From 34cdea8164c70bc5981470e201e540ea2ea4f62f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 21 Sep 2025 18:06:37 +0200
 Subject: [PATCH 26/46] Add dpad navigation to the power menu
@@ -244,5 +244,5 @@ index 0b2cc012f999..c579d61a75e4 100644
  
          public void onRotate(int from, int to) {
 -- 
-2.34.1
+2.43.0
 

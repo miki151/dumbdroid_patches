@@ -1,4 +1,4 @@
-From 83c19af3133d418769f7f6943c136d7fcda2d9f7 Mon Sep 17 00:00:00 2001
+From 68abb7c5857902a959de696f16070e4c1cbea3fe Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Sep 2025 10:47:30 +0200
 Subject: [PATCH 24/46] Fix some key mappings on the Qin F22 pro
@@ -37,5 +37,5 @@ index fd44a3663d14..cd899b70843a 100644
  key 580   APP_SWITCH
  key 582   VOICE_ASSIST
 -- 
-2.34.1
+2.43.0
 

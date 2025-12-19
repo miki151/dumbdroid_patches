@@ -1,4 +1,4 @@
-From 9c211097d8dacb9020b639bfe56f04034405c04d Mon Sep 17 00:00:00 2001
+From 2146ac51a87a1de83ebba74ca5c4062c4ab41868 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 09:51:03 +0200
 Subject: [PATCH 32/46] Only let number keys wake the screen if there is a PIN
@@ -58,5 +58,5 @@ index e3ac86f76047..542b8c2b2b85 100644
       * Check if the given keyCode represents a key that is considered a wake key
       * and is currently enabled by the user in Settings or for another reason.
 -- 
-2.34.1
+2.43.0
 

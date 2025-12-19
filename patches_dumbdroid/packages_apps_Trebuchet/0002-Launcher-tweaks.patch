@@ -1,4 +1,4 @@
-From 5b8d16ce47fd127468c1ced7e4f7c6dab36945cc Mon Sep 17 00:00:00 2001
+From 7d4fb70109dc5de8d6751d083ec4cbe35aa18fc5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 11:16:31 +0200
 Subject: [PATCH 02/13] Launcher tweaks
@@ -126,5 +126,5 @@ index 6e66c1448d..9e18bf2fc2 100644
  
      /**
 -- 
-2.34.1
+2.43.0
 

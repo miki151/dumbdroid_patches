@@ -1,4 +1,4 @@
-From f2bcf5aac35ebf66aca79167faba577236469a50 Mon Sep 17 00:00:00 2001
+From 9822ac46202992462fb9ad6ba957f67bc29096b3 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 10:00:37 +0200
 Subject: [PATCH 3/8] Remove collapsable title bars to fix dpad navigation
@@ -242,5 +242,5 @@ index 6609d7d583f..5913ded4fc4 100644
          mSnoozeView = findViewById(R.id.snoozed_list);
          mDismissView = findViewById(R.id.recently_dismissed_list);
 -- 
-2.34.1
+2.43.0
 

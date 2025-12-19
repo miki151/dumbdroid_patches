@@ -1,4 +1,4 @@
-From 8d1aebd64fed5e900d6fcf252f95fd78edec7dd2 Mon Sep 17 00:00:00 2001
+From b0a824106109d5d6483687e2137eff7de528e98b Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:39:08 +0200
 Subject: [PATCH 1/2] Fix bluetooth crash
@@ -22,5 +22,5 @@ index e14e106efa..f5f3c55316 100644
              bluetooth::hci::OpCodeText(view.GetCommandOpCode()).c_str());
    BT_HDR* response = WrapPacketAndCopy(MSG_HC_TO_STACK_HCI_EVT, &view);
 -- 
-2.34.1
+2.43.0
 

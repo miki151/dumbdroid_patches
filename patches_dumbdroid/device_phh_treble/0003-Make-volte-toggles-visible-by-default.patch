@@ -1,7 +1,7 @@
-From 4716f153a12a55cc7050b0a5186e666d43ae6998 Mon Sep 17 00:00:00 2001
+From b2ff57102b0fd7a3a200d311c511d67a86ccdfcd Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 15 Jun 2025 11:35:58 +0200
-Subject: [PATCH 03/24] Make volte toggles visible by default
+Subject: [PATCH 03/25] Make volte toggles visible by default
 
 Change-Id: I289db485a324d97d2c9f84ba008b94bfb5e9c483
 ---
@@ -25,5 +25,5 @@ index bbb758c..6cb684b 100644
 +
 +
 -- 
-2.34.1
+2.43.0
 

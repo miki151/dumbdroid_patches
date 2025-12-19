@@ -1,4 +1,4 @@
-From 21fad723fa1b4b1a0d526216411a3fded94746fc Mon Sep 17 00:00:00 2001
+From eef98a964113fbb2488a0cf73a1f22fc73775c10 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:06:58 +0200
 Subject: [PATCH 13/46] Make the default navigation mode the 3 soft key again,
@@ -21,5 +21,5 @@ index 16dc05217b24..4c2a9eb10e52 100644
 +    <integer name="config_navBarInteractionMode">0</integer>
  </resources>
 -- 
-2.34.1
+2.43.0
 

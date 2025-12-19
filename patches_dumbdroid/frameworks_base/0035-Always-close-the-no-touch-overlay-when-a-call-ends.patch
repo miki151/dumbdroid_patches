@@ -1,4 +1,4 @@
-From 5f20f341a7b9a498928114995511196f9ab9d71f Mon Sep 17 00:00:00 2001
+From 11b6778510be339056cb305d091a31f99d53177e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:10:21 +0200
 Subject: [PATCH 35/46] Always close the no-touch overlay when a call ends.
@@ -45,5 +45,5 @@ index cdb0796736ca..695c4024c978 100644
          if (mActive) {
              Sensor grav = null;//mSM.getDefaultSensor(Sensor.TYPE_GRAVITY);
 -- 
-2.34.1
+2.43.0
 

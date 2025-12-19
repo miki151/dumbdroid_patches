@@ -1,4 +1,4 @@
-From 34b48bb648e05a58a88bf17d33ff0f4e7a4e31e1 Mon Sep 17 00:00:00 2001
+From b0dc7ed2214fd1aed897aeee07743d808e277029 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 30 Oct 2025 18:24:17 +0100
 Subject: [PATCH 39/46] Add a factory reset button to the power menu during
@@ -153,5 +153,5 @@ index c579d61a75e4..e34cdc613a5c 100644
      protected abstract class EmergencyAction extends SinglePressAction {
          EmergencyAction(int iconResId, int messageResId) {
 -- 
-2.34.1
+2.43.0
 

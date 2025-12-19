@@ -1,4 +1,4 @@
-From 5494e370eedc4cf557ebe2268ea14c0929a249c2 Mon Sep 17 00:00:00 2001
+From 65ae9649bdcdcd571b20aca2a1ef829b8d1e8133 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 13 Oct 2025 16:09:05 +0200
 Subject: [PATCH 5/6] Remove d-pad volume control while media is playing
@@ -60,5 +60,5 @@ index aed50663..fb68b695 100644
              VALIDATORS.put(KEY_POWER_BUTTON_ACTION, KEY_POWER_BUTTON_ACTION_VALIDATOR);
              VALIDATORS.put(BACK_WAKE_SCREEN, BACK_WAKE_SCREEN_VALIDATOR);
 -- 
-2.34.1
+2.43.0
 

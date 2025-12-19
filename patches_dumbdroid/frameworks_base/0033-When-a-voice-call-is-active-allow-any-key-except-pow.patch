@@ -1,4 +1,4 @@
-From eac60a78ab5dde57fd52aaf9a6d0461f671741a3 Mon Sep 17 00:00:00 2001
+From 8a9a9705c9bfe5855f54f167336f653f30aa1600 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 11:05:45 +0200
 Subject: [PATCH 33/46] When a voice call is active, allow any key (except
@@ -49,5 +49,5 @@ index 542b8c2b2b85..d4d4060d4b89 100644
       * When the screen is off we ignore some keys that might otherwise typically
       * be considered wake keys.  We filter them out here.
 -- 
-2.34.1
+2.43.0
 

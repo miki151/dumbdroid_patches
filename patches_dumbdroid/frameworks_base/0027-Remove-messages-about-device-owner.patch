@@ -1,4 +1,4 @@
-From d3c229139ab6dffd22c12b2a4ca8e0ba885d911d Mon Sep 17 00:00:00 2001
+From c77a00ce2c59b732d1d0f0fb755d3f60a7878793 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 09:56:02 +0200
 Subject: [PATCH 27/46] Remove messages about device owner
@@ -123,5 +123,5 @@ index d38f8492c883..3ee5a84785a1 100644
  
      @Nullable
 -- 
-2.34.1
+2.43.0
 

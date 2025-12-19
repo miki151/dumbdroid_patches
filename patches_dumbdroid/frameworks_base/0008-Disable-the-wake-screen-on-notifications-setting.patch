@@ -1,4 +1,4 @@
-From 3a64df4a1dcb97179b30823f35008803c3f1b339 Mon Sep 17 00:00:00 2001
+From c5c5f4370690b2f88c68241b7a848b0426c5811f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:13:26 +0200
 Subject: [PATCH 08/46] Disable the "wake screen on notifications" setting
@@ -22,5 +22,5 @@ index b5f9096172d5..7d796a003b85 100644
      <!-- The number of tasks to scan to get the visibility of Home -->
      <integer name="config_maxScanTasksForHomeVisibility">10</integer>
 -- 
-2.34.1
+2.43.0
 

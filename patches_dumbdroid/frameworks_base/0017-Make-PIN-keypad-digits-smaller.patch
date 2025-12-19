@@ -1,4 +1,4 @@
-From 7aab15c74328c7429dbac6a5025b62392b224970 Mon Sep 17 00:00:00 2001
+From de0f4e3be1c46344dc1c22148d5baef98807a96e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 5 Aug 2025 15:43:28 +0200
 Subject: [PATCH 17/46] Make PIN keypad digits smaller
@@ -22,5 +22,5 @@ index c43e394cb97a..7c11618b0e71 100644
          <item name="android:fontFamily">@*android:string/config_bodyFontFamily</item>
          <item name="android:paddingBottom">-16dp</item>
 -- 
-2.34.1
+2.43.0
 

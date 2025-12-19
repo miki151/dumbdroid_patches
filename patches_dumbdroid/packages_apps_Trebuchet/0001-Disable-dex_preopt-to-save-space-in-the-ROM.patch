@@ -1,4 +1,4 @@
-From a470f4a1b34c60ce0691d5fa3432fce15c190ffc Mon Sep 17 00:00:00 2001
+From ba88c1a1f7c9ee2b07c191e973858cfb82aa9964 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 11:09:53 +0200
 Subject: [PATCH 01/13] Disable dex_preopt to save space in the ROM
@@ -23,5 +23,5 @@ index 8c1298c52b..26dca98bde 100644
      optimize: {
          enabled: false,
 -- 
-2.34.1
+2.43.0
 

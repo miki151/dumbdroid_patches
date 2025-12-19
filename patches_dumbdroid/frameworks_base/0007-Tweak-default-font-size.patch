@@ -1,4 +1,4 @@
-From ce97b6fffea7655b1af2d4c9a00dd81c3cfecebe Mon Sep 17 00:00:00 2001
+From 7178ed25723d04e726115b26b11bcc40c28ed5b5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 15 Jun 2025 11:33:46 +0200
 Subject: [PATCH 07/46] Tweak default font size
@@ -20,5 +20,5 @@ index 17d9f1b87fac..73d3cc59ea47 100644
 +    <item name="def_device_font_scale" format="float" type="dimen">1.28</item>
  </resources>
 -- 
-2.34.1
+2.43.0
 

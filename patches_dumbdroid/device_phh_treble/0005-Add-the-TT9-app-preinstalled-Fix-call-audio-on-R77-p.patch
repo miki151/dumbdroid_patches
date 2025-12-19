@@ -1,7 +1,7 @@
-From 025ee8b3f44739c0a9469c60707622ee3c66b303 Mon Sep 17 00:00:00 2001
+From 136bc5c8c7dbe21e1850a63e826461553e54c391 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 19:55:37 +0200
-Subject: [PATCH 05/24] Add the TT9 app preinstalled; Fix call audio on R77 pro
+Subject: [PATCH 05/25] Add the TT9 app preinstalled; Fix call audio on R77 pro
 
 Change-Id: I2a108a66834983625a1482f02a0b06b5a75e257a
 ---
@@ -30,5 +30,5 @@ index 6cb684b..cb1dff6 100644
 +PRODUCT_PACKAGES += tt9
  
 -- 
-2.34.1
+2.43.0
 

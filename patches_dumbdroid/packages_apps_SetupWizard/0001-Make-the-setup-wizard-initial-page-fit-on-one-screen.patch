@@ -1,4 +1,4 @@
-From 4c5229e8a2602731c8fe5f40f9a3123d25621519 Mon Sep 17 00:00:00 2001
+From 5df989fd17c9e6e9e7f9ff79f8c55663c9db4526 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 16:35:37 +0200
 Subject: [PATCH] Make the setup wizard initial page fit on one screen
@@ -179,5 +179,5 @@ index 4dc594e..4532a9f 100644
      }
  
 -- 
-2.34.1
+2.43.0
 

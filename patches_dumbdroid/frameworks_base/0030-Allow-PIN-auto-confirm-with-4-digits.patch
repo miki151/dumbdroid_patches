@@ -1,4 +1,4 @@
-From ca1f949daed65acc46ed03d991a0cc89564f2073 Mon Sep 17 00:00:00 2001
+From 36cdc72a1dd67b22b32bd6fc66842154310abfff Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:23:36 +0200
 Subject: [PATCH 30/46] Allow PIN auto-confirm with 4 digits
@@ -22,5 +22,5 @@ index 5ee4fe866f61..e351c487d5fd 100644
      /**
       * Header used for the encryption and decryption of the device credential for
 -- 
-2.34.1
+2.43.0
 

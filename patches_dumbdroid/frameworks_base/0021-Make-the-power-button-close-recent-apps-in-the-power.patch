@@ -1,4 +1,4 @@
-From 55acd9e2d0c7332bd4d4badb2c2ba97038e6ba2c Mon Sep 17 00:00:00 2001
+From a7c15adb455436382215f1f2f59893a63f3505ad Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 17 Aug 2025 11:12:30 +0200
 Subject: [PATCH 21/46] Make the power button close recent apps in the "power
@@ -93,5 +93,5 @@ index 6cf2953d2cb8..6b879d6177ad 100644
  
      @Override
 -- 
-2.34.1
+2.43.0
 

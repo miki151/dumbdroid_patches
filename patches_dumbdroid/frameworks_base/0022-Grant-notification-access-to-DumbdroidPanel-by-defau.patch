@@ -1,4 +1,4 @@
-From 0940fcac94e1b63941545aa860e6699bb867afc5 Mon Sep 17 00:00:00 2001
+From 393bb4e3ab4cc26fd0656b763af9a57b0468135a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 27 Aug 2025 10:53:36 +0200
 Subject: [PATCH 22/46] Grant notification access to DumbdroidPanel by default
@@ -24,5 +24,5 @@ index 7d796a003b85..66ccf606808e 100644
      <!-- Maximum size, specified in pixels, to restrain the display space width to. Height and
           density will be scaled accordingly to maintain aspect ratio. A value of 0 indicates no
 -- 
-2.34.1
+2.43.0
 

@@ -1,4 +1,4 @@
-From c5f3b00b97d8fc4bd91ddcede6d2d8e0cb447b0d Mon Sep 17 00:00:00 2001
+From d7c0e05727dc7d7747999eff2843ae258f91d407 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 09:10:33 +0200
 Subject: [PATCH 3/6] Add setting for power button behavior
@@ -143,5 +143,5 @@ index 4595a00..c4ff71d 100644
              handleListChange((ListPreference) preference, newValue,
                      LineageSettings.System.KEY_DPAD_SCREEN_OFF_ACTION);
 -- 
-2.34.1
+2.43.0
 

@@ -1,4 +1,4 @@
-From e73c8bf7c9ee2c5c3771d5905bcdb059504b3251 Mon Sep 17 00:00:00 2001
+From ee68ad1ed7f10419faad58f10024a176f3820ccd Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 11:42:36 +0200
 Subject: [PATCH 34/46] Make dpad up/down not wake the screen when the
@@ -29,5 +29,5 @@ index cd899b70843a..200ca1060783 100644
  key 110   INSERT
  key 111   FORWARD_DEL
 -- 
-2.34.1
+2.43.0
 

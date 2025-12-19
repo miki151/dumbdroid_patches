@@ -1,4 +1,4 @@
-From 9b4946af0546f44bab47319417ab65f69b0086ba Mon Sep 17 00:00:00 2001
+From 6bc3f9d5798efb906b071b0a366fc0ac3f3d2813 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 2 Nov 2025 17:10:27 +0100
 Subject: [PATCH 40/46] Don't allow turning on music with the D-pad if a
@@ -68,5 +68,5 @@ index 1d8930a1e465..1ee1084f3134 100644
                                  event.getEventTime(), down ? KeyEvent.ACTION_DOWN
                                          : KeyEvent.ACTION_UP, mediaKeyCode, 0);
 -- 
-2.34.1
+2.43.0
 

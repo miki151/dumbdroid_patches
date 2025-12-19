@@ -1,0 +1,29 @@
+From f3ec584e4ec0de70e463ac1a905f9b24816e175e Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@keeperrl.com>
+Date: Fri, 19 Dec 2025 11:54:42 +0000
+Subject: [PATCH 4/4] Make the r77 battery stats overlay work on all models
+ with vndk=31
+
+Change-Id: I449a542f54ed089aaec77ee652e7d68b2829034b
+---
+ Doov/R77Pro/AndroidManifest.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Doov/R77Pro/AndroidManifest.xml b/Doov/R77Pro/AndroidManifest.xml
+index 9050564..ef1461b 100644
+--- a/Doov/R77Pro/AndroidManifest.xml
++++ b/Doov/R77Pro/AndroidManifest.xml
+@@ -4,8 +4,8 @@
+         android:versionName="1.0">
+     <overlay
+         android:targetPackage="android"
+-        android:requiredSystemPropertyName="ro.vendor.build.fingerprint"
+-        android:requiredSystemPropertyValue="+DOOV/DOOV/DOOV*"
++        android:requiredSystemPropertyName="ro.vndk.version"
++        android:requiredSystemPropertyValue="31"
+         android:priority="242"
+         android:isStatic="true" />
+ </manifest>
+-- 
+2.43.0
+

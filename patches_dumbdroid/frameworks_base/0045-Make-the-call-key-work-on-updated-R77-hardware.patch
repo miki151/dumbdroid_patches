@@ -1,4 +1,4 @@
-From 4a1c02bd8aecdf9da7519cd086fb9b9843a8527a Mon Sep 17 00:00:00 2001
+From bdee3f84df54f9515f2bebe9357003d294a7904b Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 10:11:43 +0100
 Subject: [PATCH 45/46] Make the call key work on updated R77 hardware
@@ -22,5 +22,5 @@ index 200ca1060783..d1b37cd750c1 100644
  key 32    D
  key 33    F
 -- 
-2.34.1
+2.43.0
 

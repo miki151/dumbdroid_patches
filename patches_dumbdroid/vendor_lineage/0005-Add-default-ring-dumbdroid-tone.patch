@@ -1,4 +1,4 @@
-From 7d9ccd51f94100c3ed0fb44f575532ce3817d1fc Mon Sep 17 00:00:00 2001
+From 5476012a65a409841d3b4ef189a79df899ee214e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:29:51 +0100
 Subject: [PATCH 5/5] Add default ring dumbdroid tone
@@ -57902,5 +57902,5 @@ literal 0
 HcmV?d00001
 
 -- 
-2.34.1
+2.43.0
 
