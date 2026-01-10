@@ -1,4 +1,4 @@
-From 148e07af6bd02e9b9941aa964868975d34a1263d Mon Sep 17 00:00:00 2001
+From 6fb8fde42adfc40154226a52e36538265944d26c Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 6 Nov 2025 13:44:02 +0100
 Subject: [PATCH 1/4] Add Doov overlay
@@ -176,5 +176,5 @@ index 0000000..1facfcf
 +    <item name="battery.capacity">2950</item>
 +</device>
 -- 
-2.43.0
+2.34.1
 

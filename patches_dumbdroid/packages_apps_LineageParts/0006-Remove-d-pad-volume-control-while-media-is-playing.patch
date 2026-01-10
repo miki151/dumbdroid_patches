@@ -1,7 +1,7 @@
-From cfb24c611be2f88e650dab6a0cb7af2d17aee1c9 Mon Sep 17 00:00:00 2001
+From 8e899eeb56d55efcddc5b1a9ab5ab8b82c0e8e5f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 13 Oct 2025 16:09:26 +0200
-Subject: [PATCH 6/6] Remove d-pad volume control while media is playing
+Subject: [PATCH 6/7] Remove d-pad volume control while media is playing
 
 Change-Id: Ie542d826c61be74dda5e1ff4cd654081eb54d9dd
 ---
@@ -108,5 +108,5 @@ index f8d68d1..a74bb7f 100644
              handleListChange((ListPreference) preference, newValue,
                      LineageSettings.System.KEY_DPAD_CALL_ACTIVE_ACTION);
 -- 
-2.43.0
+2.34.1
 

@@ -1,4 +1,4 @@
-From 5f63dd69a732d1b17517cf2703b01c95cf25934e Mon Sep 17 00:00:00 2001
+From 8a667ad9fd1111c7fa7a4b1d480010f9a79c23c8 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 8 Dec 2025 10:10:56 +0100
 Subject: [PATCH 2/2] Fix weird bluetooth crash
@@ -23,5 +23,5 @@ index b1b72b5d9e..a901ba6201 100644
      OpCode op_code = response_view.GetCommandOpCode();
      if (op_code == OpCode::NONE) {
 -- 
-2.43.0
+2.34.1
 

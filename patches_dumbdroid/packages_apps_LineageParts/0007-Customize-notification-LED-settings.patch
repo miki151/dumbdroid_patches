@@ -1,0 +1,297 @@
+From 478f00444de851801734d7b1eac62f5d1de22c1d Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 10 Jan 2026 18:37:50 +0100
+Subject: [PATCH 7/7] Customize notification LED settings
+
+Change-Id: Id65c50d1513c493102aaf4a8829db0a6d50a94e7
+---
+ res/values/strings.xml                        |  3 +-
+ res/xml/notification_light_settings.xml       | 23 ++---
+ .../NotificationLightSettings.java            | 91 +++----------------
+ 3 files changed, 25 insertions(+), 92 deletions(-)
+
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 13ccb3c..b6b12b0 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -117,7 +117,8 @@
+     <!-- Lights settings, LED notification -->
+     <string name="led_notification_title">Light settings</string>
+     <string name="led_notification_text">LED light enabled by settings</string>
+-    <string name="notification_light_add_apps_empty_summary">To add per app control, activate \'%1$s\' and press \'Add\'</string>
++    <string name="notification_light_add_apps_empty_summary">To add per app control, press "%1$s"</string>
++    <string name="notification_light_remove_app">Remove</string>
+ 
+     <!-- LiveDisplay -->
+     <string name="live_display_summary">Optimize your screen based on time of day and ambient conditions to improve readability and reduce eyestrain</string>
+diff --git a/res/xml/notification_light_settings.xml b/res/xml/notification_light_settings.xml
+index 3e1121b..1626e9f 100644
+--- a/res/xml/notification_light_settings.xml
++++ b/res/xml/notification_light_settings.xml
+@@ -57,35 +57,30 @@
+             android:title="@string/notification_light_screen_on"
+             android:dependency="notification_light_pulse" />
+ 
+-        <lineageos.preference.LineageSystemSettingSwitchPreference
+-            android:key="notification_light_pulse_custom_enable"
+-            android:title="@string/notification_light_use_custom"
+-            android:dependency="notification_light_pulse" />
+-
+     </PreferenceCategory>
+ 
+     <PreferenceCategory
+         android:key="phone_list"
+         android:title="@string/notification_light_phonelist_title" >
+ 
+-        <org.lineageos.lineageparts.notificationlight.ApplicationLightPreference
+-            android:key="missed_call"
++        <lineageos.preference.LineageSystemSettingSwitchPreference
++            android:key="notification_light_pulse_call_enable"
+             android:title="@string/notification_light_missed_call_title"
+-            android:persistent="false"
+-            android:dependency="notification_light_pulse_custom_enable" />
++            android:defaultValue="true"
++            android:dependency="notification_light_pulse" />
+ 
+-        <org.lineageos.lineageparts.notificationlight.ApplicationLightPreference
+-            android:key="voicemail"
++        <lineageos.preference.LineageSystemSettingSwitchPreference
++            android:key="notification_light_pulse_vmail_enable"
+             android:title="@string/notification_light_voicemail_title"
+-            android:persistent="false"
+-            android:dependency="notification_light_pulse_custom_enable" />
++            android:defaultValue="true"
++            android:dependency="notification_light_pulse" />
+ 
+     </PreferenceCategory>
+ 
+     <PreferenceCategory
+         android:key="applications_list"
+         android:title="@string/notification_light_applist_title"
+-        android:dependency="notification_light_pulse_custom_enable" >
++        android:dependency="notification_light_pulse" >
+ 
+         <Preference
+             android:key="custom_apps_add"
+diff --git a/src/org/lineageos/lineageparts/notificationlight/NotificationLightSettings.java b/src/org/lineageos/lineageparts/notificationlight/NotificationLightSettings.java
+index ba3d5b1..ea616eb 100644
+--- a/src/org/lineageos/lineageparts/notificationlight/NotificationLightSettings.java
++++ b/src/org/lineageos/lineageparts/notificationlight/NotificationLightSettings.java
+@@ -47,8 +47,7 @@ import lineageos.providers.LineageSettings;
+ import lineageos.util.ColorUtils;
+ 
+ public class NotificationLightSettings extends SettingsPreferenceFragment implements
+-        ApplicationLightPreference.ItemLongClickListener, Preference.OnPreferenceChangeListener,
+-        Searchable {
++        Preference.OnPreferenceChangeListener, Searchable {
+     private static final String TAG = "NotificationLightSettings";
+ 
+     private static final String KEY_NOTIFICATION_LIGHTS = "notification_lights";
+@@ -58,8 +57,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+             LineageSettings.System.NOTIFICATION_LIGHT_COLOR_AUTO;
+     private static final String NOTIFICATION_LIGHT_SCREEN_ON =
+             LineageSettings.System.NOTIFICATION_LIGHT_SCREEN_ON;
+-    private static final String NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE =
+-            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE;
+     private static final String NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL =
+             LineageSettings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL;
+     private static final String NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL_ZEN =
+@@ -72,8 +69,10 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+     private static final String PHONE_SECTION = "phone_list";
+ 
+     private static final String DEFAULT_PREF = "default";
+-    private static final String MISSED_CALL_PREF = "missed_call";
+-    private static final String VOICEMAIL_PREF = "voicemail";
++    private static final String MISSED_CALL_PREF =
++            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_ENABLE;
++    private static final String VOICEMAIL_PREF =
++            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE;
+     private static final String ADD_APPS = "custom_apps_add";
+     private static final int DIALOG_APPS = 0;
+ 
+@@ -83,12 +82,9 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+     private PackageManager mPackageManager;
+     private PreferenceGroup mApplicationPrefList;
+     private SystemSettingMainSwitchPreference mEnabledPref;
+-    private LineageSystemSettingSwitchPreference mCustomEnabledPref;
+     private LineageSystemSettingSwitchPreference mScreenOnLightsPref;
+     private LineageSystemSettingSwitchPreference mAutoGenerateColors;
+     private ApplicationLightPreference mDefaultPref;
+-    private ApplicationLightPreference mCallPref;
+-    private ApplicationLightPreference mVoicemailPref;
+     private PackageListAdapter mPackageAdapter;
+     private String mPackageList;
+     private Map<String, Package> mPackages;
+@@ -109,7 +105,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+         PreferenceScreen prefSet = getPreferenceScreen();
+         Resources resources = getResources();
+ 
+-        PreferenceGroup mAdvancedPrefs = prefSet.findPreference(ADVANCED_SECTION);
+         PreferenceGroup mGeneralPrefs = prefSet.findPreference(GENERAL_SECTION);
+ 
+         // Get the system defined default notification color
+@@ -139,15 +134,12 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+         // Advanced light settings
+         mScreenOnLightsPref = findPreference(NOTIFICATION_LIGHT_SCREEN_ON);
+         mScreenOnLightsPref.setOnPreferenceChangeListener(this);
+-        mCustomEnabledPref = findPreference(NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE);
+         if (!mMultiColorLed && !halAdjustableBrightness) {
+             removePreference(BRIGHTNESS_SECTION);
+         }
+         if (!mLedCanPulse && !mMultiColorLed) {
+             mGeneralPrefs.removePreference(mDefaultPref);
+-            mAdvancedPrefs.removePreference(mCustomEnabledPref);
+         } else {
+-            mCustomEnabledPref.setOnPreferenceChangeListener(this);
+             mDefaultPref.setOnPreferenceChangeListener(this);
+             mDefaultPref.setDefaultValues(mDefaultColor, mDefaultLedOn, mDefaultLedOff);
+         }
+@@ -157,14 +149,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+         if (tm.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE
+                 || (!mLedCanPulse && !mMultiColorLed)) {
+             removePreference(PHONE_SECTION);
+-        } else {
+-            mCallPref = findPreference(MISSED_CALL_PREF);
+-            mCallPref.setOnPreferenceChangeListener(this);
+-            mCallPref.setDefaultValues(mDefaultColor, mDefaultLedOn, mDefaultLedOff);
+-
+-            mVoicemailPref = findPreference(VOICEMAIL_PREF);
+-            mVoicemailPref.setOnPreferenceChangeListener(this);
+-            mVoicemailPref.setDefaultValues(mDefaultColor, mDefaultLedOn, mDefaultLedOff);
+         }
+ 
+         if (!mLedCanPulse && !mMultiColorLed) {
+@@ -216,29 +200,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+ 
+         mDefaultPref.setAllValues(color, timeOn, timeOff);
+ 
+-        // Get Missed call and Voicemail values
+-        if (mCallPref != null) {
+-            int callColor = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_COLOR, mDefaultColor);
+-            int callTimeOn = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_ON, mDefaultLedOn);
+-            int callTimeOff = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF, mDefaultLedOff);
+-
+-            mCallPref.setAllValues(callColor, callTimeOn, callTimeOff);
+-        }
+-
+-        if (mVoicemailPref != null) {
+-            int vmailColor = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR, mDefaultColor);
+-            int vmailTimeOn = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON, mDefaultLedOn);
+-            int vmailTimeOff = LineageSettings.System.getInt(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF, mDefaultLedOff);
+-
+-            mVoicemailPref.setAllValues(vmailColor, vmailTimeOn, vmailTimeOff);
+-        }
+-
+         if (mLedCanPulse || mMultiColorLed) {
+             mApplicationPrefList = findPreference(APPLICATION_SECTION);
+             mApplicationPrefList.setOrderingAsAdded(false);
+@@ -269,16 +230,14 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+                 try {
+                     PackageInfo info = mPackageManager.getPackageInfo(pkg.name,
+                             PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA));
+-                    ApplicationLightPreference pref =
+-                            new ApplicationLightPreference(context, null,
+-                                    pkg.color, pkg.timeon, pkg.timeoff);
++                    NotificationLightAppPreference pref =
++                            new NotificationLightAppPreference(context);
+ 
+                     pref.setKey(pkg.name);
+                     pref.setTitle(info.applicationInfo.loadLabel(mPackageManager));
+                     pref.setIcon(info.applicationInfo.loadIcon(mPackageManager));
+                     pref.setPersistent(false);
+-                    pref.setOnPreferenceChangeListener(this);
+-                    pref.setOnLongClickListener(this);
++                    pref.setOnRemoveClickListener(this::showRemoveDialog);
+                     mApplicationPrefList.addPreference(pref);
+                 } catch (NameNotFoundException e) {
+                     // Do nothing
+@@ -295,10 +254,9 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+         if (mApplicationPrefList != null && mApplicationPrefList.getPreferenceCount() == 1) {
+             String summary = getResources().getString(
+                     R.string.notification_light_add_apps_empty_summary);
+-            String useCustom = getResources().getString(
+-                    R.string.notification_light_use_custom);
++            String addLabel = getResources().getString(R.string.add);
+             Preference pref = new Preference(context);
+-            pref.setSummary(String.format(summary, useCustom));
++            pref.setSummary(String.format(summary, addLabel));
+             pref.setEnabled(false);
+             mApplicationPrefList.addPreference(pref);
+         }
+@@ -399,24 +357,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+                         LineageSettings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF, timeOff);
+                 refreshDefault();
+                 return;
+-            case MISSED_CALL_PREF:
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_COLOR, color);
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_ON, timeOn);
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF, timeOff);
+-                refreshDefault();
+-                return;
+-            case VOICEMAIL_PREF:
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR, color);
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON, timeOn);
+-                LineageSettings.System.putInt(resolver,
+-                        LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF, timeOff);
+-                refreshDefault();
+-                return;
+         }
+ 
+         // Find the custom package and sets its new values
+@@ -443,9 +383,9 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+         refreshDefault();
+     }
+ 
+-    public boolean onItemLongClick(final String key) {
++    private void showRemoveDialog(String key) {
+         if (mApplicationPrefList.findPreference(key) == null) {
+-            return false;
++            return;
+         }
+ 
+         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
+@@ -458,12 +398,10 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+                 .setNegativeButton(android.R.string.cancel, null);
+ 
+         builder.show();
+-        return true;
+     }
+ 
+     public boolean onPreferenceChange(Preference preference, Object objValue) {
+-        if (preference == mEnabledPref || preference == mCustomEnabledPref ||
+-                preference == mScreenOnLightsPref ||
++        if (preference == mEnabledPref || preference == mScreenOnLightsPref ||
+                 preference == mAutoGenerateColors) {
+             getActivity().invalidateOptionsMenu();
+         } else {
+@@ -497,7 +435,7 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+                 dialog = builder.create();
+ 
+                 list.setOnItemClickListener((parent, view, position, id1) -> {
+-                    // Add empty application definition, the user will be able to edit it later
++                    // Add application entry for notification lights.
+                     PackageItem info = (PackageItem) parent.getItemAtPosition(position);
+                     addCustomApplicationPref(info.packageName);
+                     dialog.cancel();
+@@ -588,7 +526,6 @@ public class NotificationLightSettings extends SettingsPreferenceFragment implem
+                 result.add(DEFAULT_PREF);
+                 result.add(ADVANCED_SECTION);
+                 result.add(NOTIFICATION_LIGHT_SCREEN_ON);
+-                result.add(NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE);
+                 result.add(PHONE_SECTION);
+                 result.add(MISSED_CALL_PREF);
+                 result.add(VOICEMAIL_PREF);
+-- 
+2.34.1
+

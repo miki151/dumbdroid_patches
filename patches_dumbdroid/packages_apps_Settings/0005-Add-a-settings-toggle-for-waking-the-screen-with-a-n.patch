@@ -1,7 +1,7 @@
-From 19f107c953c0fab52617a2bf148cb95b5832ac96 Mon Sep 17 00:00:00 2001
+From 3ccbc56d4d354a0570797bb02de6d6657772cd2e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:14:00 +0200
-Subject: [PATCH 5/8] Add a settings toggle for waking the screen with a number
+Subject: [PATCH 5/9] Add a settings toggle for waking the screen with a number
  key
 
 Change-Id: I9b000c826c832c13ae524a6ada2801d8ab32c2cf
@@ -56,5 +56,5 @@ index f811872ee59..30daa7ed571 100644
                  context, MY_USER_ID, lockPatternUtils));
          controllers.add(new OwnerInfoPreferenceController(context, parent));
 -- 
-2.43.0
+2.34.1
 

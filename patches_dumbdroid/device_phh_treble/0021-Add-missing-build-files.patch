@@ -1,4 +1,4 @@
-From 93a8e89758bfd5baa543e15158755bc73750d51c Mon Sep 17 00:00:00 2001
+From 506338a5e695f169fe3ca51e413d3c0e9b341768 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 3 Dec 2025 10:54:18 +0100
 Subject: [PATCH 21/25] Add missing build files
@@ -98,5 +98,5 @@ index 0000000..7f7515b
 +PRODUCT_EXTRA_VNDK_VERSIONS := 31
 +
 -- 
-2.43.0
+2.34.1
 

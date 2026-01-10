@@ -1,4 +1,4 @@
-From edf38d83f36dd2bd1c3bcde9e109697c48984920 Mon Sep 17 00:00:00 2001
+From 5523e7b6a560c5a8762d4deae649cfb152064f92 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 5 Aug 2025 17:20:21 +0200
 Subject: [PATCH 2/2] Make the back key remove digits from phone number entry
@@ -44,5 +44,5 @@ index 2470ec029..82f3556bb 100644
      } else if (isSearchVisible()) {
        LogUtil.i("MainSearchController.onBackPressed", "Search is visible");
 -- 
-2.43.0
+2.34.1
 

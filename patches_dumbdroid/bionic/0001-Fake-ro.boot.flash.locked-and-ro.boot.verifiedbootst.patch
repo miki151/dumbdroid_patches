@@ -1,4 +1,4 @@
-From 4eb7c2a20fae0ac50e34e88c798dc6696129d24f Mon Sep 17 00:00:00 2001
+From 6bb1a602f730460da1b7a59ac052078b37e7b384 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 9 Jul 2025 12:46:32 +0200
 Subject: [PATCH] Fake ro.boot.flash.locked and ro.boot.verifiedbootstate to
@@ -25,5 +25,5 @@ index 886bef127..6be956746 100644
        callback(cookie, pi->name, pi->long_value(), serial);
      } else {
 -- 
-2.43.0
+2.34.1
 

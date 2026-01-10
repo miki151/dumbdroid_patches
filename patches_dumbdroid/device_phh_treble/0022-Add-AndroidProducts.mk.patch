@@ -1,4 +1,4 @@
-From 636b283fb147764cd22527853600717ab0417b23 Mon Sep 17 00:00:00 2001
+From 2f8f0613af2bb1ef8531c74443778589c8a3ae7f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 3 Dec 2025 12:21:10 +0100
 Subject: [PATCH 22/25] Add AndroidProducts.mk
@@ -19,5 +19,5 @@ index 0000000..eb802d0
 +	$(LOCAL_DIR)/lineage_dg31.mk \
 +
 -- 
-2.43.0
+2.34.1
 

@@ -1,7 +1,7 @@
-From edbf4fe95f7b61eaef5a56b33e1660fea55757e5 Mon Sep 17 00:00:00 2001
+From 6fef215075b28fc5b9754c207e5b564a23a29206 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 09:56:36 +0200
-Subject: [PATCH 28/46] Remove more messages about device owner
+Subject: [PATCH 28/50] Remove more messages about device owner
 
 Change-Id: I078f5c09f590bcb154f079052f0ba4528fcf4cc1
 ---
@@ -41,5 +41,5 @@ index 57061ff9f5a0..c4302e93dddd 100644
  
      private CharSequence getDisclosureText(@Nullable CharSequence organizationName) {
 -- 
-2.43.0
+2.34.1
 

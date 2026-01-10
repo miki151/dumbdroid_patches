@@ -1,7 +1,7 @@
-From 0453ad71acb07bc68cd171a3a56a1d7ed6a05dfd Mon Sep 17 00:00:00 2001
+From 20e89a902b112fc47f406eeb390d9f8527d00e97 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 20 Nov 2025 07:27:01 +0100
-Subject: [PATCH 7/8] Hardcode a 2100mah battery size in settings
+Subject: [PATCH 7/9] Hardcode a 2100mah battery size in settings
 
 Change-Id: I0b533e640f74440ea92441b37df9c71d58a807f4
 ---
@@ -83,5 +83,5 @@ index 80f337f4ecd..95a1d46f147 100644
      }
  
 -- 
-2.43.0
+2.34.1
 

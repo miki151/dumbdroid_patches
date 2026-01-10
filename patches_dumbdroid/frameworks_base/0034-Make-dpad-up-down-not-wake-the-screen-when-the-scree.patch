@@ -1,7 +1,7 @@
-From ee68ad1ed7f10419faad58f10024a176f3820ccd Mon Sep 17 00:00:00 2001
+From 1dd8843f688d5558e8d48e0740e2e9062f6ff9cc Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 8 Oct 2025 11:42:36 +0200
-Subject: [PATCH 34/46] Make dpad up/down not wake the screen when the
+Subject: [PATCH 34/50] Make dpad up/down not wake the screen when the
  screen-off volume setting is offf
 
 Change-Id: I10bccfa19f7168a6c3f00a398874054e331d255a
@@ -29,5 +29,5 @@ index cd899b70843a..200ca1060783 100644
  key 110   INSERT
  key 111   FORWARD_DEL
 -- 
-2.43.0
+2.34.1
 

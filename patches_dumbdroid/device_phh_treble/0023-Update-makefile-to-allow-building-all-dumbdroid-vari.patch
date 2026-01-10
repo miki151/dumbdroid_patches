@@ -1,4 +1,4 @@
-From 1a24138ad2e9700f1b2a5e11acb01688fe2259ec Mon Sep 17 00:00:00 2001
+From bb56b3b4902bb581aba70a8cda24ddfe1e12e777 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 11:09:34 +0100
 Subject: [PATCH 23/25] Update makefile to allow building all dumbdroid
@@ -30,5 +30,5 @@ index eb802d0..6fd6a35 100644
 +	$(LOCAL_DIR)/lineage_dv30.mk \
  
 -- 
-2.43.0
+2.34.1
 

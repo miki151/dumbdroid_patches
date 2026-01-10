@@ -1,7 +1,7 @@
-From da154ddafabf6fdf596e9b00faca6935c4619f82 Mon Sep 17 00:00:00 2001
+From 009889fe22e8dea6a048d370f05506a225584cb9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 20 Sep 2025 22:13:13 +0200
-Subject: [PATCH 1/8] Make the top level settings navigable with Dpad
+Subject: [PATCH 1/9] Make the top level settings navigable with Dpad
 
 Change-Id: Ic30f8254bde60c707ed30442919b3aa7998d80a4
 ---
@@ -204,5 +204,5 @@ index d1fa7601322..f76815c0eda 100644
      public void setPaddingHorizontal(int padding) {
          mPaddingHorizontal = padding;
 -- 
-2.43.0
+2.34.1
 

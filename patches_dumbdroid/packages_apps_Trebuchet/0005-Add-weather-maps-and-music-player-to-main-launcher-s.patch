@@ -1,4 +1,4 @@
-From 593927ede112928c2d9865f989a19518b3651d5b Mon Sep 17 00:00:00 2001
+From d493cedb517c7546b73f49308041bdcae8247fd8 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 14 Jul 2025 09:16:13 +0200
 Subject: [PATCH 05/13] Add weather, maps and music player to main launcher
@@ -56,5 +56,5 @@ index 9c7b92f965..d0150abd4c 100644
 +
  </favorites>
 -- 
-2.43.0
+2.34.1
 

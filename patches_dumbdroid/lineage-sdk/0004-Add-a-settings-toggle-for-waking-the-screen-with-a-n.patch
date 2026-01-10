@@ -1,7 +1,7 @@
-From 3738a4112ed89a056bdbd9612da495c0a90f067e Mon Sep 17 00:00:00 2001
+From 34304ea7dfef4182a722ef437b0e5be935522abc Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:12:32 +0200
-Subject: [PATCH 4/6] Add a settings toggle for waking the screen with a number
+Subject: [PATCH 4/7] Add a settings toggle for waking the screen with a number
  key
 
 Change-Id: I500c9615daf3d8a5d0c8737f15a00a6ed3b283d1
@@ -84,5 +84,5 @@ index 336ddae3..aed50663 100644
              VALIDATORS.put(SHOW_ALARM_ICON, SHOW_ALARM_ICON_VALIDATOR);
              VALIDATORS.put(STATUS_BAR_IME_SWITCHER, STATUS_BAR_IME_SWITCHER_VALIDATOR);
 -- 
-2.43.0
+2.34.1
 

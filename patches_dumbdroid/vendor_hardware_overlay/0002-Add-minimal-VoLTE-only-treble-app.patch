@@ -1,4 +1,4 @@
-From 6b6aed30a109a74525358fba78fd4a0f4e290fd9 Mon Sep 17 00:00:00 2001
+From 942fde992b2d4d51472b3ba9dbdcaf3476dc2c70 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:28:47 +0100
 Subject: [PATCH 2/4] Add minimal VoLTE-only treble app
@@ -137379,5 +137379,5 @@ zz#k%oyUlZ8<l0e76iVkYd_xL9qoB~*91yQ)sQ_;rLk0O|xTzZ0#qg&R@Lrs09MDnG
 nQbFGTeiJ2p0FMX2Pn$y=Q1Q_SUV0i*8dBDH_!=W8{Kx+Tkx5k)
 
 -- 
-2.43.0
+2.34.1
 

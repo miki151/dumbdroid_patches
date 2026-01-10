@@ -1,4 +1,4 @@
-From e0717b2692accfcfd444c6b70a4d5c50e0a408ba Mon Sep 17 00:00:00 2001
+From 5b2046a3b362b0f861da786c7a149b8b2fdd8359 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Sep 2025 10:59:47 +0200
 Subject: [PATCH 2/2] Support keypad backlight on the Doov R77 pro
@@ -30,5 +30,5 @@ index e4baeeeda..bb33b5b2b 100644
  genfscon sysfs /class/rfkill/rfkill0/state        u:object_r:sysfs_bluetooth_writable:s0
  genfscon sysfs /class/rfkill/rfkill1/state        u:object_r:sysfs_bluetooth_writable:s0
 -- 
-2.43.0
+2.34.1
 

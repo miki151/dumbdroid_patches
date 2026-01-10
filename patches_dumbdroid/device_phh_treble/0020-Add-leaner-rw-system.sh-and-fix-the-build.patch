@@ -1,4 +1,4 @@
-From c6125136ac3f8e52e952e8764d909244850a06fc Mon Sep 17 00:00:00 2001
+From 8193c34a8e470316c1db75632b530327040105fe Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:26:24 +0100
 Subject: [PATCH 20/25] Add leaner rw-system.sh and fix the build
@@ -1077,5 +1077,5 @@ index f3c0c45..3e4b3b7 100644
  #Disable for everyone for the moment
  ro.sys.sdcardfs=0
 -- 
-2.43.0
+2.34.1
 

@@ -1,4 +1,4 @@
-From 0207ea4ff9b5bf01edc66d36c03b0a4c90529028 Mon Sep 17 00:00:00 2001
+From fbee34d9be2b159c6011b835db01dcab232ac68e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@keeperrl.com>
 Date: Fri, 19 Dec 2025 11:55:19 +0000
 Subject: [PATCH 25/25] Make ro.debuggable=0 again
@@ -22,5 +22,5 @@ index 70cf91f..327fd1f 100644
      f=/vendor/lib$abi/libstagefright_foundation.so
      if [ -f "$f" ];then
 -- 
-2.43.0
+2.34.1
 

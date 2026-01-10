@@ -1,7 +1,7 @@
-From fd53399134ddffb69a06b1b389e48c43d8ba0f11 Mon Sep 17 00:00:00 2001
+From 0726bc07b89de156996f7840ba019c964ad55d99 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:24:07 +0200
-Subject: [PATCH 31/46] Wake the device with number keys
+Subject: [PATCH 31/50] Wake the device with number keys
 
 Change-Id: I5176447beabad7cab19110711a72794843316faa
 ---
@@ -69,5 +69,5 @@ index dd31284c0a9e..e3ac86f76047 100644
       * Check if the given keyCode represents a key that is considered a wake key
       * and is currently enabled by the user in Settings or for another reason.
 -- 
-2.43.0
+2.34.1
 

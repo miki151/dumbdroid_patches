@@ -1,7 +1,7 @@
-From 388596f85a8a12aadc13c191a21d27e109f1627a Mon Sep 17 00:00:00 2001
+From 1ac9732f8f02c07bb257139975cce830c8486b96 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 09:12:08 +0200
-Subject: [PATCH 3/6] Add setting for power button behavior
+Subject: [PATCH 3/7] Add setting for power button behavior
 
 Change-Id: I38f0702b93d016a73b7e19a56e2005c7543c0f8e
 ---
@@ -60,5 +60,5 @@ index a0854f72..336ddae3 100644
              VALIDATORS.put(MENU_WAKE_SCREEN, MENU_WAKE_SCREENN_VALIDATOR);
              VALIDATORS.put(VOLUME_ANSWER_CALL, VOLUME_ANSWER_CALL_VALIDATOR);
 -- 
-2.43.0
+2.34.1
 

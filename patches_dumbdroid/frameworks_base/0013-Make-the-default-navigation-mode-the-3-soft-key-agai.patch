@@ -1,7 +1,7 @@
-From eef98a964113fbb2488a0cf73a1f22fc73775c10 Mon Sep 17 00:00:00 2001
+From 33d8c717917fbcff4157d1c4bb89feed5ed9d5ef Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:06:58 +0200
-Subject: [PATCH 13/46] Make the default navigation mode the 3 soft key again,
+Subject: [PATCH 13/50] Make the default navigation mode the 3 soft key again,
  with the soft key bar hidden
 
 Change-Id: Ie3658caa3b70898c26194f4ce4b67d22668bbaf8
@@ -21,5 +21,5 @@ index 16dc05217b24..4c2a9eb10e52 100644
 +    <integer name="config_navBarInteractionMode">0</integer>
  </resources>
 -- 
-2.43.0
+2.34.1
 

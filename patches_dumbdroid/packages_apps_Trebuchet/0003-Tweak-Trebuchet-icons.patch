@@ -1,4 +1,4 @@
-From 20b310ff9913bb2c670fc84130760604a99f767a Mon Sep 17 00:00:00 2001
+From d85d0b96c16bfd9b954ac6020a00467da88472a9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 13 Jun 2025 17:58:56 +0200
 Subject: [PATCH 03/13] Tweak Trebuchet icons
@@ -102,5 +102,5 @@ index 5278ebc1a7..d9b483e00a 100644
          float weights = 0;
  
 -- 
-2.43.0
+2.34.1
 

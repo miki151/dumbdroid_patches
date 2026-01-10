@@ -1,4 +1,4 @@
-From fccd4cc7f0345e2ff693ab105e298af872921c8f Mon Sep 17 00:00:00 2001
+From 5581c0047d996bcfe0a779d6c0cad6c98895fe89 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:29:05 +0100
 Subject: [PATCH 3/4] Add doov R77 overlay for fixed battery stats, remove
@@ -458,5 +458,5 @@ index bc84489..7954338 100644
 -	treble-overlay-xiaomi-redmis2 \
  
 -- 
-2.43.0
+2.34.1
 

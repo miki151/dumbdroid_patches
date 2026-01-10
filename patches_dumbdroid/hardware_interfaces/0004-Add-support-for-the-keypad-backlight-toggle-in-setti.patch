@@ -1,0 +1,47 @@
+From a8f877f1a8e3d1a4c9dc220b6465481e5d1afc6e Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 10 Jan 2026 12:36:47 +0100
+Subject: [PATCH 4/4] Add support for the keypad backlight toggle in settings
+
+Change-Id: I3afdd18f96785815afca9807e9d343d8e4f3b036
+---
+ light/aidl/default/lights.rs | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/light/aidl/default/lights.rs b/light/aidl/default/lights.rs
+index 4f47a872ad..7bb67bc55b 100644
+--- a/light/aidl/default/lights.rs
++++ b/light/aidl/default/lights.rs
+@@ -101,7 +101,7 @@ impl Default for LightsService {
+         let lights = vec![
+             HwLight { id: 1, ordinal: 1, r#type: LightType::BACKLIGHT },
+             HwLight { id: 2, ordinal: 2, r#type: LightType::NOTIFICATIONS },
+-//            HwLight { id: 2, ordinal: 2, r#type: LightType::BATTERY },
++            HwLight { id: 3, ordinal: 3, r#type: LightType::KEYBOARD },
+         ];
+         Self::new(lights)
+     }
+@@ -116,12 +116,15 @@ impl ILights for LightsService {
+             light.state = brightness;
+             if light.hw_light.r#type == LightType::BACKLIGHT {
+                 write_screen_backlight(brightness);
++            } else {
++                let mut key_brightness = 0;
++                for (id, state) in states.iter() {
++                    if *id == 2 || *id == 3 {
++                        key_brightness = cmp::max(key_brightness, state.state);
++                    }
++                }
++                write_key_backlight(key_brightness);
+             }
+-            let mut key_brightness = 0;
+-            for (_id, state) in states.iter() {
+-                key_brightness = cmp::max(key_brightness, state.state);
+-            }
+-            write_key_backlight(key_brightness);
+             Ok(())
+         } else {
+             Err(Status::new_exception(ExceptionCode::UNSUPPORTED_OPERATION, None))
+-- 
+2.34.1
+

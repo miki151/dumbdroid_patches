@@ -1,7 +1,7 @@
-From 7fe37590ffe830cf737031e5d3569af8f1ba08a1 Mon Sep 17 00:00:00 2001
+From f65833e5b35800320cc66af1b9b1df202910ceda Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:10:56 +0200
-Subject: [PATCH 2/6] Remove settings for buttons that don't exist
+Subject: [PATCH 2/7] Remove settings for buttons that don't exist
 
 Change-Id: Ief47b67229bebf2fa13fc3a09199e519ccb439b1
 ---
@@ -30,5 +30,5 @@ index 2c42469..4595a00 100644
          final boolean showHomeWake = DeviceUtils.canWakeUsingHomeKey(getActivity());
          final boolean showBackWake = DeviceUtils.canWakeUsingBackKey(getActivity());
 -- 
-2.43.0
+2.34.1
 

@@ -1,4 +1,4 @@
-From 3eaa334ca959e23628f8651747de002d4fa86fd1 Mon Sep 17 00:00:00 2001
+From 627b4ca8a070d0f01a3a74ed41002755b4dd2bd4 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 26 Oct 2025 12:36:21 +0100
 Subject: [PATCH 12/13] Turn off the bounce animation
@@ -39,5 +39,5 @@ index 1692912a9f..ddb70e2c0a 100644
  
      private static void showForHomeIfNeeded(Launcher launcher, boolean withDelay) {
 -- 
-2.43.0
+2.34.1
 

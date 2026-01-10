@@ -1,4 +1,4 @@
-From 015c3a7cac7636bb2716f1529a4fc8d2fce10227 Mon Sep 17 00:00:00 2001
+From f271772625b9e3623986e0147f9ad4bc9ee577b6 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:03:09 +0200
 Subject: [PATCH 01/25] Remove unused vndk versions
@@ -26,5 +26,5 @@ index 8f7b711..db14be9 100644
  
 -PRODUCT_EXTRA_VNDK_VERSIONS += 28 29
 -- 
-2.43.0
+2.34.1
 

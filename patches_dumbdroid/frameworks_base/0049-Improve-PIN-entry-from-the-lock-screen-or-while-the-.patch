@@ -1,0 +1,268 @@
+From c45aad4c5e219278309679eae646d9fa0974ee3d Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 10 Jan 2026 12:41:56 +0100
+Subject: [PATCH 49/50] Improve PIN entry from the lock screen or while the
+ screen is off
+
+Change-Id: Ie0f5499ca3b9ad8fa62c718f841887adb69b957f
+---
+ .../keyguard/BasePasswordTextView.java        |  5 +++
+ .../keyguard/KeyguardPinBasedInputView.java   | 22 +++++++++++--
+ .../KeyguardPinBasedInputViewController.java  | 19 +++++++++++
+ .../keyguard/KeyguardPinViewController.java   | 10 +-----
+ .../interactor/KeyguardKeyEventInteractor.kt  | 15 +++++----
+ .../domain/interactor/PendingPinInput.kt      | 33 ++++++++++++++++++-
+ 6 files changed, 84 insertions(+), 20 deletions(-)
+
+diff --git a/packages/SystemUI/shared/keyguard/src/com/android/keyguard/BasePasswordTextView.java b/packages/SystemUI/shared/keyguard/src/com/android/keyguard/BasePasswordTextView.java
+index fe12134054c4..7b79726d6b32 100644
+--- a/packages/SystemUI/shared/keyguard/src/com/android/keyguard/BasePasswordTextView.java
++++ b/packages/SystemUI/shared/keyguard/src/com/android/keyguard/BasePasswordTextView.java
+@@ -209,6 +209,11 @@ public abstract class BasePasswordTextView extends FrameLayout {
+ 
+         mPinShapeInput = inflatePinShapeInput(isPinHinting);
+         addView(mPinShapeInput.getView());
++
++        int length = mText.length();
++        for (int i = 0; i < length; i++) {
++            mPinShapeInput.append();
++        }
+     }
+ 
+     /** Controls whether the last entered digit is briefly shown after being entered */
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+index 6c9fcbbfaaf3..4078b93aeba7 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputView.java
+@@ -80,8 +80,11 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+     protected void setPasswordEntryEnabled(boolean enabled) {
+         mPasswordEntry.setEnabled(enabled);
+         mOkButton.setEnabled(enabled);
+-        if (enabled && !mPasswordEntry.hasFocus()) {
+-            mPasswordEntry.requestFocus();
++        if (enabled) {
++            if (!mPasswordEntry.hasFocus()) {
++                mPasswordEntry.requestFocus();
++            }
++            appendPendingPinInput();
+         }
+     }
+ 
+@@ -91,6 +94,7 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+         mOkButton.setEnabled(enabled);
+         if (enabled) {
+             mPasswordEntry.requestFocus();
++            appendPendingPinInput();
+         }
+     }
+ 
+@@ -174,9 +178,21 @@ public abstract class KeyguardPinBasedInputView extends KeyguardAbsKeyInputView
+         }
+     }
+ 
++    void appendPendingPinInput() {
++        if (!mPasswordEntry.isEnabled() || !isShown()) {
++            return;
++        }
++        String pending = PendingPinInput.take();
++        if (pending.isEmpty()) {
++            return;
++        }
++        for (int i = 0; i < pending.length(); i++) {
++            mPasswordEntry.append(pending.charAt(i));
++        }
++    }
++
+     @Override
+     protected void resetPasswordText(boolean animate, boolean announce) {
+-	PendingPinInput.reset();
+         mPasswordEntry.reset(animate, announce);
+     }
+ 
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputViewController.java b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputViewController.java
+index 10d1891c8405..48d39b453d6f 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputViewController.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardPinBasedInputViewController.java
+@@ -34,6 +34,7 @@ import com.android.internal.util.LatencyTracker;
+ import com.android.internal.widget.LockPatternUtils;
+ import com.android.keyguard.KeyguardSecurityModel.SecurityMode;
+ import com.android.keyguard.domain.interactor.KeyguardKeyboardInteractor;
++import com.android.systemui.keyguard.domain.interactor.PendingPinInput;
+ import com.android.systemui.classifier.FalsingCollector;
+ import com.android.systemui.flags.FeatureFlags;
+ import com.android.systemui.res.R;
+@@ -46,6 +47,7 @@ public abstract class KeyguardPinBasedInputViewController<T extends KeyguardPinB
+     private final FalsingCollector mFalsingCollector;
+     private final KeyguardKeyboardInteractor mKeyguardKeyboardInteractor;
+     protected PasswordTextView mPasswordEntry;
++    private final PendingPinInput.Listener mPendingPinListener = this::onPendingPinChanged;
+ 
+     private final OnKeyListener mOnKeyListener = (v, keyCode, event) -> {
+         if (event.getAction() == KeyEvent.ACTION_DOWN) {
+@@ -148,6 +150,9 @@ public abstract class KeyguardPinBasedInputViewController<T extends KeyguardPinB
+             layoutParams.height = (int) getResources().getDimension(
+                     R.dimen.keyguard_pin_field_height);
+         }
++
++        PendingPinInput.addListener(mPendingPinListener);
++        maybeAppendPendingPinInput();
+     }
+ 
+     private void setKeyboardBasedFocusOutline(boolean isAnyKeyboardConnected) {
+@@ -174,6 +179,19 @@ public abstract class KeyguardPinBasedInputViewController<T extends KeyguardPinB
+         for (NumPadKey button : mView.getButtons()) {
+             button.setOnTouchListener(null);
+         }
++
++        PendingPinInput.removeListener(mPendingPinListener);
++    }
++
++    private void onPendingPinChanged() {
++        maybeAppendPendingPinInput();
++    }
++
++    private void maybeAppendPendingPinInput() {
++        if (!mPasswordEntry.isEnabled()) {
++            return;
++        }
++        mView.appendPendingPinInput();
+     }
+ 
+     @Override
+@@ -185,6 +203,7 @@ public abstract class KeyguardPinBasedInputViewController<T extends KeyguardPinB
+         // it's guaranteed that the view has focus.
+         mPasswordEntry.clearFocus();
+         mPasswordEntry.requestFocus();
++        maybeAppendPendingPinInput();
+     }
+ 
+     @Override
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java b/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
+index c4c6795d66f6..2c6b64b2f404 100644
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardPinViewController.java
+@@ -32,8 +32,6 @@ import com.android.systemui.flags.Flags;
+ import com.android.systemui.res.R;
+ import com.android.systemui.statusbar.policy.DevicePostureController;
+ import com.android.systemui.user.domain.interactor.SelectedUserInteractor;
+-import com.android.systemui.keyguard.domain.interactor.PendingPinInput;
+-import android.util.Log;
+ 
+ public class KeyguardPinViewController
+         extends KeyguardPinBasedInputViewController<KeyguardPINView> {
+@@ -81,15 +79,9 @@ public class KeyguardPinViewController
+     @Override
+     public void onResume(int reason) {
+         super.onResume(reason);
+-        String pending = PendingPinInput.get();
+-        Log.i("Dumbdroid", "KeyguardPinViewControlelr onResume \"" + mPasswordEntry.getText() + "\" + \"" + pending);
+-        for (int i = 0; i < pending.length(); i++) {
+-            mPasswordEntry.append(pending.charAt(i));
+-        }
+-	Log.i("Dumbdroid", "After append \"" + mPasswordEntry.getText() + "\"");
+-
+     }
+ 
++
+     @Override
+     protected void onViewAttached() {
+         super.onViewAttached();
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+index 10ff2e6da4f5..88c2702a7a29 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/KeyguardKeyEventInteractor.kt
+@@ -81,12 +81,14 @@ constructor(
+                 KeyEvent.KEYCODE_MENU -> return dispatchMenuKeyEvent()
+             }
+         }
+-        if (shouldShowPinBouncer(event)) {
++        if (shouldHandlePinKey(event)) {
+             digitFromKey(event)?.let {
+-		PendingPinInput.addDigit(it)
+-		Log.i("Dumbdroid", "Adding digit " + it)
+-		}
+-            statusBarKeyguardViewManager.showPrimaryBouncer(true)
++                PendingPinInput.addDigit(it)
++                Log.i("Dumbdroid", "Adding digit " + it)
++            }
++            if (!statusBarKeyguardViewManager.primaryBouncerIsOrWillBeShowing()) {
++                statusBarKeyguardViewManager.showPrimaryBouncer(true)
++            }
+             return true
+         }
+         return false
+@@ -163,11 +165,10 @@ constructor(
+         }
+     }
+ 
+-    private fun shouldShowPinBouncer(event: KeyEvent): Boolean {
++    private fun shouldHandlePinKey(event: KeyEvent): Boolean {
+         if (event.action != KeyEvent.ACTION_DOWN) return false
+         if (statusBarStateController.state != StatusBarState.KEYGUARD) return false
+         if (!isDeviceAwake()) return false
+-        if (statusBarKeyguardViewManager.primaryBouncerIsOrWillBeShowing()) return false
+ 
+         val mode = keyguardSecurityModel.getSecurityMode(selectedUserInteractor.getSelectedUserId())
+         if (mode != KeyguardSecurityModel.SecurityMode.PIN) return false
+diff --git a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
+index 0d0faa767308..7095b5969f2c 100644
+--- a/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
++++ b/packages/SystemUI/src/com/android/systemui/keyguard/domain/interactor/PendingPinInput.kt
+@@ -1,12 +1,19 @@
+ package com.android.systemui.keyguard.domain.interactor
+ 
+ object PendingPinInput {
++    fun interface Listener {
++        fun onPendingPinChanged()
++    }
++
+     @JvmStatic
+     var digits: String = ""
+ 
++    private val listeners = ArrayList<Listener>()
++
+     @JvmStatic
+     fun addDigit(d: Char) {
+         digits += d
++        notifyListeners()
+     }
+ 
+     @JvmStatic
+@@ -14,9 +21,33 @@ object PendingPinInput {
+         return digits
+     }
+ 
++    @JvmStatic
++    fun take(): String {
++        val pending = digits
++        digits = ""
++        return pending
++    }
++
+     @JvmStatic
+     fun reset() {
+         digits = ""
+     }
+-}
+ 
++    @JvmStatic
++    fun addListener(listener: Listener) {
++        if (!listeners.contains(listener)) {
++            listeners.add(listener)
++        }
++    }
++
++    @JvmStatic
++    fun removeListener(listener: Listener) {
++        listeners.remove(listener)
++    }
++
++    private fun notifyListeners() {
++        for (listener in listeners) {
++            listener.onPendingPinChanged()
++        }
++    }
++}
+-- 
+2.34.1
+

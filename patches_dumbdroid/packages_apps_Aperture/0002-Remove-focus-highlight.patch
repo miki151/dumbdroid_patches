@@ -1,4 +1,4 @@
-From 4e149fe38c6e8af7f702b7c97b6bf0be325070b8 Mon Sep 17 00:00:00 2001
+From a1b169a7b2f2f494daadb334a01c0bb678e8591b Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 3 Sep 2025 09:35:27 +0200
 Subject: [PATCH 2/5] Remove focus highlight
@@ -43,5 +43,5 @@ index c77ef88..92172ea 100644
      android:keepScreenOn="true"
      tools:context=".CameraActivity">
 -- 
-2.43.0
+2.34.1
 

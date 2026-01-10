@@ -1,4 +1,4 @@
-From 0b934bab0b3b2a010342c667b485cc6d2ac8c70d Mon Sep 17 00:00:00 2001
+From d1bd426a4461f30e6aab3153ee97e5b411cbeb6f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 21 Jul 2025 15:52:38 +0200
 Subject: [PATCH 2/2] Remove default vndk versions and leave it to the device
@@ -25,5 +25,5 @@ index 3b70b3edef..6ecac49c48 100644
  PRODUCT_BUILD_CACHE_IMAGE := false
  PRODUCT_BUILD_DEBUG_BOOT_IMAGE := false
 -- 
-2.43.0
+2.34.1
 

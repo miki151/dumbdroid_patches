@@ -1,0 +1,278 @@
+From 3b3cae5e6ddbab517c34c768fc123b1f4a4597a3 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 10 Jan 2026 12:36:04 +0100
+Subject: [PATCH 48/50] Add support for the keypad backlight toggle in settings
+
+Change-Id: Ic8930b57a7341d17fdae66584c71253368833774
+---
+ core/java/android/provider/Settings.java      |  8 +++
+ .../server/input/InputManagerService.java     |  8 +++
+ .../input/KeyboardBacklightController.java    | 35 ++++++++++-
+ .../server/power/PowerManagerService.java     | 58 +++++++++++++------
+ 4 files changed, 89 insertions(+), 20 deletions(-)
+
+diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
+index 783483d8e491..c7b40d337e4f 100644
+--- a/core/java/android/provider/Settings.java
++++ b/core/java/android/provider/Settings.java
+@@ -5309,6 +5309,14 @@ public final class Settings {
+         @Readable
+         public static final String KEYBOARD_VIBRATION_ENABLED = "keyboard_vibration_enabled";
+ 
++        /**
++         * Whether keyboard backlight is enabled. The value is boolean (1 or 0).
++         *
++         * @hide
++         */
++        @Readable
++        public static final String KEYBOARD_BACKLIGHT_ENABLED = "keyboard_backlight_enabled";
++
+         /**
+          * Ringer volume. This is used internally, changing this value will not
+          * change the volume. See AudioManager.
+diff --git a/services/core/java/com/android/server/input/InputManagerService.java b/services/core/java/com/android/server/input/InputManagerService.java
+index d3d29ef85c62..5b9eacb11f46 100644
+--- a/services/core/java/com/android/server/input/InputManagerService.java
++++ b/services/core/java/com/android/server/input/InputManagerService.java
+@@ -3577,6 +3577,13 @@ public class InputManagerService extends IInputManager.Stub
+         mNative.setAccessibilityStickyKeysEnabled(enabled);
+     }
+ 
++    /**
++     * Sets whether keyboard backlight is enabled.
++     */
++    public void setKeyboardBacklightEnabled(boolean enabled) {
++        mKeyboardBacklightController.setKeyboardBacklightEnabled(enabled);
++    }
++
+     void setUseLargePointerIcons(boolean useLargeIcons) {
+         mPointerIconCache.setUseLargePointerIcons(useLargeIcons);
+     }
+@@ -3588,6 +3595,7 @@ public class InputManagerService extends IInputManager.Stub
+         default void unregisterKeyboardBacklightListener(IKeyboardBacklightListener l, int pid) {}
+         default void onInteractiveChanged(boolean isInteractive) {}
+         default void notifyUserActivity() {}
++        default void setKeyboardBacklightEnabled(boolean enabled) {}
+         default void systemRunning() {}
+         default void dump(PrintWriter pw) {}
+     }
+diff --git a/services/core/java/com/android/server/input/KeyboardBacklightController.java b/services/core/java/com/android/server/input/KeyboardBacklightController.java
+index c3205afe14f2..081451a9c1c3 100644
+--- a/services/core/java/com/android/server/input/KeyboardBacklightController.java
++++ b/services/core/java/com/android/server/input/KeyboardBacklightController.java
+@@ -71,6 +71,7 @@ final class KeyboardBacklightController implements
+     private static final int MSG_NOTIFY_USER_ACTIVITY = 4;
+     private static final int MSG_NOTIFY_USER_INACTIVITY = 5;
+     private static final int MSG_INTERACTIVE_STATE_CHANGED = 6;
++    private static final int MSG_SET_KEYBOARD_BACKLIGHT_ENABLED = 7;
+     private static final int MAX_BRIGHTNESS = 255;
+     private static final int DEFAULT_NUM_BRIGHTNESS_CHANGE_STEPS = 10;
+     @VisibleForTesting
+@@ -101,6 +102,8 @@ final class KeyboardBacklightController implements
+     private boolean mIsBacklightOn = false;
+     // Maintains state if currently the device is interactive or not
+     private boolean mIsInteractive = true;
++    // Maintains state if keyboard backlight is enabled via settings.
++    private boolean mKeyboardBacklightEnabled = true;
+ 
+     // List of currently registered keyboard backlight listeners
+     @GuardedBy("mKeyboardBacklightListenerRecords")
+@@ -192,7 +195,17 @@ final class KeyboardBacklightController implements
+         mHandler.sendMessage(msg);
+     }
+ 
++    @Override
++    public void setKeyboardBacklightEnabled(boolean enabled) {
++        Message msg = Message.obtain(mHandler, MSG_SET_KEYBOARD_BACKLIGHT_ENABLED,
++                enabled ? 1 : 0, 0);
++        mHandler.sendMessage(msg);
++    }
++
+     private void updateKeyboardBacklight(int deviceId, Direction direction) {
++        if (!mKeyboardBacklightEnabled) {
++            return;
++        }
+         InputDevice inputDevice = getInputDevice(deviceId);
+         KeyboardBacklightState state = mKeyboardBacklights.get(deviceId);
+         if (inputDevice == null || state == null) {
+@@ -324,6 +337,18 @@ final class KeyboardBacklightController implements
+         updateAmbientLightListener();
+     }
+ 
++    private void handleKeyboardBacklightEnabled(boolean enabled) {
++        if (mKeyboardBacklightEnabled == enabled) {
++            return;
++        }
++        mKeyboardBacklightEnabled = enabled;
++        for (int i = 0; i < mKeyboardBacklights.size(); i++) {
++            KeyboardBacklightState state = mKeyboardBacklights.valueAt(i);
++            state.onBacklightStateChanged();
++        }
++        updateAmbientLightListener();
++    }
++
+     @VisibleForTesting
+     public void handleAmbientLightValueChanged(int brightnessValue) {
+         mAmbientBacklightValue = brightnessValue;
+@@ -355,6 +380,9 @@ final class KeyboardBacklightController implements
+             case MSG_INTERACTIVE_STATE_CHANGED:
+                 handleInteractiveStateChange((boolean) msg.obj);
+                 return true;
++            case MSG_SET_KEYBOARD_BACKLIGHT_ENABLED:
++                handleKeyboardBacklightEnabled(msg.arg1 != 0);
++                return true;
+         }
+         return false;
+     }
+@@ -478,6 +506,7 @@ final class KeyboardBacklightController implements
+             needToListenAmbientLightSensor |= mKeyboardBacklights.valueAt(i).mUseAmbientController;
+         }
+         needToListenAmbientLightSensor &= mIsInteractive;
++        needToListenAmbientLightSensor &= mKeyboardBacklightEnabled;
+         if (needToListenAmbientLightSensor && mAmbientListener == null) {
+             mAmbientListener = this::handleAmbientLightValueChanged;
+             mAmbientController.registerAmbientBacklightListener(mAmbientListener);
+@@ -597,19 +626,19 @@ final class KeyboardBacklightController implements
+         private void onBacklightStateChanged() {
+             int toValue = mUseAmbientController ? mAmbientBacklightValue
+                     : mBrightnessValueForLevel[mBrightnessLevel];
+-            setBacklightValue(mIsBacklightOn ? toValue : 0);
++            setBacklightValue((mIsBacklightOn && mKeyboardBacklightEnabled) ? toValue : 0);
+         }
+         private void setBrightnessLevel(int brightnessLevel) {
+             // Once we manually set level, disregard ambient light controller
+             mUseAmbientController = false;
+-            if (mIsBacklightOn) {
++            if (mIsBacklightOn && mKeyboardBacklightEnabled) {
+                 setBacklightValue(mBrightnessValueForLevel[brightnessLevel]);
+             }
+             mBrightnessLevel = brightnessLevel;
+         }
+ 
+         private void onAmbientBacklightValueChanged() {
+-            if (mIsBacklightOn && mUseAmbientController) {
++            if (mIsBacklightOn && mUseAmbientController && mKeyboardBacklightEnabled) {
+                 setBacklightValue(mAmbientBacklightValue);
+             }
+         }
+diff --git a/services/core/java/com/android/server/power/PowerManagerService.java b/services/core/java/com/android/server/power/PowerManagerService.java
+index d7a46c545c14..d8be43de3ae7 100644
+--- a/services/core/java/com/android/server/power/PowerManagerService.java
++++ b/services/core/java/com/android/server/power/PowerManagerService.java
+@@ -365,6 +365,7 @@ public final class PowerManagerService extends SystemService
+     private float mButtonBrightness;
+     private boolean mKeyboardVisible;
+     private float mKeyboardBrightness;
++    private boolean mKeyboardBacklightEnabled = true;
+ 
+     private boolean mButtonLightOnKeypressOnly;
+ 
+@@ -1502,6 +1503,9 @@ public final class PowerManagerService extends SystemService
+         resolver.registerContentObserver(Settings.System.getUriFor(
+                 Settings.System.SCREEN_AUTO_BRIGHTNESS_ADJ),
+                 false, mSettingsObserver, UserHandle.USER_ALL);
++        resolver.registerContentObserver(Settings.System.getUriFor(
++                Settings.System.KEYBOARD_BACKLIGHT_ENABLED),
++                false, mSettingsObserver, UserHandle.USER_ALL);
+         resolver.registerContentObserver(Settings.Global.getUriFor(
+                 Settings.Global.THEATER_MODE_ON),
+                 false, mSettingsObserver, UserHandle.USER_ALL);
+@@ -1686,6 +1690,8 @@ public final class PowerManagerService extends SystemService
+         mKeyboardBrightness = LineageSettings.Secure.getFloatForUser(resolver,
+                 LineageSettings.Secure.KEYBOARD_BRIGHTNESS, mKeyboardBrightnessDefault,
+                 UserHandle.USER_CURRENT);
++        mKeyboardBacklightEnabled = Settings.System.getIntForUser(resolver,
++                Settings.System.KEYBOARD_BACKLIGHT_ENABLED, 1, UserHandle.USER_CURRENT) != 0;
+ 
+         mForceNavbar = LineageSettings.System.getIntForUser(resolver,
+                 LineageSettings.System.FORCE_SHOW_NAVBAR,
+@@ -2632,6 +2638,7 @@ public final class PowerManagerService extends SystemService
+                     break;
+                 }
+             }
++            updateKeyboardBacklightLocked();
+ 
+             // Phase 2: Lock profiles that became inactive/not kept awake.
+             updateProfilesLocked(now);
+@@ -3105,20 +3112,6 @@ public final class PowerManagerService extends SystemService
+                                 }
+                             }
+ 
+-                            if (mKeyboardLight != null) {
+-                                float keyboardBrightness = BRIGHTNESS_OFF_FLOAT;
+-                                if (isValidBrightness(mButtonBrightnessOverrideFromWindowManager)) {
+-                                    if (mButtonBrightnessOverrideFromWindowManager >
+-                                            PowerManager.BRIGHTNESS_MIN) {
+-                                        keyboardBrightness =
+-                                                mButtonBrightnessOverrideFromWindowManager;
+-                                    }
+-                                } else if (isValidKeyboardBrightness(mKeyboardBrightness)) {
+-                                    keyboardBrightness = mKeyboardBrightness;
+-                                }
+-                                mKeyboardLight.setBrightness(mKeyboardVisible ?
+-                                        keyboardBrightness : BRIGHTNESS_OFF_FLOAT);
+-                            }
+                         }
+                     } else {
+                         groupNextTimeout = lastUserActivityTime + screenOffTimeout;
+@@ -3129,9 +3122,6 @@ public final class PowerManagerService extends SystemService
+                                     mButtonsLight.setBrightness(BRIGHTNESS_OFF_FLOAT);
+                                     powerGroup.setButtonOnLocked(false);
+                                 }
+-                                if (mKeyboardLight != null) {
+-                                    mKeyboardLight.setBrightness(BRIGHTNESS_OFF_FLOAT);
+-                                }
+                             }
+                         }
+                     }
+@@ -3865,6 +3855,39 @@ public final class PowerManagerService extends SystemService
+         return value > PowerManager.BRIGHTNESS_MIN && value <= PowerManager.BRIGHTNESS_MAX;
+     }
+ 
++    @GuardedBy("mLock")
++    private void updateKeyboardBacklightLocked() {
++        if (mKeyboardLight == null) {
++            return;
++        }
++        boolean screenOn = isDefaultDisplayOnLocked();
++        float keyboardBrightness = BRIGHTNESS_OFF_FLOAT;
++        if (mKeyboardBacklightEnabled && screenOn) {
++            if (isValidBrightness(mButtonBrightnessOverrideFromWindowManager)) {
++                if (mButtonBrightnessOverrideFromWindowManager > PowerManager.BRIGHTNESS_MIN) {
++                    keyboardBrightness = mButtonBrightnessOverrideFromWindowManager;
++                }
++            } else if (isValidKeyboardBrightness(mKeyboardBrightness)) {
++                keyboardBrightness = mKeyboardBrightness;
++            }
++        }
++        setKeyboardBacklightLocked(keyboardBrightness);
++    }
++
++    @GuardedBy("mLock")
++    private boolean isDefaultDisplayOnLocked() {
++        DisplayInfo displayInfo = mDisplayManagerInternal.getDisplayInfo(Display.DEFAULT_DISPLAY);
++        if (displayInfo == null) {
++            return PowerManagerInternal.isInteractive(getGlobalWakefulnessLocked());
++        }
++        return displayInfo.state == Display.STATE_ON;
++    }
++
++    @GuardedBy("mLock")
++    private void setKeyboardBacklightLocked(float keyboardBrightness) {
++        mKeyboardLight.setBrightness(keyboardBrightness);
++    }
++
+     @VisibleForTesting
+     @GuardedBy("mLock")
+     int getDesiredScreenPolicyLocked(int groupId) {
+@@ -4923,6 +4946,7 @@ public final class PowerManagerService extends SystemService
+             pw.println("  mButtonBrightnessOverrideFromWindowManager="
+                     + mButtonBrightnessOverrideFromWindowManager);
+             pw.println("  mKeyboardBrightness=" + mKeyboardBrightness);
++            pw.println("  mKeyboardBacklightEnabled=" + mKeyboardBacklightEnabled);
+             pw.println("  mScreenBrightnessOverrideFromWindowManager="
+                     + mScreenBrightnessOverrideFromWindowManager);
+             pw.println("  mUserActivityTimeoutOverrideFromWindowManager="
+-- 
+2.34.1
+

@@ -1,4 +1,4 @@
-From c55081c514cc85c6a0aa5571878d80776fcde661 Mon Sep 17 00:00:00 2001
+From 615cb38465b7298c68037ee81900b03b78e293e6 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 20 Nov 2025 09:30:56 +0100
 Subject: [PATCH 13/13] Change the default home layout to include a clock
@@ -83,5 +83,5 @@ index d0150abd4c..71cbb7ae84 100644
  
  </favorites>
 -- 
-2.43.0
+2.34.1
 

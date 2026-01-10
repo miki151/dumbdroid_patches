@@ -1,4 +1,4 @@
-From a820642fc5e9340f1ee50385f9beb434e7a09aad Mon Sep 17 00:00:00 2001
+From 031ff4d08e03d4de037163041abafe9a7d769a57 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:10:09 +0200
 Subject: [PATCH 04/13] Tweak launcher icons
@@ -43,5 +43,5 @@ index bd75f026f4..9c7b92f965 100644
  
  </favorites>
 -- 
-2.43.0
+2.34.1
 

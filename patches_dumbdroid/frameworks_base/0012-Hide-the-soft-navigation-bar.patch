@@ -1,7 +1,7 @@
-From af7a98ed16b4b17149144738081920917e9a786f Mon Sep 17 00:00:00 2001
+From b01629a260ddf1e425f55fecb871c26bbfc1c185 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:06:20 +0200
-Subject: [PATCH 12/46] Hide the soft navigation bar
+Subject: [PATCH 12/50] Hide the soft navigation bar
 
 Change-Id: I78822634aadaac60d5a21821cbb649338ee02fe0
 ---
@@ -43,5 +43,5 @@ index 68be5700b6b3..eb7f3073fc47 100644
  
      /** @see #initializeTaskbarIfNecessary() */
 -- 
-2.43.0
+2.34.1
 

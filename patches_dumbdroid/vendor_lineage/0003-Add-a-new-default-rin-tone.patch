@@ -1,4 +1,4 @@
-From 63250eee89adf08ddb4de2fe51fc241d0f9012e6 Mon Sep 17 00:00:00 2001
+From 48b16a3793c83c9892065342c1a092d52a514f61 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 26 Oct 2025 12:37:21 +0100
 Subject: [PATCH 3/5] Add a new default rin tone
@@ -44,5 +44,5 @@ index 0c6ebba8..d189e0bf 100644
  # Tethering - allow without requiring a provisioning app
  # (for devices that check this)
 -- 
-2.43.0
+2.34.1
 

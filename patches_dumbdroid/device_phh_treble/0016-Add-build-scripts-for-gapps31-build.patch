@@ -1,4 +1,4 @@
-From 3aaf29d66757eae3d145c060667546e53136cdf2 Mon Sep 17 00:00:00 2001
+From c73d2dfab4a843a11dcafa91e79c9cdc86bc139e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:24:27 +0100
 Subject: [PATCH 16/25] Add build scripts for gapps31 build
@@ -78,5 +78,5 @@ index 0000000..b42951b
 +PRODUCT_EXTRA_VNDK_VERSIONS := 31
 +
 -- 
-2.43.0
+2.34.1
 

@@ -1,7 +1,7 @@
-From e66ce336b8ebd646be2810ddf713c9cd0dd4ecb8 Mon Sep 17 00:00:00 2001
+From eaec8b0970cfe66904d8423559bca5d00977caf9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 26 Oct 2025 12:35:41 +0100
-Subject: [PATCH 38/46] Turn off raise to wake by default
+Subject: [PATCH 38/50] Turn off raise to wake by default
 
 Change-Id: Ie06747d20df1e6027289cd78839580302ca34cc9
 ---
@@ -22,5 +22,5 @@ index 73d3cc59ea47..fa5393043a9d 100644
      <!-- Default state of tap to wake -->
      <bool name="def_double_tap_to_wake">true</bool>
 -- 
-2.43.0
+2.34.1
 

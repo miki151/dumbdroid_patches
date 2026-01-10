@@ -1,4 +1,4 @@
-From 0c394f0de63e91d36cd295b1b9969e6c4f525053 Mon Sep 17 00:00:00 2001
+From 04d3151696b41cabc98dc199767ef497c2226894 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:30:39 +0200
 Subject: [PATCH] Save space in the ROM by disabling dex_preopt
@@ -23,5 +23,5 @@ index 6f8bd07..de89b73 100644
          "bouncycastle-unbundled",
          "com.google.android.material_material",
 -- 
-2.43.0
+2.34.1
 

@@ -1,4 +1,4 @@
-From b586295a8fc4bf79b6b830caab22c5156c0273b9 Mon Sep 17 00:00:00 2001
+From 1b164670084f8e8987cee508e1b798a20270f468 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 17 Aug 2025 11:13:55 +0200
 Subject: [PATCH 07/13] Make the power button close recent apps in the "power
@@ -68,5 +68,5 @@ index e28598c21b..720338c165 100644
 \ No newline at end of file
 +}
 -- 
-2.43.0
+2.34.1
 

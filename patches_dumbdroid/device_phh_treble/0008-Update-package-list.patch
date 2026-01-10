@@ -1,4 +1,4 @@
-From 2dff5a7098fd590f030a6be27ad185dfeddaf58e Mon Sep 17 00:00:00 2001
+From 135a75e1f5e818064166ad35ad3188837ca0e2ab Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:20:57 +0200
 Subject: [PATCH 08/25] Update package list
@@ -32,5 +32,5 @@ index fa91409..68d7fd3 100644
 +PRODUCT_PACKAGES += DumbdroidUpdater DumbdroidPanel DumbdroidDonationLink
 +PRODUCT_PACKAGES += musicplayer breezy_weather organic_maps
 -- 
-2.43.0
+2.34.1
 

@@ -1,7 +1,7 @@
-From 46b7e7f47e28f967375c6dd09a6bd24a27a228c9 Mon Sep 17 00:00:00 2001
+From 05326e6b3c6ee7529f2aeea68086663a4c5582a7 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 11:07:38 +0200
-Subject: [PATCH 04/46] Add dpad volume controls
+Subject: [PATCH 04/50] Add dpad volume controls
 
 Change-Id: I5bb7ac4898e6c08df2dcadfa484df25fd06d9ce2
 ---
@@ -178,5 +178,5 @@ index 028fd1db8a12..2aafb485344b 100644
          switch (keyCode) {
              case KeyEvent.KEYCODE_BACK: {
 -- 
-2.43.0
+2.34.1
 

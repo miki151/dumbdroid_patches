@@ -1,4 +1,4 @@
-From 18fe1ffbe049b49ede2d53cfd6de7e086ea4f63c Mon Sep 17 00:00:00 2001
+From 355b96f130221709965edb74b84a0d545e13e1ae Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 20 Sep 2025 18:16:40 +0200
 Subject: [PATCH] Fix dpad navigation
@@ -33,5 +33,5 @@ index 9331d10..38bc431 100644
  
          if (mHostInterface != null) {
 -- 
-2.43.0
+2.34.1
 

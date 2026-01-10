@@ -1,4 +1,4 @@
-From e47d77a2172ac23b954f1d9a02443c574c3abe87 Mon Sep 17 00:00:00 2001
+From 45ae68e667f56ac42e6d3a718f40661a22ca6b6f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:25:00 +0200
 Subject: [PATCH 11/25] Add DumbdroidAdmin package
@@ -35,5 +35,5 @@ index 68d7fd3..d15c9a4 100644
 +PRODUCT_PACKAGES += DumbdroidUpdater DumbdroidPanel DumbdroidDonationLink DumbdroidAdmin
  PRODUCT_PACKAGES += musicplayer breezy_weather organic_maps
 -- 
-2.43.0
+2.34.1
 

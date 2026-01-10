@@ -1,4 +1,4 @@
-From f9b6599c6d51f0815d4e593aedd36248d75d5ec5 Mon Sep 17 00:00:00 2001
+From 8b5f2c2e0ff95b71d56165fedee74c598e681cec Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 09:58:52 +0200
 Subject: [PATCH 11/13] Remove cycling through recent apps
@@ -31,5 +31,5 @@ index f473628f8f..0f42298a6e 100644
                  return snapToPageRelative(mIsRtl ? 1 : -1, true /* cycle */, DIRECTION_LEFT);
              case KeyEvent.KEYCODE_DPAD_UP:
 -- 
-2.43.0
+2.34.1
 

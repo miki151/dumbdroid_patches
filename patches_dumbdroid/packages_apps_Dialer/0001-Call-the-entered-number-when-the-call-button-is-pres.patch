@@ -1,4 +1,4 @@
-From 8831e3a301e55f325aefc06826a4d1d7ae5d0170 Mon Sep 17 00:00:00 2001
+From a58a7a3d79ed2e1c85b9cc0b8f096908a6adb084 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 27 Jul 2025 14:04:16 +0200
 Subject: [PATCH 1/2] Call the entered number when the call button is pressed.
@@ -22,5 +22,5 @@ index c3bd2bce0..098735d8f 100644
          return true;
        }
 -- 
-2.43.0
+2.34.1
 

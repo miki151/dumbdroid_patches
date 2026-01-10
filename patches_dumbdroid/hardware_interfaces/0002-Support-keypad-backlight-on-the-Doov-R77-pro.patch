@@ -1,7 +1,7 @@
-From 438e444f9d662ab6dedfb4c99184bc711ff9dec3 Mon Sep 17 00:00:00 2001
+From a89f3aca57d31161139039b0ae23fc32f70da56b Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Sep 2025 10:54:51 +0200
-Subject: [PATCH 2/3] Support keypad backlight on the Doov R77 pro.
+Subject: [PATCH 2/4] Support keypad backlight on the Doov R77 pro.
 
 Change-Id: I3c349da836c2a19d81e77b92cde56cc38eb15b5f
 ---
@@ -56,5 +56,5 @@ index 8fbc7dbfb8..3a94162279 100644
      fn default() -> Self {
          let lights = vec![
 -- 
-2.43.0
+2.34.1
 

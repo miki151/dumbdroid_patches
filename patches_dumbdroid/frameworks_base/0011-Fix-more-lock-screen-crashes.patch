@@ -1,7 +1,7 @@
-From c8422dd651318f269e48291ff5b1f30c6a269b77 Mon Sep 17 00:00:00 2001
+From 1e5888f27771d8aaeb3eb3d084bd76591419bb0e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:05:17 +0200
-Subject: [PATCH 11/46] Fix more lock screen crashes
+Subject: [PATCH 11/50] Fix more lock screen crashes
 
 Change-Id: I33b1d453dbe90382cc2fcdf5607af478b4f6f94b
 ---
@@ -110,5 +110,5 @@ index b70f3b823968..02b38b066372 100644
              }
              disableEscrowTokenOnNonManagedDevicesIfNeeded(userId);
 -- 
-2.43.0
+2.34.1
 

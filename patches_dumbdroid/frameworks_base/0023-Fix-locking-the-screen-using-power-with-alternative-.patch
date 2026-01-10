@@ -1,7 +1,7 @@
-From f0679d222eda3bf8e0c34de8a2975849205f62cd Mon Sep 17 00:00:00 2001
+From 49cdfa0b64c8546e6108e179a1a7485afb0e64cd Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 27 Aug 2025 10:54:04 +0200
-Subject: [PATCH 23/46] Fix locking the screen using power with alternative
+Subject: [PATCH 23/50] Fix locking the screen using power with alternative
  launchers
 
 Change-Id: I7f44cd8b3ff43db5afdf177ad2307ea8d6f33acd
@@ -22,5 +22,5 @@ index 6b879d6177ad..ec5e110d9b88 100644
              }
              switch (mShortPressOnPowerBehavior) {
 -- 
-2.43.0
+2.34.1
 

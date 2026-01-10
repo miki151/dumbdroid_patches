@@ -1,7 +1,7 @@
-From e7e4f6518dccf6472b9d9f091efbfc63dcaff86a Mon Sep 17 00:00:00 2001
+From 1ec8f8e413346037cacf605333aef8db404c8275 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:32:16 +0200
-Subject: [PATCH 2/6] Add settings entries for dpad volume control
+Subject: [PATCH 2/7] Add settings entries for dpad volume control
 
 Change-Id: I3069ca2777922da81d551c5f44b29e5c0eac31b8
 ---
@@ -79,5 +79,5 @@ index 62092f15..a0854f72 100644
              VALIDATORS.put(MENU_WAKE_SCREEN, MENU_WAKE_SCREENN_VALIDATOR);
              VALIDATORS.put(VOLUME_ANSWER_CALL, VOLUME_ANSWER_CALL_VALIDATOR);
 -- 
-2.43.0
+2.34.1
 

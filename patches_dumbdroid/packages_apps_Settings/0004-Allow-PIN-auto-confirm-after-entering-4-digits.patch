@@ -1,7 +1,7 @@
-From 36e781395218283c45c1b5bd477454e205d2e269 Mon Sep 17 00:00:00 2001
+From d621c62cb95f661090a4bb1b0433a31f9fdd4870 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:30:21 +0200
-Subject: [PATCH 4/8] Allow PIN auto-confirm after entering 4 digits
+Subject: [PATCH 4/9] Allow PIN auto-confirm after entering 4 digits
 
 Change-Id: Idefa4228ff52c112bfff01d926b5fa8dd1ceca96
 ---
@@ -127,5 +127,5 @@ index 86c1244c8b0..920597b76d3 100644
          assertThat(mController.isAvailable()).isTrue();
      }
 -- 
-2.43.0
+2.34.1
 

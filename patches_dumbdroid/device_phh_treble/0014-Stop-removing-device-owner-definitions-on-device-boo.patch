@@ -1,4 +1,4 @@
-From 90a5c6ead837a4448760cad743a5050429392dc6 Mon Sep 17 00:00:00 2001
+From adfa270e2386b0c5cbfdb7cbd1560b6ac608c274 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 3 Nov 2025 11:35:33 +0100
 Subject: [PATCH 14/25] Stop removing device owner definitions on device boot
@@ -25,5 +25,5 @@ index 74bfc99..062a61a 100644
      exec u:r:phhsu_daemon:s0 root -- /system/bin/phh-ota delete-other-slot
  
 -- 
-2.43.0
+2.34.1
 

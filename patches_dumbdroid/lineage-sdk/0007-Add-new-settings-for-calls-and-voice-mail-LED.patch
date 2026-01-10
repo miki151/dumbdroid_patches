@@ -1,0 +1,362 @@
+From 44b453f6035c88e4b924bc5ef7b2fbb1abb5cfd0 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Sat, 10 Jan 2026 18:36:06 +0100
+Subject: [PATCH 7/7] Add new settings for calls and voice mail LED
+
+Change-Id: Ib5567cf08b4e5460178da50471a8614af86e452d
+---
+ .../res/values/defaults.xml                   |   2 +
+ .../LineageDatabaseHelper.java                |   4 +
+ .../LineageSettingsProviderDefaultsTest.java  |   6 +
+ .../lineageos/providers/LineageSettings.java  |  24 +++
+ .../LineageNotificationLights.java            | 172 ++++++++++++++++--
+ 5 files changed, 190 insertions(+), 18 deletions(-)
+
+diff --git a/packages/LineageSettingsProvider/res/values/defaults.xml b/packages/LineageSettingsProvider/res/values/defaults.xml
+index 11e226b2..e709041e 100644
+--- a/packages/LineageSettingsProvider/res/values/defaults.xml
++++ b/packages/LineageSettingsProvider/res/values/defaults.xml
+@@ -64,6 +64,8 @@
+     <!-- Default value for notification LED customization -->
+     <bool name="def_notification_pulse_custom_enable">false</bool>
+     <string name="def_notification_pulse_custom_value"></string>
++    <bool name="def_notification_pulse_call_enable">true</bool>
++    <bool name="def_notification_pulse_vmail_enable">true</bool>
+ 
+     <!-- Default value for swapping volume keys on rotation -->
+     <bool name="def_swap_volume_keys_on_rotation">false</bool>
+diff --git a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+index 3ea18395..d56fdb8d 100644
+--- a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
++++ b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+@@ -440,6 +440,10 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
+ 
+             loadBooleanSetting(stmt, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE,
+                     R.bool.def_notification_pulse_custom_enable);
++            loadBooleanSetting(stmt, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_ENABLE,
++                    R.bool.def_notification_pulse_call_enable);
++            loadBooleanSetting(stmt, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE,
++                    R.bool.def_notification_pulse_vmail_enable);
+ 
+             loadBooleanSetting(stmt, LineageSettings.System.SWAP_VOLUME_KEYS_ON_ROTATION,
+                     R.bool.def_swap_volume_keys_on_rotation);
+diff --git a/packages/LineageSettingsProvider/tests/src/org/lineageos/lineagesettings/tests/LineageSettingsProviderDefaultsTest.java b/packages/LineageSettingsProvider/tests/src/org/lineageos/lineagesettings/tests/LineageSettingsProviderDefaultsTest.java
+index 27953452..62d197b7 100644
+--- a/packages/LineageSettingsProvider/tests/src/org/lineageos/lineagesettings/tests/LineageSettingsProviderDefaultsTest.java
++++ b/packages/LineageSettingsProvider/tests/src/org/lineageos/lineagesettings/tests/LineageSettingsProviderDefaultsTest.java
+@@ -60,6 +60,12 @@ public class LineageSettingsProviderDefaultsTest extends AndroidTestCase {
+         SYSTEM_SETTINGS_DEFAULTS.add(new Setting(
+                 LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE,
+                 "R.bool.def_notification_pulse_custom_enable"));
++        SYSTEM_SETTINGS_DEFAULTS.add(new Setting(
++                LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_ENABLE,
++                "R.bool.def_notification_pulse_call_enable"));
++        SYSTEM_SETTINGS_DEFAULTS.add(new Setting(
++                LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE,
++                "R.bool.def_notification_pulse_vmail_enable"));
+         SYSTEM_SETTINGS_DEFAULTS.add(new Setting(
+                 LineageSettings.System.SWAP_VOLUME_KEYS_ON_ROTATION,
+                 "R.bool.def_swap_volume_keys_on_rotation"));
+diff --git a/sdk/src/java/lineageos/providers/LineageSettings.java b/sdk/src/java/lineageos/providers/LineageSettings.java
+index fb68b695..2475994f 100644
+--- a/sdk/src/java/lineageos/providers/LineageSettings.java
++++ b/sdk/src/java/lineageos/providers/LineageSettings.java
+@@ -1893,6 +1893,16 @@ public final class LineageSettings {
+         public static final Validator NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF_VALIDATOR =
+                 sNonNegativeIntegerValidator;
+ 
++        /**
++         * Whether to allow missed call notifications to use the LED
++         */
++        public static final String NOTIFICATION_LIGHT_PULSE_CALL_ENABLE =
++                "notification_light_pulse_call_enable";
++
++        /** @hide */
++        public static final Validator NOTIFICATION_LIGHT_PULSE_CALL_ENABLE_VALIDATOR =
++                sBooleanValidator;
++
+         /**
+          * What color to use for the voicemail notification LED
+          */
+@@ -1923,6 +1933,16 @@ public final class LineageSettings {
+         public static final Validator NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF_VALIDATOR =
+                 sNonNegativeIntegerValidator;
+ 
++        /**
++         * Whether to allow voicemail notifications to use the LED
++         */
++        public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE =
++                "notification_light_pulse_vmail_enable";
++
++        /** @hide */
++        public static final Validator NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE_VALIDATOR =
++                sBooleanValidator;
++
+         /**
+          * Whether to use the custom LED values for the notification pulse LED.
+          * 0 = 0ff, 1 = on
+@@ -2257,12 +2277,16 @@ public final class LineageSettings {
+                     NOTIFICATION_LIGHT_PULSE_CALL_LED_ON_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF,
+                     NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF_VALIDATOR);
++            VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_CALL_ENABLE,
++                    NOTIFICATION_LIGHT_PULSE_CALL_ENABLE_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR,
+                     NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON,
+                     NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF,
+                     NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF_VALIDATOR);
++            VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE,
++                    NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE,
+                     NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE_VALIDATOR);
+             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES,
+diff --git a/sdk/src/java/org/lineageos/internal/notification/LineageNotificationLights.java b/sdk/src/java/org/lineageos/internal/notification/LineageNotificationLights.java
+index 5d23c70e..2b3d1566 100644
+--- a/sdk/src/java/org/lineageos/internal/notification/LineageNotificationLights.java
++++ b/sdk/src/java/org/lineageos/internal/notification/LineageNotificationLights.java
+@@ -45,6 +45,10 @@ import java.util.Map;
+ public final class LineageNotificationLights {
+     private static final String TAG = "LineageNotificationLights";
+     private static final boolean DEBUG = false;
++    private static final String CHANNEL_ID_MISSED_CALLS = "TelecomMissedCalls";
++    private static final String CHANNEL_ID_VOICE_MAIL = "voiceMail";
++    private static final String CHANNEL_ID_DIALER_MISSED_CALL = "phone_missed_call";
++    private static final String CHANNEL_ID_DIALER_VOICEMAIL_PREFIX = "phone_voicemail";
+ 
+     // Light capabilities
+     // Whether the notification light is RGB adjustable.
+@@ -60,11 +64,15 @@ public final class LineageNotificationLights {
+     private boolean mScreenOnEnabled;
+     private boolean mZenAllowLights;
+     private boolean mNotificationLedEnabled;
++    private boolean mMissedCallLightsEnabled;
++    private boolean mVoicemailLightsEnabled;
+     private int mNotificationLedBrightnessLevel;
+     private int mNotificationLedBrightnessLevelZen;
+     private int mDefaultNotificationColor;
+     private int mDefaultNotificationLedOn;
+     private int mDefaultNotificationLedOff;
++    private LedValues mMissedCallLedValues;
++    private LedValues mVoicemailLedValues;
+ 
+     private ArrayMap<String, LedValues> mNotificationPulseCustomLedValues;
+     private Map<String, String> mPackageNameMappings;
+@@ -168,6 +176,86 @@ public final class LineageNotificationLights {
+         return mNotificationPulseCustomLedValues.get(mapPackage(packageName));
+     }
+ 
++    private LedValues getLedValuesForCategory(Notification notification) {
++        if (notification == null) {
++            return null;
++        }
++        String category = notification.category;
++        if (Notification.CATEGORY_MISSED_CALL.equals(category)) {
++            return mMissedCallLightsEnabled ? mMissedCallLedValues : null;
++        }
++        if (Notification.CATEGORY_VOICEMAIL.equals(category)) {
++            return mVoicemailLightsEnabled ? mVoicemailLedValues : null;
++        }
++        String channelId = notification.getChannelId();
++        if (CHANNEL_ID_MISSED_CALLS.equals(channelId)) {
++            return mMissedCallLightsEnabled ? mMissedCallLedValues : null;
++        }
++        if (CHANNEL_ID_DIALER_MISSED_CALL.equals(channelId)) {
++            return mMissedCallLightsEnabled ? mMissedCallLedValues : null;
++        }
++        if (CHANNEL_ID_VOICE_MAIL.equals(channelId)) {
++            return mVoicemailLightsEnabled ? mVoicemailLedValues : null;
++        }
++        if (channelId != null && channelId.startsWith(CHANNEL_ID_DIALER_VOICEMAIL_PREFIX)) {
++            return mVoicemailLightsEnabled ? mVoicemailLedValues : null;
++        }
++        return null;
++    }
++
++    private boolean isCategoryBlocked(Notification notification) {
++        if (notification == null) {
++            return false;
++        }
++        String category = notification.category;
++        if (Notification.CATEGORY_MISSED_CALL.equals(category)) {
++            return !mMissedCallLightsEnabled;
++        }
++        if (Notification.CATEGORY_VOICEMAIL.equals(category)) {
++            return !mVoicemailLightsEnabled;
++        }
++        String channelId = notification.getChannelId();
++        if (CHANNEL_ID_MISSED_CALLS.equals(channelId)) {
++            return !mMissedCallLightsEnabled;
++        }
++        if (CHANNEL_ID_DIALER_MISSED_CALL.equals(channelId)) {
++            return !mMissedCallLightsEnabled;
++        }
++        if (CHANNEL_ID_VOICE_MAIL.equals(channelId)) {
++            return !mVoicemailLightsEnabled;
++        }
++        if (channelId != null && channelId.startsWith(CHANNEL_ID_DIALER_VOICEMAIL_PREFIX)) {
++            return !mVoicemailLightsEnabled;
++        }
++        return false;
++    }
++
++    public boolean isNotificationAllowed(String packageName, Notification notification) {
++        if (isCategoryBlocked(notification)) {
++            return false;
++        }
++        if (getLedValuesForCategory(notification) != null) {
++            return true;
++        }
++        return getLedValuesForPackageName(packageName) != null;
++    }
++
++    private void applyCustomLedValues(LedValues ledValues, LedValues customValues,
++            String packageName) {
++        if (customValues == null) {
++            return;
++        }
++        ledValues.setColor(customValues.getColor() != 0
++                ? customValues.getColor()
++                : generateLedColorForPackageName(packageName));
++        ledValues.setOnMs(customValues.getOnMs() >= 0
++                ? customValues.getOnMs()
++                : mDefaultNotificationLedOn);
++        ledValues.setOffMs(customValues.getOffMs() >= 0
++                ? customValues.getOffMs()
++                : mDefaultNotificationLedOff);
++    }
++
+     private int generateLedColorForPackageName(String packageName) {
+         if (!mAutoGenerateNotificationColor) {
+             return mDefaultNotificationColor;
+@@ -312,6 +400,10 @@ public final class LineageNotificationLights {
+             ledValues.setEnabled(false);
+             return;
+         }
++        if (!forcedOn && !isNotificationAllowed(packageName, n)) {
++            ledValues.setEnabled(false);
++            return;
++        }
+ 
+         final int brightness;
+         if (!mCanAdjustBrightness) {
+@@ -326,16 +418,15 @@ public final class LineageNotificationLights {
+         }
+         ledValues.setBrightness(brightness);
+ 
+-        final LedValues ledValuesPkg = getLedValuesForPackageName(packageName);
+-
++        final LedValues ledValuesCategory = getLedValuesForCategory(n);
++        final LedValues ledValuesPkg = ledValuesCategory == null
++                ? getLedValuesForPackageName(packageName)
++                : null;
+         // Use package specific values that the user has chosen.
+-        if (ledValuesPkg != null) {
+-            ledValues.setColor(ledValuesPkg.getColor() != 0 ?
+-                    ledValuesPkg.getColor() : generateLedColorForPackageName(packageName));
+-            ledValues.setOnMs(ledValuesPkg.getOnMs() >= 0 ?
+-                    ledValuesPkg.getOnMs() : mDefaultNotificationLedOn);
+-            ledValues.setOffMs(ledValuesPkg.getOffMs() >= 0 ?
+-                    ledValuesPkg.getOffMs() : mDefaultNotificationLedOff);
++        if (ledValuesCategory != null) {
++            applyCustomLedValues(ledValues, ledValuesCategory, packageName);
++        } else if (ledValuesPkg != null) {
++            applyCustomLedValues(ledValues, ledValuesPkg, packageName);
+         } else if (ledValues.getColor() == 0) {
+             ledValues.setColor(generateLedColorForPackageName(packageName));
+             ledValues.setOnMs(mDefaultNotificationLedOn);
+@@ -385,10 +476,31 @@ public final class LineageNotificationLights {
+                     LineageSettings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF),
+                     false, this, UserHandle.USER_ALL);
+             resolver.registerContentObserver(LineageSettings.System.getUriFor(
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE),
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES),
+                     false, this, UserHandle.USER_ALL);
+             resolver.registerContentObserver(LineageSettings.System.getUriFor(
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES),
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_COLOR),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_ON),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_ENABLE),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF),
++                    false, this, UserHandle.USER_ALL);
++            resolver.registerContentObserver(LineageSettings.System.getUriFor(
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE),
+                     false, this, UserHandle.USER_ALL);
+             resolver.registerContentObserver(LineageSettings.System.getUriFor(
+                     LineageSettings.System.NOTIFICATION_LIGHT_SCREEN_ON),
+@@ -426,6 +538,12 @@ public final class LineageNotificationLights {
+             mNotificationLedEnabled = Settings.System.getIntForUser(resolver,
+                     Settings.System.NOTIFICATION_LIGHT_PULSE,
+                     0, UserHandle.USER_CURRENT) != 0;
++            mMissedCallLightsEnabled = LineageSettings.System.getIntForUser(resolver,
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_ENABLE, 1,
++                    UserHandle.USER_CURRENT) != 0;
++            mVoicemailLightsEnabled = LineageSettings.System.getIntForUser(resolver,
++                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_ENABLE, 1,
++                    UserHandle.USER_CURRENT) != 0;
+ 
+             // Automatically pick a color for LED if not set
+             mAutoGenerateNotificationColor = LineageSettings.System.getIntForUser(resolver,
+@@ -447,18 +565,36 @@ public final class LineageNotificationLights {
+                     LineageSettings.System.NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF,
+                     mDefaultNotificationLedOff, UserHandle.USER_CURRENT);
+ 
++            mMissedCallLedValues = new LedValues(
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_COLOR,
++                            mDefaultNotificationColor, UserHandle.USER_CURRENT),
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_ON,
++                            mDefaultNotificationLedOn, UserHandle.USER_CURRENT),
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF,
++                            mDefaultNotificationLedOff, UserHandle.USER_CURRENT));
++
++            mVoicemailLedValues = new LedValues(
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR,
++                            mDefaultNotificationColor, UserHandle.USER_CURRENT),
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON,
++                            mDefaultNotificationLedOn, UserHandle.USER_CURRENT),
++                    LineageSettings.System.getIntForUser(resolver,
++                            LineageSettings.System.NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF,
++                            mDefaultNotificationLedOff, UserHandle.USER_CURRENT));
++
+             // LED generated notification colors
+             mGeneratedPackageLedColors.clear();
+ 
+             // LED custom notification colors
+             mNotificationPulseCustomLedValues.clear();
+-            if (LineageSettings.System.getIntForUser(resolver,
+-                    LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE, 0,
+-                    UserHandle.USER_CURRENT) != 0) {
+-                parseNotificationPulseCustomValuesString(LineageSettings.System.getStringForUser(
+-                        resolver, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES,
+-                        UserHandle.USER_CURRENT));
+-            }
++            parseNotificationPulseCustomValuesString(LineageSettings.System.getStringForUser(
++                    resolver, LineageSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES,
++                    UserHandle.USER_CURRENT));
+ 
+             // Notification lights with screen on
+             mScreenOnEnabled = (LineageSettings.System.getIntForUser(resolver,
+-- 
+2.34.1
+

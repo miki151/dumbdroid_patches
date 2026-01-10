@@ -1,7 +1,7 @@
-From eb4a13b6c2e18e370208a7a5ab031c3b50b3699d Mon Sep 17 00:00:00 2001
+From fcf3bdb03507bff88680837e3c4b1a88f9145f29 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:23:14 +0200
-Subject: [PATCH 16/46] Bind the MENU Action to toggling quick settings; Bind
+Subject: [PATCH 16/50] Bind the MENU Action to toggling quick settings; Bind
  IN_APP_SEARCH Action to Home
 
 Change-Id: Ib3928fb984663bbd5785c375bc13e6959ab70211
@@ -68,5 +68,5 @@ index dbe0c53d4cdf..6cf2953d2cb8 100644
              case LAUNCH_CAMERA:
                  launchCameraAction();
 -- 
-2.43.0
+2.34.1
 

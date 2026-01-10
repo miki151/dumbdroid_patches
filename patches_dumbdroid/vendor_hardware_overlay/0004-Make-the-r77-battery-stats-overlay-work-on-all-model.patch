@@ -1,4 +1,4 @@
-From f3ec584e4ec0de70e463ac1a905f9b24816e175e Mon Sep 17 00:00:00 2001
+From ea4ede15119b957eee6c59969dd5146e096f68fa Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@keeperrl.com>
 Date: Fri, 19 Dec 2025 11:54:42 +0000
 Subject: [PATCH 4/4] Make the r77 battery stats overlay work on all models
@@ -25,5 +25,5 @@ index 9050564..ef1461b 100644
          android:isStatic="true" />
  </manifest>
 -- 
-2.43.0
+2.34.1
 

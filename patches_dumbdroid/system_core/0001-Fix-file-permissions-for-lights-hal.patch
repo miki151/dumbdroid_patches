@@ -1,4 +1,4 @@
-From aa9128ebbd638907ebabb7b66a25d85fb49d23fb Mon Sep 17 00:00:00 2001
+From ff2a4dfeca39632fe602762b3ad6c6a632bbe6b6 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Wed, 11 Jun 2025 09:29:32 +0200
 Subject: [PATCH] Fix file permissions for lights hal
@@ -19,5 +19,5 @@ index 39e8fe9eb..343803569 100644
 +/sys/class/leds/*  brightness    0666   system   system
 +
 -- 
-2.43.0
+2.34.1
 

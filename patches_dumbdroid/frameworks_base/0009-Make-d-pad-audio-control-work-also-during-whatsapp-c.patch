@@ -1,7 +1,7 @@
-From 200fe1f609d2c3e81d7410ee8fd7bbd42654f96f Mon Sep 17 00:00:00 2001
+From 86861809c2ee7d4bfe33292ec875bd28c25a3ec9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 19:57:39 +0200
-Subject: [PATCH 09/46] Make d-pad audio control work also during whatsapp
+Subject: [PATCH 09/50] Make d-pad audio control work also during whatsapp
  calls
 
 Change-Id: I84a3a59934dae4ff5a5271800016142acca928e7
@@ -71,5 +71,5 @@ index 2aafb485344b..573f44d8c003 100644
                          // If we are in call but we decided not to pass the key to
                          // the application, just pass it to the session service.
 -- 
-2.43.0
+2.34.1
 

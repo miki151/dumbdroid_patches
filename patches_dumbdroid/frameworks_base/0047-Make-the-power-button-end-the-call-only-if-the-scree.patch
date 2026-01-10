@@ -1,0 +1,32 @@
+From 750a70c882a77b89193613c4b8f412e5b65f6ad3 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 9 Jan 2026 14:58:12 +0100
+Subject: [PATCH 47/50] Make the power button end the call only if the screen
+ is on
+
+Change-Id: I9a4a62480ebf678cf1e50dd8fb7d9cd7f6c2963c
+---
+ .../java/com/android/server/policy/PhoneWindowManager.java    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+index 1ee1084f3134..1a89766276af 100644
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
+@@ -1262,11 +1262,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+ 
+         mWindowManagerFuncs.onPowerKeyDown(interactive);
+ 
+-        // Stop ringing or end call if configured to do so when power is pressed.
++        // Stop ringing or end call only when the screen is already on.
+         TelecomManager telecomManager = getTelecommService();
+         boolean hungUp = false;
+         if (telecomManager != null) {
+-            if (telecomManager.isRinging() || telecomManager.isInCall()) {
++            if (interactive && (telecomManager.isRinging() || telecomManager.isInCall())) {
+                 hungUp = telecomManager.endCall();
+             }
+         }
+-- 
+2.34.1
+
