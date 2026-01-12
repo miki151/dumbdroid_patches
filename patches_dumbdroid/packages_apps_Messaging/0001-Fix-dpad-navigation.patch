@@ -1,7 +1,7 @@
 From 355b96f130221709965edb74b84a0d545e13e1ae Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 20 Sep 2025 18:16:40 +0200
-Subject: [PATCH] Fix dpad navigation
+Subject: [PATCH 1/2] Fix dpad navigation
 
 Change-Id: I6d8f8705c8a4d90a854fb2d68ce81a6b3b3658c4
 ---

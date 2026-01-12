@@ -1,7 +1,7 @@
 From 74baad53b59f230136513a8459f3f7c59b6d8871 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:26:26 +0200
-Subject: [PATCH 4/7] Rename MENU and IN_APP_SEARCH Actions to reflect their
+Subject: [PATCH 4/8] Rename MENU and IN_APP_SEARCH Actions to reflect their
  real behavior
 
 Change-Id: I53a3421b9bbf7b281e12aa47264c1b73473d5658

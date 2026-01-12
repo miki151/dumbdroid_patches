@@ -1,7 +1,7 @@
 From f65833e5b35800320cc66af1b9b1df202910ceda Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 27 Jun 2025 18:10:56 +0200
-Subject: [PATCH 2/7] Remove settings for buttons that don't exist
+Subject: [PATCH 2/8] Remove settings for buttons that don't exist
 
 Change-Id: Ief47b67229bebf2fa13fc3a09199e519ccb439b1
 ---

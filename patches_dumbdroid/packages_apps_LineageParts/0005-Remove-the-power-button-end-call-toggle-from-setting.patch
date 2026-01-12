@@ -1,7 +1,7 @@
 From 375d9f817ecddba007573707f3bf29a6483a02ae Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 9 Oct 2025 00:23:54 +0200
-Subject: [PATCH 5/7] Remove the power-button-end-call toggle from settings
+Subject: [PATCH 5/8] Remove the power-button-end-call toggle from settings
 
 Change-Id: Id4fe2f5f7c5cf402336ce61fc6acba69993743e5
 ---

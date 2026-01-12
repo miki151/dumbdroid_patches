@@ -1,0 +1,141 @@
+From 9dee45d3c22ae76803269fdf90007ea2fd3c7717 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 12 Jan 2026 11:31:48 +0100
+Subject: [PATCH 2/2] Improve readability in dark theme
+
+Change-Id: I396e98c30191953cafcd3cd82b83f3d54f902f61
+---
+ res/drawable/focus_item_background.xml        | 22 +++++++++++++++++++
+ res/layout/contact_list_content.xml           |  1 +
+ res/layout/contact_picker_content.xml         |  1 +
+ .../join_contact_picker_list_content.xml      |  1 +
+ res/values-night/colors.xml                   |  2 ++
+ res/values/styles.xml                         |  3 +++
+ .../contacts/list/ContactListItemView.java    |  6 +++++
+ 7 files changed, 36 insertions(+)
+ create mode 100644 res/drawable/focus_item_background.xml
+
+diff --git a/res/drawable/focus_item_background.xml b/res/drawable/focus_item_background.xml
+new file mode 100644
+index 000000000..5ecc78142
+--- /dev/null
++++ b/res/drawable/focus_item_background.xml
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!-- Copyright (C) 2024 The Android Open Source Project
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++<selector xmlns:android="http://schemas.android.com/apk/res/android">
++    <item android:state_pressed="true" android:drawable="@color/control_highlight_color" />
++    <item android:state_focused="true" android:drawable="@color/control_highlight_color" />
++    <item android:state_activated="true" android:drawable="@color/control_highlight_color" />
++    <item android:state_selected="true" android:drawable="@color/control_highlight_color" />
++    <item android:drawable="@android:color/transparent" />
++</selector>
+diff --git a/res/layout/contact_list_content.xml b/res/layout/contact_list_content.xml
+index f728d3653..a3d226897 100644
+--- a/res/layout/contact_list_content.xml
++++ b/res/layout/contact_list_content.xml
+@@ -87,6 +87,7 @@
+                 android:layout_marginStart="?attr/contact_browser_list_padding_left"
+                 android:layout_marginEnd="?attr/contact_browser_list_padding_right"
+                 android:paddingTop="?attr/list_item_padding_top"
++                android:listSelector="@android:color/transparent"
+                 android:clipToPadding="false"
+                 android:fastScrollEnabled="true"
+                 android:forceDarkAllowed="false"
+diff --git a/res/layout/contact_picker_content.xml b/res/layout/contact_picker_content.xml
+index 6bc741911..caad1737b 100644
+--- a/res/layout/contact_picker_content.xml
++++ b/res/layout/contact_picker_content.xml
+@@ -30,6 +30,7 @@
+         android:layout_marginStart="?attr/contact_browser_list_padding_left"
+         android:layout_marginEnd="?attr/contact_browser_list_padding_right"
+         android:paddingTop="@dimen/contact_browser_list_item_padding_top_or_bottom"
++        android:listSelector="@android:color/transparent"
+         android:clipToPadding="false"
+         android:fastScrollEnabled="true"
+         android:forceDarkAllowed="false"/>
+diff --git a/res/layout/join_contact_picker_list_content.xml b/res/layout/join_contact_picker_list_content.xml
+index 2313de769..1b4055ec0 100644
+--- a/res/layout/join_contact_picker_list_content.xml
++++ b/res/layout/join_contact_picker_list_content.xml
+@@ -50,6 +50,7 @@
+             android:layout_marginRight="?attr/contact_browser_list_padding_right"
+             android:layout_marginStart="?attr/contact_browser_list_padding_left"
+             android:layout_marginEnd="?attr/contact_browser_list_padding_right"
++            android:listSelector="@android:color/transparent"
+             android:fastScrollEnabled="true"
+             android:forceDarkAllowed="false"
+             android:scrollbarStyle="outsideOverlay" />
+diff --git a/res/values-night/colors.xml b/res/values-night/colors.xml
+index fc5bb3017..9dfe71b6f 100644
+--- a/res/values-night/colors.xml
++++ b/res/values-night/colors.xml
+@@ -14,5 +14,7 @@
+     <color name="background_primary">@*android:color/system_neutral1_900</color>
+     <color name="contact_all_list_background_color">@*android:color/system_neutral1_900</color>
+ 
++    <color name="control_highlight_color">#80BDBDBD</color>
++
+     <color name="fab_color">@android:color/system_accent1_100</color>
+ </resources>
+diff --git a/res/values/styles.xml b/res/values/styles.xml
+index d31ce80da..ed7afd2d4 100644
+--- a/res/values/styles.xml
++++ b/res/values/styles.xml
+@@ -52,6 +52,7 @@
+         <item name="android:colorPrimaryDark">@color/primary_color_dark</item>
+         <item name="android:colorPrimary">@color/primary_color</item>
+         <item name="android:colorAccent">@color/primary_color</item>
++        <item name="android:colorControlHighlight">@color/control_highlight_color</item>
+         <item name="android:alertDialogTheme">@style/ContactsAlertDialogTheme</item>
+         <item name="list_item_height">@dimen/contact_browser_list_item_height</item>
+         <item name="list_section_header_height">24dip</item>
+@@ -124,6 +125,8 @@
+         <item name="colorPrimary">@color/primary_color</item>
+         <item name="android:colorAccent">@color/primary_color</item>
+         <item name="colorAccent">@color/primary_color</item>
++        <item name="android:colorControlHighlight">@color/control_highlight_color</item>
++        <item name="colorControlHighlight">@color/control_highlight_color</item>
+         <item name="android:alertDialogTheme">@style/ContactsAlertDialogThemeAppCompat</item>
+         <item name="alertDialogTheme">@style/ContactsAlertDialogThemeAppCompat</item>
+         <item name="list_item_height">@dimen/contact_browser_list_item_height</item>
+diff --git a/src/com/android/contacts/list/ContactListItemView.java b/src/com/android/contacts/list/ContactListItemView.java
+index aafe5b188..035918803 100644
+--- a/src/com/android/contacts/list/ContactListItemView.java
++++ b/src/com/android/contacts/list/ContactListItemView.java
+@@ -260,6 +260,9 @@ public class ContactListItemView extends ViewGroup
+     public ContactListItemView(Context context) {
+         super(context);
+ 
++        setAddStatesFromChildren(true);
++        setBackgroundResource(R.drawable.focus_item_background);
++
+         mTextHighlighter = new TextHighlighter(Typeface.BOLD);
+         mNameHighlightSequence = new ArrayList<HighlightSequence>();
+         mNumberHighlightSequence = new ArrayList<HighlightSequence>();
+@@ -274,6 +277,9 @@ public class ContactListItemView extends ViewGroup
+     public ContactListItemView(Context context, AttributeSet attrs) {
+         super(context, attrs);
+ 
++        setAddStatesFromChildren(true);
++        setBackgroundResource(R.drawable.focus_item_background);
++
+         TypedArray a;
+ 
+         if (R.styleable.ContactListItemView != null) {
+-- 
+2.34.1
+

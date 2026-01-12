@@ -1,7 +1,7 @@
 From 13338fed8f8d1f82cbbc99f5a51f6179d6b0f45a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 09:10:33 +0200
-Subject: [PATCH 3/7] Add setting for power button behavior
+Subject: [PATCH 3/8] Add setting for power button behavior
 
 Change-Id: I7c13216d9d08f514e99f7a80b02d0c1138fb30e6
 ---
