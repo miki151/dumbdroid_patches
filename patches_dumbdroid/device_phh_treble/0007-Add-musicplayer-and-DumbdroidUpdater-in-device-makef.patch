@@ -1,7 +1,7 @@
 From bc898d6adf4df6729fd3f175474a0ceb8ec0524f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 21 Jul 2025 15:56:43 +0200
-Subject: [PATCH 07/25] Add musicplayer and DumbdroidUpdater in device makefile
+Subject: [PATCH 07/26] Add musicplayer and DumbdroidUpdater in device makefile
 
 Change-Id: Ia2f4a43c42783ecaccef25bdf149c23381d26737
 ---

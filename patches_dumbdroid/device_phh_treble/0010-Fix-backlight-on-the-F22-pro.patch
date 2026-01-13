@@ -1,7 +1,7 @@
 From 791ccfdfd7963886f9ad6a6a14dc30a3d6c330e5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 15 Sep 2025 11:00:25 +0200
-Subject: [PATCH 10/25] Fix backlight on the F22 pro
+Subject: [PATCH 10/26] Fix backlight on the F22 pro
 
 Change-Id: I5cf8947fb6a24acbae8c1d0db764a6485b68d8fa
 ---

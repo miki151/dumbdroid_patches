@@ -1,7 +1,7 @@
 From 2da4db746f0f3d559f23a1b934e3b61f2f9a2979 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:28:55 +0200
-Subject: [PATCH 13/25] Try to mount an OTA image after downloading to verify
+Subject: [PATCH 13/26] Try to mount an OTA image after downloading to verify
  it
 
 Change-Id: I3f0e66893329a4927d04aab6cd4e0fe4798b70cd

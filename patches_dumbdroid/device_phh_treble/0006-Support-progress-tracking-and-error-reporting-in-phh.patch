@@ -1,7 +1,7 @@
 From 0a71005e70a28e8e8673d91c22ad840ee5fc1dd7 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 21 Jul 2025 15:55:12 +0200
-Subject: [PATCH 06/25] Support progress tracking and error reporting in
+Subject: [PATCH 06/26] Support progress tracking and error reporting in
  phh-ota
 
 Change-Id: I2121bc89e53a5802bfb7fe26d9fc3eca11ffa3eb

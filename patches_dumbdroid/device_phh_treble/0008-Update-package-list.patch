@@ -1,7 +1,7 @@
 From 135a75e1f5e818064166ad35ad3188837ca0e2ab Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 25 Jul 2025 14:20:57 +0200
-Subject: [PATCH 08/25] Update package list
+Subject: [PATCH 08/26] Update package list
 
 Change-Id: Ie3b484e09d0f67ec508abe13af7ab7cc6ab66d05
 ---

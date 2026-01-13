@@ -1,7 +1,7 @@
 From fbee34d9be2b159c6011b835db01dcab232ac68e Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@keeperrl.com>
 Date: Fri, 19 Dec 2025 11:55:19 +0000
-Subject: [PATCH 25/25] Make ro.debuggable=0 again
+Subject: [PATCH 25/26] Make ro.debuggable=0 again
 
 Change-Id: I75a761863427db986a46fcda249fa0ec677bb7fc
 ---

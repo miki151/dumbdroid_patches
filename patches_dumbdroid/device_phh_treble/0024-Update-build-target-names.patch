@@ -1,7 +1,7 @@
 From 3a28672cd55df543dc07e78f5383d26c079beeae Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 8 Dec 2025 19:40:02 +0100
-Subject: [PATCH 24/25] Update build target names
+Subject: [PATCH 24/26] Update build target names
 
 Change-Id: I49c8f02fb207deb1dcfb224f6ed0e9c472c4b003
 ---
