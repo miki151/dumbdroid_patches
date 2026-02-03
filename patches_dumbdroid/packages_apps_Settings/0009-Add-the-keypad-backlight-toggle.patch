@@ -1,7 +1,7 @@
 From f7ff563e84500ce5da66293018983f1e31c9599f Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 10 Jan 2026 12:39:37 +0100
-Subject: [PATCH 9/9] Add the keypad backlight toggle
+Subject: [PATCH 09/10] Add the keypad backlight toggle
 
 Change-Id: I0e81fedb04f31e7ade583450835734da847458ad
 ---

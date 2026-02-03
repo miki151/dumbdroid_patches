@@ -1,7 +1,7 @@
 From 04f1a11d31bd1938f7126ec47795e402c652f401 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Dec 2025 15:18:58 +0100
-Subject: [PATCH 46/50] Fix dpad center button on new R77 hardware
+Subject: [PATCH 46/51] Fix dpad center button on new R77 hardware
 
 Change-Id: I508b31be03ba5c57000f655d6b143740c0f1ad62
 ---

@@ -1,7 +1,7 @@
 From b01629a260ddf1e425f55fecb871c26bbfc1c185 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:06:20 +0200
-Subject: [PATCH 12/50] Hide the soft navigation bar
+Subject: [PATCH 12/51] Hide the soft navigation bar
 
 Change-Id: I78822634aadaac60d5a21821cbb649338ee02fe0
 ---

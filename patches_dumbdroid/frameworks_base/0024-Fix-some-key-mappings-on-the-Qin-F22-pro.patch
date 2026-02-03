@@ -1,7 +1,7 @@
 From a5463bbff720d5c01294c82495cd29447df154f1 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 5 Sep 2025 10:47:30 +0200
-Subject: [PATCH 24/50] Fix some key mappings on the Qin F22 pro
+Subject: [PATCH 24/51] Fix some key mappings on the Qin F22 pro
 
 Change-Id: I5faaea15db3b63931513a6e73fb192ded2f39a54
 ---

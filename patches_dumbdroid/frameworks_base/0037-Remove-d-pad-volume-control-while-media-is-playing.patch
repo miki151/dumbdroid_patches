@@ -1,7 +1,7 @@
 From 23ce806903fc213d3392c14372f6ed1de3c95910 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Mon, 13 Oct 2025 16:08:36 +0200
-Subject: [PATCH 37/50] Remove d-pad volume control while media is playing
+Subject: [PATCH 37/51] Remove d-pad volume control while media is playing
 
 Change-Id: I00ad1415808ad1f57fdf6e6817549bc4b04eed3d
 ---

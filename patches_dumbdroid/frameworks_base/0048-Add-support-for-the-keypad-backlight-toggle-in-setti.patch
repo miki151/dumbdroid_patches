@@ -1,7 +1,7 @@
 From 3b3cae5e6ddbab517c34c768fc123b1f4a4597a3 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 10 Jan 2026 12:36:04 +0100
-Subject: [PATCH 48/50] Add support for the keypad backlight toggle in settings
+Subject: [PATCH 48/51] Add support for the keypad backlight toggle in settings
 
 Change-Id: Ic8930b57a7341d17fdae66584c71253368833774
 ---

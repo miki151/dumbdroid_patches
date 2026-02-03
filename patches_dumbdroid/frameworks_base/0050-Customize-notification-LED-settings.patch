@@ -1,7 +1,7 @@
 From 283c782ccdcb1bba06542b86330962fe97591e97 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 10 Jan 2026 18:36:45 +0100
-Subject: [PATCH 50/50] Customize notification LED settings
+Subject: [PATCH 50/51] Customize notification LED settings
 
 Change-Id: I65cb5a26aabbd08ecfca82e35a2b8854130ba9fc
 ---

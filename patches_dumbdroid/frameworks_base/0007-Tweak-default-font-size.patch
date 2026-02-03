@@ -1,7 +1,7 @@
 From b9fcd3542abddcc7e740e5c5809c4e9b0c934291 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 15 Jun 2025 11:33:46 +0200
-Subject: [PATCH 07/50] Tweak default font size
+Subject: [PATCH 07/51] Tweak default font size
 
 Change-Id: Ie72058d0428c8dab566374b6e7923db46bc9738d
 ---

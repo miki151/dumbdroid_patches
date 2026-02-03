@@ -1,0 +1,24 @@
+From 01da7db4ceda1052674ffbbf23afcd690e22247b Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 14 Jan 2026 09:56:38 +0100
+Subject: [PATCH 5/5] Make the IMS overlay static (always on)
+
+Change-Id: Ib0a848185f6e9b7870baa19b80525bf4e6364d8a
+---
+ Telephony/MTK-IMS/AndroidManifest.xml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Telephony/MTK-IMS/AndroidManifest.xml b/Telephony/MTK-IMS/AndroidManifest.xml
+index 5afe885..96cdc27 100644
+--- a/Telephony/MTK-IMS/AndroidManifest.xml
++++ b/Telephony/MTK-IMS/AndroidManifest.xml
+@@ -4,5 +4,6 @@
+         android:versionName="1.0">
+         <overlay android:targetPackage="com.android.phone"
+ 		android:priority="79"
++		android:isStatic="true"
+ 		/>
+ </manifest>
+-- 
+2.34.1
+

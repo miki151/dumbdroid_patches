@@ -1,7 +1,7 @@
 From ea4ede15119b957eee6c59969dd5146e096f68fa Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@keeperrl.com>
 Date: Fri, 19 Dec 2025 11:54:42 +0000
-Subject: [PATCH 4/4] Make the r77 battery stats overlay work on all models
+Subject: [PATCH 4/5] Make the r77 battery stats overlay work on all models
  with vndk=31
 
 Change-Id: I449a542f54ed089aaec77ee652e7d68b2829034b

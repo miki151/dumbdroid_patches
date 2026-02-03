@@ -1,7 +1,7 @@
 From 0726bc07b89de156996f7840ba019c964ad55d99 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 7 Oct 2025 09:24:07 +0200
-Subject: [PATCH 31/50] Wake the device with number keys
+Subject: [PATCH 31/51] Wake the device with number keys
 
 Change-Id: I5176447beabad7cab19110711a72794843316faa
 ---

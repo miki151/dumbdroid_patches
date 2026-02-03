@@ -1,7 +1,7 @@
 From 89418f1e2eb15e44cebac08297957e20d1ffe863 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 10 Jun 2025 21:03:50 +0200
-Subject: [PATCH 01/50] Disable doze
+Subject: [PATCH 01/51] Disable doze
 
 Change-Id: I6d40f84c418ebf377f778aa43240fb76bd85979e
 ---

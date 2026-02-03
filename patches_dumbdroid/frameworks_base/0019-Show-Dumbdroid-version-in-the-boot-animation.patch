@@ -1,7 +1,7 @@
 From 29c1b7ea9db27817ccd274e70218e3d8eaa3f07b Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 16 Aug 2025 09:05:09 +0200
-Subject: [PATCH 19/50] Show Dumbdroid version in the boot animation
+Subject: [PATCH 19/51] Show Dumbdroid version in the boot animation
 
 Change-Id: Iadf983f2adbd253ae66eb361843362df6591c4bb
 ---

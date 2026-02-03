@@ -1,7 +1,7 @@
 From e7cff518f59bacb93b9b86361e60f36ae95eb8d5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:25:56 +0100
-Subject: [PATCH 19/26] Remove unnecessary file
+Subject: [PATCH 19/27] Remove unnecessary file
 
 Change-Id: Ia2a9b6d03428f1da3b99f3e26a0879a5c43a5d30
 ---

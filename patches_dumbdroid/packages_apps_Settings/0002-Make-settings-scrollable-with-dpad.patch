@@ -1,7 +1,7 @@
 From 48bd6396d49dbcba04e20690abc6e65bbf662776 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 21 Sep 2025 08:37:33 +0200
-Subject: [PATCH 2/9] Make settings scrollable with dpad
+Subject: [PATCH 02/10] Make settings scrollable with dpad
 
 Change-Id: I476b37c1824b48f631ef9e9f46f5a74b70ab9ff5
 ---

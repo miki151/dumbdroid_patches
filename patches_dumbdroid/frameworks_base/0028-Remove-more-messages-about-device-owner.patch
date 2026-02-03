@@ -1,7 +1,7 @@
 From 6fef215075b28fc5b9754c207e5b564a23a29206 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 09:56:36 +0200
-Subject: [PATCH 28/50] Remove more messages about device owner
+Subject: [PATCH 28/51] Remove more messages about device owner
 
 Change-Id: I078f5c09f590bcb154f079052f0ba4528fcf4cc1
 ---

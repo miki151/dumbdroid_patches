@@ -1,7 +1,7 @@
 From 3f8d132171257a2d7ab3b5bb5e12fd2a9a98211a Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Tue, 13 Jan 2026 10:58:18 +0100
-Subject: [PATCH 26/26] Remove play store and gms installations when booting
+Subject: [PATCH 26/27] Remove play store and gms installations when booting
  the vanilla variant
 
 Change-Id: Ic4e8f56d54d696a2576b751e2e4fd9dfcc87914d

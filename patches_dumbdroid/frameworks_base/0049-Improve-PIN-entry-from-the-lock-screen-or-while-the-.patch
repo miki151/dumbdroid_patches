@@ -1,7 +1,7 @@
 From c45aad4c5e219278309679eae646d9fa0974ee3d Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 10 Jan 2026 12:41:56 +0100
-Subject: [PATCH 49/50] Improve PIN entry from the lock screen or while the
+Subject: [PATCH 49/51] Improve PIN entry from the lock screen or while the
  screen is off
 
 Change-Id: Ie0f5499ca3b9ad8fa62c718f841887adb69b957f

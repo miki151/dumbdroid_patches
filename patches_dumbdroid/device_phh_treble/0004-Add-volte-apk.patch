@@ -1,7 +1,7 @@
 From 19333928e0ba0857318635efbcc370428b8d4cb6 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sun, 15 Jun 2025 11:36:23 +0200
-Subject: [PATCH 04/26] Add volte apk
+Subject: [PATCH 04/27] Add volte apk
 
 Change-Id: I45b2430efce3b38b544b45f7b358b1f445d73920
 ---

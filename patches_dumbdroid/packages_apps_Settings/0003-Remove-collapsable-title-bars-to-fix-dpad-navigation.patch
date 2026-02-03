@@ -1,7 +1,7 @@
 From e96e9da28219b9f510241a8ab2df74d329a348f9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 26 Sep 2025 10:00:37 +0200
-Subject: [PATCH 3/9] Remove collapsable title bars to fix dpad navigation
+Subject: [PATCH 03/10] Remove collapsable title bars to fix dpad navigation
 
 Change-Id: Ifd31893eb01d65b168bb9bf0ff0c94a0b41e9f98
 ---

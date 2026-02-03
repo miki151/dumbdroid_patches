@@ -1,7 +1,7 @@
 From 973dd4ccf77a48dcc6dcd2c421ea890132131786 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 24 Jul 2025 11:44:30 +0200
-Subject: [PATCH 14/50] Remap the top right button as menu again
+Subject: [PATCH 14/51] Remap the top right button as menu again
 
 Change-Id: Icaf1c5ff3a541a45dd4532dc4dbbf1293b77eedb
 ---

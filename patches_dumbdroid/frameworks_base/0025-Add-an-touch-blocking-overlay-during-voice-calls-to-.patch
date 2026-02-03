@@ -1,7 +1,7 @@
 From f0d205ea3a00b7954c0437810d37419a4146edd9 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 12 Sep 2025 13:13:34 +0200
-Subject: [PATCH 25/50] Add an touch-blocking overlay during voice calls to
+Subject: [PATCH 25/51] Add an touch-blocking overlay during voice calls to
  prevent accidental touches on device without a proximity sensor
 
 Change-Id: If5989f1eac3547bf772afa63bb5467676913da9e

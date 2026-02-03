@@ -1,7 +1,7 @@
 From d04c089995705738773e3c462d847b862bcde7b5 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Thu, 30 Oct 2025 18:24:17 +0100
-Subject: [PATCH 39/50] Add a factory reset button to the power menu during
+Subject: [PATCH 39/51] Add a factory reset button to the power menu during
  setup wizard
 
 Change-Id: Ib90eb6ebf81dd5dd533dc275c7880fee14cefd8d

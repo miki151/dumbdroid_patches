@@ -1,7 +1,7 @@
 From 64377d7adfb8f4ec4dbd8997dcd187db64b12529 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:30:42 +0100
-Subject: [PATCH 8/9] Add missing files to fix the build
+Subject: [PATCH 08/10] Add missing files to fix the build
 
 Change-Id: Ie92c13384e9cace7e3d7c70fd6d31471499b0e24
 ---

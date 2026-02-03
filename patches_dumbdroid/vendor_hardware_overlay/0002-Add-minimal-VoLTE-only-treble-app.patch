@@ -1,7 +1,7 @@
 From 942fde992b2d4d51472b3ba9dbdcaf3476dc2c70 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:28:47 +0100
-Subject: [PATCH 2/4] Add minimal VoLTE-only treble app
+Subject: [PATCH 2/5] Add minimal VoLTE-only treble app
 
 Change-Id: Ibdf7b135b6cef63cdec0d298cd6eb91284cb41a0
 ---

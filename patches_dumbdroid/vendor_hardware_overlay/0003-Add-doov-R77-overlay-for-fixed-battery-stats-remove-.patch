@@ -1,7 +1,7 @@
 From 5581c0047d996bcfe0a779d6c0cad6c98895fe89 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 29 Nov 2025 18:29:05 +0100
-Subject: [PATCH 3/4] Add doov R77 overlay for fixed battery stats, remove
+Subject: [PATCH 3/5] Add doov R77 overlay for fixed battery stats, remove
  unused overlays
 
 Change-Id: I942b62b70434061a569c6093a2235fda58b54bb9

@@ -1,7 +1,7 @@
 From 750a70c882a77b89193613c4b8f412e5b65f6ad3 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Fri, 9 Jan 2026 14:58:12 +0100
-Subject: [PATCH 47/50] Make the power button end the call only if the screen
+Subject: [PATCH 47/51] Make the power button end the call only if the screen
  is on
 
 Change-Id: I9a4a62480ebf678cf1e50dd8fb7d9cd7f6c2963c

@@ -1,7 +1,7 @@
 From 46745c35c2a40d90a8e92338d2250e7754b0f926 Mon Sep 17 00:00:00 2001
 From: Michal Brzozowski <miki@extremic.com>
 Date: Sat, 8 Nov 2025 14:14:55 +0100
-Subject: [PATCH 42/50] Decouple DnD and ringer mode
+Subject: [PATCH 42/51] Decouple DnD and ringer mode
 
 Change-Id: I21632da9127a48fd7454ca1b26fdef8fc9755c9d
 ---
