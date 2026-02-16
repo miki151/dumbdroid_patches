@@ -1,0 +1,129 @@
+From cd910e1980a2de44b47f973e72f3b9829c9a7188 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Fri, 13 Feb 2026 13:24:36 +0100
+Subject: [PATCH 3/3] Add a "minimize" button to the ongoing call screen
+
+Change-Id: I7f94e7e6d42bf94368124818b3306d3cc25641e0
+---
+ .../commontheme/res/values/strings.xml        |  2 ++
+ .../incallui/incall/impl/InCallFragment.java  | 15 ++++++++++++++
+ .../impl/res/layout/frag_incall_voice.xml     | 20 +++++++++++++++++++
+ .../incall/impl/res/values/strings.xml        |  4 ++++
+ 4 files changed, 41 insertions(+)
+
+diff --git a/java/com/android/incallui/commontheme/res/values/strings.xml b/java/com/android/incallui/commontheme/res/values/strings.xml
+index 78afd4f8c..dd10e2426 100644
+--- a/java/com/android/incallui/commontheme/res/values/strings.xml
++++ b/java/com/android/incallui/commontheme/res/values/strings.xml
+@@ -18,6 +18,8 @@
+ 
+   <string name="incall_content_description_end_call">End call</string>
+ 
++  <string name="incall_content_description_minimize_call">Minimize call screen</string>
++
+   <string name="incall_content_description_muted">Muted</string>
+ 
+   <string name="incall_content_description_unmuted">Unmuted</string>
+diff --git a/java/com/android/incallui/incall/impl/InCallFragment.java b/java/com/android/incallui/incall/impl/InCallFragment.java
+index ed194f4b4..6214e9a63 100644
+--- a/java/com/android/incallui/incall/impl/InCallFragment.java
++++ b/java/com/android/incallui/incall/impl/InCallFragment.java
+@@ -22,6 +22,7 @@ import android.Manifest.permission;
+ import android.annotation.SuppressLint;
+ import android.app.Activity;
+ import android.content.Context;
++import android.content.Intent;
+ import android.content.pm.PackageManager;
+ import android.graphics.Insets;
+ import android.os.Bundle;
+@@ -89,6 +90,7 @@ public class InCallFragment extends Fragment
+ 
+   private final List<ButtonController> buttonControllers = new ArrayList<>();
+   private View endCallButton;
++  private View minimizeButton;
+   private InCallPaginator paginator;
+   private LockableViewPager pager;
+   private InCallPagerAdapter adapter;
+@@ -198,6 +200,10 @@ public class InCallFragment extends Fragment
+ 
+     endCallButton = view.findViewById(R.id.incall_end_call);
+     endCallButton.setOnClickListener(this);
++    minimizeButton = view.findViewById(R.id.incall_minimize);
++    if (minimizeButton != null) {
++      minimizeButton.setOnClickListener(this);
++    }
+ 
+     if (ContextCompat.checkSelfPermission(getContext(), permission.READ_PHONE_STATE)
+         != PackageManager.PERMISSION_GRANTED) {
+@@ -283,6 +289,12 @@ public class InCallFragment extends Fragment
+     if (view == endCallButton) {
+       LogUtil.i("InCallFragment.onClick", "end call button clicked");
+       inCallScreenDelegate.onEndCallClicked();
++    } else if (view == minimizeButton) {
++      LogUtil.i("InCallFragment.onClick", "minimize button clicked");
++      Intent homeIntent = new Intent(Intent.ACTION_MAIN);
++      homeIntent.addCategory(Intent.CATEGORY_HOME);
++      homeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++      startActivity(homeIntent);
+     } else {
+       LogUtil.e("InCallFragment.onClick", "unknown view: " + view);
+       Assert.createAssertionFailException("");
+@@ -361,6 +373,9 @@ public class InCallFragment extends Fragment
+     if (endCallButton != null) {
+       endCallButton.setEnabled(enabled);
+     }
++    if (minimizeButton != null) {
++      minimizeButton.setEnabled(enabled);
++    }
+   }
+ 
+   @Override
+diff --git a/java/com/android/incallui/incall/impl/res/layout/frag_incall_voice.xml b/java/com/android/incallui/incall/impl/res/layout/frag_incall_voice.xml
+index 45870f307..fd9b8fd1f 100644
+--- a/java/com/android/incallui/incall/impl/res/layout/frag_incall_voice.xml
++++ b/java/com/android/incallui/incall/impl/res/layout/frag_incall_voice.xml
+@@ -118,6 +118,26 @@
+         android:layout_alignParentBottom="true"
+         android:layout_centerHorizontal="true"
+         android:contentDescription="@string/incall_content_description_end_call"/>
++
++    <TextView
++        android:id="@+id/incall_minimize"
++        style="@style/Dialer.Incall.TextAppearance.Label"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_toEndOf="@id/incall_end_call"
++        android:layout_alignBottom="@id/incall_end_call"
++        android:layout_marginStart="16dp"
++        android:minWidth="96dp"
++        android:paddingStart="14dp"
++        android:paddingTop="10dp"
++        android:paddingEnd="14dp"
++        android:paddingBottom="10dp"
++        android:background="@drawable/incall_minimize_button_background"
++        android:gravity="center"
++        android:maxLines="1"
++        android:singleLine="true"
++        android:text="@string/incall_label_minimize"
++        android:contentDescription="@string/incall_content_description_minimize_call"/>
+   </RelativeLayout>
+ 
+   <FrameLayout
+diff --git a/java/com/android/incallui/incall/impl/res/values/strings.xml b/java/com/android/incallui/incall/impl/res/values/strings.xml
+index 7f87ee466..83c4f88f5 100644
+--- a/java/com/android/incallui/incall/impl/res/values/strings.xml
++++ b/java/com/android/incallui/incall/impl/res/values/strings.xml
+@@ -40,6 +40,10 @@
+      [CHAR LIMIT=12] -->
+   <string name="incall_label_dialpad">Keypad</string>
+ 
++  <!-- Label shown under the minimize button next to end call.
++     [CHAR LIMIT=12] -->
++  <string name="incall_label_minimize">Minimize</string>
++
+   <!-- Talkback text for speaker button status. [CHAR LIMIT=12] -->
+   <string name="incall_talkback_speaker_on">, is on</string>
+ 
+-- 
+2.34.1
+
