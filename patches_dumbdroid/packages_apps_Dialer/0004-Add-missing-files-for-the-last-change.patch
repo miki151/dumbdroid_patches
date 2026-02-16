@@ -1,0 +1,51 @@
+From 445f9ac7b4ea94c17409c05da21ed1f9d177976a Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Mon, 16 Feb 2026 13:34:28 +0100
+Subject: [PATCH 4/4] Add missing files for the last change
+
+Change-Id: I68e8999aa2815329bc19180242e5ac755f0ad4b0
+---
+ .../impl/res/drawable/ic_incall_minimize_24.xml     | 10 ++++++++++
+ .../drawable/incall_minimize_button_background.xml  | 13 +++++++++++++
+ 2 files changed, 23 insertions(+)
+ create mode 100644 java/com/android/incallui/incall/impl/res/drawable/ic_incall_minimize_24.xml
+ create mode 100644 java/com/android/incallui/incall/impl/res/drawable/incall_minimize_button_background.xml
+
+diff --git a/java/com/android/incallui/incall/impl/res/drawable/ic_incall_minimize_24.xml b/java/com/android/incallui/incall/impl/res/drawable/ic_incall_minimize_24.xml
+new file mode 100644
+index 000000000..0151a8573
+--- /dev/null
++++ b/java/com/android/incallui/incall/impl/res/drawable/ic_incall_minimize_24.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<vector xmlns:android="http://schemas.android.com/apk/res/android"
++    android:width="24dp"
++    android:height="24dp"
++    android:viewportWidth="24"
++    android:viewportHeight="24">
++  <path
++      android:fillColor="@android:color/white"
++      android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"/>
++</vector>
+diff --git a/java/com/android/incallui/incall/impl/res/drawable/incall_minimize_button_background.xml b/java/com/android/incallui/incall/impl/res/drawable/incall_minimize_button_background.xml
+new file mode 100644
+index 000000000..dc96ab35e
+--- /dev/null
++++ b/java/com/android/incallui/incall/impl/res/drawable/incall_minimize_button_background.xml
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<ripple xmlns:android="http://schemas.android.com/apk/res/android"
++    android:color="#40FFFFFF">
++  <item>
++    <shape android:shape="rectangle">
++      <solid android:color="@android:color/transparent"/>
++      <stroke
++          android:width="1dp"
++          android:color="@android:color/white"/>
++      <corners android:radius="18dp"/>
++    </shape>
++  </item>
++</ripple>
+-- 
+2.34.1
+
