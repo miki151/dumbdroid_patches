@@ -1,0 +1,76 @@
+From ed4efc06163356bb7884e19b3159761c54dc7840 Mon Sep 17 00:00:00 2001
+From: Michal Brzozowski <miki@extremic.com>
+Date: Wed, 18 Feb 2026 08:30:22 +0100
+Subject: [PATCH 29/29] Add an overlay to turn off doze on F21 pro and F22 pro
+
+Change-Id: Ia624f585eb77fb9b6034cafc0653130445882f83
+---
+ lineage.mk                                  |  1 +
+ overlay-turn-off-doze/Android.bp            | 11 +++++++++++
+ overlay-turn-off-doze/AndroidManifest.xml   | 15 +++++++++++++++
+ overlay-turn-off-doze/res/values/config.xml |  4 ++++
+ 4 files changed, 31 insertions(+)
+ create mode 100644 overlay-turn-off-doze/Android.bp
+ create mode 100644 overlay-turn-off-doze/AndroidManifest.xml
+ create mode 100644 overlay-turn-off-doze/res/values/config.xml
+
+diff --git a/lineage.mk b/lineage.mk
+index d15c9a4..eb72f80 100644
+--- a/lineage.mk
++++ b/lineage.mk
+@@ -28,3 +28,4 @@ PRODUCT_COPY_FILES += \
+ PRODUCT_PACKAGES += tt9
+ PRODUCT_PACKAGES += DumbdroidUpdater DumbdroidPanel DumbdroidDonationLink DumbdroidAdmin
+ PRODUCT_PACKAGES += musicplayer breezy_weather organic_maps
++PRODUCT_PACKAGES += TrebleDisableAutoPowerModes
+diff --git a/overlay-turn-off-doze/Android.bp b/overlay-turn-off-doze/Android.bp
+new file mode 100644
+index 0000000..1512d9e
+--- /dev/null
++++ b/overlay-turn-off-doze/Android.bp
+@@ -0,0 +1,11 @@
++package {
++    default_applicable_licenses: ["Android-Apache-2.0"],
++}
++
++runtime_resource_overlay {
++    name: "TrebleDisableAutoPowerModes",
++    resource_dirs: ["res"],
++    manifest: "AndroidManifest.xml",
++    sdk_version: "current",
++    product_specific: true,
++}
+diff --git a/overlay-turn-off-doze/AndroidManifest.xml b/overlay-turn-off-doze/AndroidManifest.xml
+new file mode 100644
+index 0000000..28e438c
+--- /dev/null
++++ b/overlay-turn-off-doze/AndroidManifest.xml
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android"
++    package="me.phh.treble.overlay.disableautopowermodes">
++
++    <overlay
++        android:targetPackage="android"
++        android:isStatic="true"
++        android:priority="1000"
++        android:requiredSystemPropertyName="ro.vendor.build.fingerprint"
++        android:requiredSystemPropertyValue="+(^Qin/full_k61v1_64_gms*|^QIN/full_AGN*)" />
++
++    <application
++        android:label="TrebleDisableAutoPowerModes"
++        android:hasCode="false" />
++</manifest>
+diff --git a/overlay-turn-off-doze/res/values/config.xml b/overlay-turn-off-doze/res/values/config.xml
+new file mode 100644
+index 0000000..66ac0b1
+--- /dev/null
++++ b/overlay-turn-off-doze/res/values/config.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <bool name="config_enableAutoPowerModes">false</bool>
++</resources>
+-- 
+2.34.1
+
